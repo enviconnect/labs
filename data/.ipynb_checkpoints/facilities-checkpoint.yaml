@@ -1,0 +1,301 @@
+---
+type: FeatureCollection
+features:
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -1.5776411
+    - 42.6862012
+    - 0
+  properties:
+    name: CENER Alaiz experimental wind farm
+    type: wind farm
+    country: Spain
+    description: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
+    url: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
+  infrastructure:
+      - wind turbines
+  data:
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 11.6822258
+    - 57.7302907
+    - 0
+  properties:
+    name: Chalmers test wind turbine
+    type: wind turbine
+    country: Sweden
+    url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
+    note: Location shown is approximate
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 12.0974455
+    - 55.6925969
+    - 0
+  properties:
+    name: DTU Wind Energy
+    type: wind energy research center
+    country: Denmark
+    description: DTU Wind operates several wind-energy related facilities, including a materials lab, the Poul La Cour Tunnel, the Large Scale Facility for blade testing, and the Østerild National Test Center, capable of trialling the new generation of mega-turbines up to 330 metres tall. 
+    url: https://wind.dtu.dk/Facilities
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 4.9350001
+    - 52.832082
+    - 0
+  properties:
+    name: ECN Wind Turbine Test Facility Wieringermeer
+    type: wind farm
+    country: Netherlands
+    description: 5 turbines of 2.5 MW 
+    url: https://repository.tudelft.nl/islandora/object/uuid%3A92123c07-cc12-4945-973f-103bd744ec87.
+    note: Location shown on map is approximate
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 114.71987
+    - 41.1586199
+    - 0
+  properties:
+    name: IET & NCEPU wind turbine at Zhangbei
+    type: wind turbine
+    country: China
+    description: A 100-kW turbine with some meteorological data
+    url: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf
+    note: "Location shown on map is approximate. According to the linked information, 'The turbine is situated 20 km west of Zhangbei County and 200 km northwest of Beijing.'"
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 8.68215
+    - 47.52007
+    - 0
+  properties:
+    name: ETH Aventa research wind turbine
+    type: wind turbine
+    country: Switzerland
+    description: This is one of two neighbouring test turbines. One is owned by ETH Zürich. The other is owned by OST (see separate entry).
+    url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ETH-aventa-research-wind-turbine.pdf
+    note: Location shown on map is approximate
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 8.68214
+    - 47.52006
+    - 0
+  properties:
+    name: OST test turbine
+    type: wind turbine
+    country: Switzerland
+    description: The wind turbine Taggenberg 1, type AV-7, is manufactured by Aventa AG in Switzerland and was commissioned in December 2002.
+    url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ost-twt-facility.pdf.
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 17.6166667
+    - 65.9666667
+    - 0
+  properties:
+    name: RI.SE Cold Climate Test Center
+    type: wind farm
+    country: Sweden
+    description: A test site for wind energy in cold climates at Uljabuouda, operated by RI.SE.
+    url: https://www.ri.se/en/what-we-do/test-demo/cold-climate-test-centre
+    note: location shown on map is approximate
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -1.864344
+    - 47.103143
+    - 0
+  properties:
+    name: Saint-Hilaire-de-Chaléons
+    type: wind turbine
+    country: France
+    description: A commercial 2MW Senvion Turbine operated by VALEMO within a park of 6 identical turbines
+    url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-saint-hilaire-de-chaleons.pdf.
+    note: location shown on map is approximate.
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 9.8514181
+    - 48.6605881
+    - 0
+  properties:
+    name: WINSENT – wind science and engineering test site in complex terrain, Stöttener Berg, Germany
+    type: wind turbine
+    country: Germany
+    description: WINSENT – wind science and engineering test site in complex terrain, Stöttener Berg, Germany.
+    url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-windsent.pdf
+    note: Location on map is approximate.
+  data:
+    - multi-year wind data
+    - vertical profiling wind lidar measurement campaigns
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -64.01637
+    - 47.03222
+    - 0
+  properties:
+    name: WEICan Wind R&D Park
+    type: wind farm
+    country: Canada
+    description: 5 x 2.0 MW turbines.
+    url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-weican-twt-facilities.pdf.
+    note: Location shown on map is approximate
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 9.206257
+    - 53.8306575
+    - 0
+  properties:
+    name: WiValdi Research Wind Farm
+    type: wind farm
+    country: Germany
+    description: The German Aerospace Center (DLR) is developing the research wind farm (referred to as WiValdi) at its Krummendeich site together with partners from the Research Alliance Wind Energy in Lower Saxony, Germany. WiValdi is scheduled to be put into operation during the course of 2022 and will have a predicted service life of 20 years. WiValdi stands for wind validation.
+    url: https://windenergy-researchfarm.com/
+    note: "See also https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-WiValdi-research-wind-farm.pdf. The location shown on the map is approximate."
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 6.6
+    - 54.0166666666667
+    - 0
+  properties:
+    name: Alpha Ventus
+    type: wind farm
+    country: Germany
+    description: Certain data from the Alpha Ventus wind farm are available for research purposes.
+    url: https://rave-offshore.de/en/about-rave.html
+    note: Location shown is approximate.'
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -3.0199977
+    - 56.1743314
+    - 0
+  properties:
+    name: 'Offshore Renewable Energy Catapult: Levenmouth Demonstration Turbine'
+    type: wind turbine
+    country: United Kingdom
+    description: A 7MW turbine just offshore
+    url: https://ore.catapult.org.uk/what-we-do/testing-validation/levenmouth/
+    note: location shown on map is approximate
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 6.0428709
+    - 50.7845058
+    - 0
+  properties:
+    name: Center for Wind Power Drives RWTH Aachen
+    type: wind energy research center
+    country: Germany
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -1.5081364
+    - 55.1304836
+    - 0
+  properties:
+    name: Offshore Renewable Energy Catapult
+    type: wind energy research center
+    country: United Kingdom
+    description: 
+    url: https://ore.catapult.org.uk/what-we-do/testing-validation/powertrain-facilities/.
+    note: Location shown on the map is approximate.
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 10.218597
+    - 53.469263
+    - 0
+  properties:
+    name: Windpark Curslack
+    type: wind farm 
+    country: Germany
+    description: The HAW Hamburg research facility includes 5 Nordex N117 wind turbines, a met mast, and a battery storage facility.
+    url: https://www.haw-hamburg.de/cc4e/infrastruktur-und-technische-forschungsausstattung/windpark-curslack/
+    note: Information is in German only. The location shown on the map is approximate.
+  infrastructure:
+    - battery storage
+    - met mast
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 8.52327
+    - 49.0150481
+    - 0
+  properties:
+    name: Fraunhofer-Institut für Chemische Technologie (ICT)
+    type: Energy systems research center
+    country: Germany
+    description: A micro grid with integrated Vanadium-Redox-Flow battery, connected to a 2-MW wind turbine.
+    url: https://www.ict.fraunhofer.de/de/presse_mediathek/pressemitteilungen/2021/2021-12-13.html
+    note: Location shown on the map is approximate.
+  infrastructure:
+    - Vanadium-Redox-Flow battery
+    - Microgrid
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 6.58777
+    - 54.015
+    - 0
+  properties:
+    name: FINO 1
+    type: wind measurement site
+    country: Germany
+    description: A 101-m met tower and platform in the North Sea. Data are available for use.
+    url: https://www.fino1.de/en/.
+    note: location shown on map is approximate
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -15.368656
+    - 27.992053
+    - 0
+  properties:
+    name: Oceanic Platform of the Canary Islands(PLOCAN)
+    type: wind energy research center
+    country: Spain
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -105.2176253
+    - 39.9140081
+    - 0
+  properties:
+    name: "NREL's Flatiron Campus"
+    type: wind energy research center
+    country: United States of America
+    description: "NREL's Flatirons Campus features state-of-the-art equipment and facilities that support fundamental wind energy research, technology development, experimentation, and validation of components and systems.
+
+More than a renewable energy research site, Flatirons Campus is also home to the National Wind Technology Center (NWTC). Since 1992, NWTC scientists and engineers have pioneered the advancement of wind energy technology. Using field validation sites, dynamometers, structural research facilities, and composites manufacturing and integrated energy systems facilities, NWTC researchers and industry partners pursue wind energy innovations to create a clean, sustainable energy future powered by reliable, low-cost wind energy."
+    description-url: https://www.nrel.gov/wind/facilities.html
+    url: https://www.nrel.gov/wind/facilities.html
