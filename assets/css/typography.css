@@ -1,0 +1,24 @@
+@font-face {
+  font-family: "Montserrat";
+  src: url(“fonts/montserrat-v25-latin-regular.ttf”) format(“truetype”);
+  font-family: "Raleway";
+  src: url(“fonts/raleway-v28-latin-regular.ttf”) format(“truetype”);
+}
+
+*,
+html,
+body {
+  font-family: "Raleway", sans-serif;
+}
+
+.content h1, h2, h3 {
+  font-family: "Montserrat", sans-serif;
+}
+
+.content h2 {
+  font-size: 32px;
+  padding-left: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-left: 3px solid #17a9ae;
+}

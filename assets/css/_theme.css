@@ -1,0 +1,20 @@
+:root {
+--color-1: #CE1B4C;
+--color-2: #DD967E;
+--color-3: #38325B;
+--color-4: #727C8B;
+--color-5: #17A9AE;
+--color-6: #A9CADC;
+--black: #212121;
+--muted: #ABABAB;
+--white: #ffffff;
+--off-white: mix($white, $muted, 20%);
+--dark-gray: mix(#fff, $black, 60%);
+--light-gray: mix(#fff, $black, 30%);
+--white-offset: mix(#fff, $black, 10%);
+--logo-gray: #48484a;
+
+--bs-primary: var(--color-5);
+--bs-secondary: var(--color-2);
+--bs-dark: var(--color-3);
+}
