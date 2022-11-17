@@ -1,6 +1,5 @@
 .footer {
-    background-color: var(--bs-dark);
-    color: var(--muted);
+    background-color: var(--off-white);
     font-size: smaller;
 }
 

@@ -1,0 +1,12 @@
+.title {
+    background-color: var(--color-5);
+}
+
+.title h1 {
+    color: var(--white);
+}
+
+.title h1.subtitle {
+    font-size: 50%;
+    font-weight: lighter;
+}
