@@ -9,6 +9,10 @@
 --muted: #ABABAB;
 --white: #ffffff;
 
+--primary: var(--color-5);
+--secondary: var(--color-2);
+--dark: var(--color-3);
+
 --bs-primary: var(--color-5);
 --bs-secondary: var(--color-2);
 --bs-dark: var(--color-3);

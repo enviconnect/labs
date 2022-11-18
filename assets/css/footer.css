@@ -27,7 +27,7 @@
     color: inherit;
     text-decoration: underline;
     display: block;
-    &:hover {
+    & :hover {
         text-decoration: underline;
     }
 }
@@ -35,10 +35,10 @@
     list-style: disc;
     padding-left: 0;
     font-size: 100%;
-    li {
+    & li {
         list-style-position: inside;
         color: inherit;
-        a {
+        & a {
             color: inherit;
             text-decoration: none;
             display: inline;
