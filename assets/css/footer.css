@@ -27,24 +27,29 @@
     color: inherit;
     text-decoration: underline;
     display: block;
-    & :hover {
-        text-decoration: underline;
-    }
 }
+
+.footer a :hover {
+    text-decoration: underline;
+}
+
 .footer ul {
     list-style: disc;
     padding-left: 0;
     font-size: 100%;
-    & li {
-        list-style-position: inside;
-        color: inherit;
-        & a {
-            color: inherit;
-            text-decoration: none;
-            display: inline;
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
+}
+
+.footer ul li {
+    list-style-position: inside;
+    color: inherit;
+}
+
+.footer ul li a {
+    color: inherit;
+    text-decoration: none;
+    display: inline;
+}
+
+.footer ul li a :hover {
+    text-decoration: underline;
 }
