@@ -1,5 +1,5 @@
 .filter_row {
-    background-color: var(--dark-gray);
-    border: 1px solid var(--color-5);
+    background-color: #E9E9E9;
+    border: 1px solid #E9E9E9;
     border-radius: 0.25rem;
 }
