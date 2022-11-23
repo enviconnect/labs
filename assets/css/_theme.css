@@ -13,10 +13,6 @@
 --secondary: var(--color-2);
 --dark: var(--color-3);
 
---bs-primary: var(--color-5);
---bs-secondary: var(--color-2);
---bs-dark: var(--color-3);
-
 --off-white: #E9E9E9;
 --dark-gray: color-mix(in srgb, var(--white), var(--black) 60%);
 --light-gray: color-mix(in srgb, var(--white), var(--black) 30%);

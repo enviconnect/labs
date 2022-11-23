@@ -290,7 +290,7 @@ def filter_facilities(
     dff_i = country_i.intersection(facilitytype_i).copy()
     dff_i = dff_i.intersection(infrastructure_i)
     dff_i = dff_i.intersection(availabledata_i)
-    
+
     dff = df_in.loc[dff_i].copy()
 
     return dff
@@ -364,7 +364,7 @@ def create_googlemaps_link_button(lat, lon):
 # --------------
 
 
-def create_facility_map(df_in,df_selected=""):
+def create_facility_map(df_in, df_selected=""):
     """
     Create the map of all facilities
 
@@ -405,7 +405,7 @@ def create_facility_map(df_in,df_selected=""):
         zoom=map_zoom,
         # size = 5
     )
-    fig.update_layout(        
+    fig.update_layout(
         hovermode="closest",
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
     )
@@ -447,53 +447,49 @@ def create_sortable_facility_table(df_in):
     # create a list of columns to display
     show_columns = ["name", "country", "type"]
 
-    sortable_facility_table = dash_table.DataTable(
-        id="sortable-facility-table",
-        columns=[
-            {"name": i, "id": i, "deletable": False, "selectable": False} for i in show_columns #df_table.columns
-        ],
-        data=df_table.to_dict('records'),
-        #data = df_table.to_dict('index'),
-        style_data={
-            'whiteSpace': 'normal',
-            'height': 'auto',
-            'lineHeight': '15px'
-        },
-        style_cell_conditional=[
-            {'if': {'column_id': 'id'},
-             'width': '10%'},
-            {'if': {'column_id': 'name'},
-             'width': '30%'},
-            {'if': {'column_id': 'country'},
-             'width': '25%'},
-            {'if': {'column_id': 'type'},
-             'width': '30%'},
-        ],
-        style_as_list_view=True,
-        style_cell={'padding': '5px',
-        "border-bottom": "1px solid #E9E9E9",
-        "border-top": "1px solid #E9E9E9"},
-        style_header={
-            'backgroundColor': '#E9E9E9',
-            #'color': "#FFFFFF",
-            'fontWeight': 'bold',
-            'border': "1px solid #E9E9E9"
-        },
-        editable=False,
-        filter_action="native",
-        sort_action="native",
-        sort_mode="multi",
-        column_selectable="single",
-        # row_selectable="multi",
-        row_deletable=False,
-        selected_columns=[],
-        selected_rows=[],
-        page_action="native",
-        style_table={"overflow-y":"none",
-            'border': "1px solid #E9E9E9"},
-        page_current=0,
-        page_size=7,
-    ),
+    sortable_facility_table = (
+        dash_table.DataTable(
+            id="sortable-facility-table",
+            columns=[
+                {"name": i, "id": i, "deletable": False, "selectable": False}
+                for i in show_columns  # df_table.columns
+            ],
+            data=df_table.to_dict("records"),
+            # data = df_table.to_dict('index'),
+            style_data={"whiteSpace": "normal", "height": "auto", "lineHeight": "15px"},
+            style_cell_conditional=[
+                {"if": {"column_id": "id"}, "width": "10%"},
+                {"if": {"column_id": "name"}, "width": "30%"},
+                {"if": {"column_id": "country"}, "width": "25%"},
+                {"if": {"column_id": "type"}, "width": "30%"},
+            ],
+            style_as_list_view=True,
+            style_cell={
+                "padding": "5px",
+                "border-bottom": "1px solid #E9E9E9",
+                "border-top": "1px solid #E9E9E9",
+            },
+            style_header={
+                "backgroundColor": "#E9E9E9",
+                #'color': "#FFFFFF",
+                "fontWeight": "bold",
+                "border": "1px solid #E9E9E9",
+            },
+            editable=False,
+            filter_action="native",
+            sort_action="native",
+            sort_mode="multi",
+            column_selectable="single",
+            # row_selectable="multi",
+            row_deletable=False,
+            selected_columns=[],
+            selected_rows=[],
+            page_action="native",
+            style_table={"overflow-y": "none", "border": "1px solid #E9E9E9"},
+            page_current=0,
+            page_size=7,
+        ),
+    )
 
     return sortable_facility_table
 
@@ -640,17 +636,13 @@ def get_card_infrastructure_element(dff_selected):
 
     """
 
-    if not dff_selected["infrastructure"].isnull().values.any():
+    infrastructure_list = create_Ul(dff_selected['infrastructure'].squeeze())
 
-        infrastructure_list = create_Ul(dff_selected["infrastructure"].squeeze())
-
-        infrastructure_element = [
-            html.P("Available infrastructure:"),
-            infrastructure_list,
-        ]
-        return infrastructure_element
-    else:
-        return html.P("no infrastructure information available")
+    infrastructure_element = [
+        html.P("Available infrastructure:"),
+        infrastructure_list
+    ]        
+    return infrastructure_element
 
 
 def get_card_availabledata_element(dff_selected):
@@ -672,17 +664,14 @@ def get_card_availabledata_element(dff_selected):
 
     """
 
-    if not dff_selected["availabledata"].isnull().values.any():
+    availabledata_list = create_Ul(dff_selected['availabledata'].squeeze())
 
-        availabledata_list = create_Ul(dff_selected["availabledata"].squeeze())
-
-        availabledata_element = [html.P("Available data:"), availabledata_list]
-        return availabledata_element
-    else:
-        return html.P("no information about data available")
-
-
-
+    availabledata_element = [
+        html.P("Available data:"),
+        availabledata_list
+    ]        
+    return availabledata_element
+    
 
 # -----------------------------
 # Create the layout for this page
@@ -692,6 +681,20 @@ def get_card_availabledata_element(dff_selected):
 # 3 cols on the left for filters, 9 on the right for map & information
 layout = dbc.Container(
     [
+        # title row
+        html.Div(
+            [
+            dbc.Row(
+                [
+                    dbc.Col(
+                        [html.H1("Wind Energy R&D Facilities Explorer")],
+                        width=12,
+                    ),
+                ],
+                className="title h-10 pt-2 mx-0 mb-2",
+            ),
+            ]
+        ),
         # content
         html.Div(
             [
@@ -701,7 +704,8 @@ layout = dbc.Container(
                         dbc.Col(
                             [
                                 dcc.Graph(
-                                    figure=create_facility_map(df,""), id="facility_map"
+                                    figure=create_facility_map(df, ""),
+                                    id="facility_map",
                                 )
                             ],
                             className="col-12 col-lg-6 h-sm-60 h-md-33 h-lg-25",
@@ -729,65 +733,43 @@ layout = dbc.Container(
                     ],
                     className="filter_row px-1 py-2 mx-0 my-2",
                 ),
-                # card row
-                dbc.Row(
-                    dbc.Col(
-                        [
-                            dbc.Card(
-                                [
-                                    dbc.CardBody(
-                                        [
-                                            # title: should span whole card
-                                            dbc.Col(
-                                                [
-                                                    html.H4(
-                                                        className="card-title",
-                                                        id="card-title",
-                                                    )
-                                                ],
-                                                className="col-12",
-                                            ),
-                                            # row for description
-                                            dbc.Row(
-                                                [
-                                                    dbc.Col(
-                                                        [
-                                                            html.P(
-                                                                className="card-text",
-                                                                id="card-desc",
-                                                            )
-                                                        ],
-                                                        className="col-12 col-md-6",
-                                                    ),
-                                                    dbc.Col(
-                                                        [
-                                                            html.Div(
-                                                                className="card-text",
-                                                                id="card-infrastructure",
-                                                            )
-                                                        ],
-                                                        className="col-12 col-md-3",
-                                                    ),
-                                                    dbc.Col(
-                                                        [
-                                                            html.Div(
-                                                                className="card-text",
-                                                                id="card-availabledata",
-                                                            )
-                                                        ],
-                                                        className="col-12 col-md-3",
-                                                    ),
-                                                ],
-                                                className="col-12",
-                                            ),
-                                        ]
-                                    )
-                                ]
-                            )
-                        ],
-                        width=12,
-                    ),
-                    className="pb-2",
+                # tabs row
+                dbc.Col(
+                    [
+                        html.H4(
+                            [
+                                html.I(className="fa-solid fa-circle-info"),
+                                " ",
+                                "Select a facility",
+                            ],
+                            id="tabs-title",
+                        ),
+                        dbc.Tabs(
+                            [
+                                dbc.Tab(
+                                    label="Description",
+                                    tab_id="tab-1",
+                                    id="tab-desc",
+                                    className="p-2 info-tab",
+                                ),
+                                dbc.Tab(
+                                    label="Infrastructure",
+                                    tab_id="tab-2",
+                                    id="tab-infrastructure",
+                                    className="p-2 info-tab",
+                                ),
+                                dbc.Tab(
+                                    label="Available data",
+                                    tab_id="tab-3",
+                                    id="tab-availabledata",
+                                    className="p-2 info-tab",
+                                ),
+                            ],
+                            id="card-tabs",
+                            active_tab="tab-1",
+                        ),
+                    ],
+                    className="p-2 mb-2 info-tab-box",
                 ),
             ],
             className="content",
@@ -809,7 +791,7 @@ layout = dbc.Container(
     Input("country_selector", "value"),
     Input("facilitytype_selector", "value"),
     Input("infrastructure_selector", "value"),
-    Input("availabledata_selector", "value")
+    Input("availabledata_selector", "value"),
 )
 def update_table_map(
     countries_selected="",
@@ -837,15 +819,15 @@ def update_table_map(
 
     """
 
-    dff= filter_facilities(
-            df,
-            countries_selected,
-            facilitytypes_selected,
-            infrastructure_selected,
-            availabledata_selected,
-        )
+    dff = filter_facilities(
+        df,
+        countries_selected,
+        facilitytypes_selected,
+        infrastructure_selected,
+        availabledata_selected,
+    )
 
-    fig = create_facility_map(dff,"")
+    fig = create_facility_map(dff, "")
 
     df_table = dff[["name", "country", "type_property"]].copy()
     df_table["id"] = df_table.index
@@ -856,16 +838,22 @@ def update_table_map(
 
 
 @dash.callback(
-        Output("card-title", "children"),
-        Output("card-desc", "children"),
-        Output("card-infrastructure", "children"),
-        Output("card-availabledata", "children"),
+    [
+        Output("tabs-title", "children"),
+        Output("tab-desc", "children"),
+        Output("tab-infrastructure", "children"),
+        Output("tab-infrastructure", "disabled"),
+        Output("tab-availabledata", "children"),
+        Output("tab-availabledata", "disabled"),
         Output("sortable-facility-table", "selected_cells"),
         Output("sortable-facility-table", "active_cell"),
+    ],
+    [
         Input("facility_map", "clickData"),
         Input("sortable-facility-table", "active_cell"),
+    ],
 )
-def update_information_card(clickData=None, active_cell={}):
+def update_information_tabs(clickData=None, active_cell={}):
     """
     Create an card containing information about the selected facility
 
@@ -889,45 +877,51 @@ def update_information_card(clickData=None, active_cell={}):
     # first check to see what triggered the callback
 
     if (clickData is None) and (not active_cell):
-        dff_selected=""
-        card_title_element = html.H4(
-            [html.I(className="fa-solid fa-circle-info"), " ", "Select a facility"]
+        tabs_title_element = html.H4(
+            [
+                html.I(className="fa-solid fa-circle-info"),
+                " ",
+                "Facility information"
+            ]
         )
-        card_description_element = html.P(
-            "Click on a site on the map or in the table to find out more"
-        )
-        card_infrastructure_element = []
-        card_availabledata_element = []
+        tab_description_element = html.P(
+            "Click on a facility on the map or in the table to find out more")
+        tab_infrastructure_element = []
+        tab_infrastructure_disabled = True
+        tab_availabledata_element = []
+        tab_availabledata_disabled = True
     else:
         if not (clickData is None):
             selected = clickData["points"][0]
-            dff_selected = (
-                df[(df["lat"] == selected["lat"]) & (df["lon"] == selected["lon"])]
-                if selected
-                else None
-            )
+            dff_selected = df[(df['lat'] == selected['lat']) & (
+                df['lon'] == selected['lon'])] if selected else None
 
         if active_cell:
-            dff_selected = df[df.index == active_cell["row_id"]]
+            dff_selected = df[df.index==active_cell['row_id']]
 
-        card_title_element = get_card_facility_title_element(dff_selected)
+        tabs_title_element = get_card_facility_title_element(dff_selected)
 
-        card_description_element = get_card_facility_description_element(dff_selected)
+        tab_description_element = get_card_facility_description_element(
+            dff_selected)
 
-        card_infrastructure_element = get_card_infrastructure_element(dff_selected)
+        if not dff_selected["infrastructure"].isnull().values.any():
+            tab_infrastructure_element = get_card_infrastructure_element(
+                dff_selected)
+            tab_infrastructure_disabled = False
+        else:
+            tab_infrastructure_element = html.P("no information about infrastructure available")
+            tab_infrastructure_disabled = True
 
-        card_availabledata_element = get_card_availabledata_element(dff_selected)
+        if not dff_selected["availabledata"].isnull().values.any():
+            tab_availabledata_element = get_card_availabledata_element(
+            dff_selected)
+            tab_availabledata_disabled = False
+        else:
+            tab_availabledata_element = html.P("no information about data available")
+            tab_availabledata_disabled = True
 
     # and clear the selections
-    selected_cells = []
-    active_cell = None
+    selected_cells=[]
+    active_cell=None
 
-    return (
-        card_title_element,
-        card_description_element,
-        card_infrastructure_element,
-        card_availabledata_element,
-        selected_cells,
-        active_cell,
-    )
-
+    return tabs_title_element, tab_description_element, tab_infrastructure_element, tab_infrastructure_disabled, tab_availabledata_element, tab_availabledata_disabled, selected_cells, active_cell

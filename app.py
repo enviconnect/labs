@@ -15,8 +15,9 @@ import dash_bootstrap_components as dbc
 
 app = Dash(
     __name__,
-    external_stylesheets=[dbc.themes.BOOTSTRAP,
-        dbc.icons.FONT_AWESOME],
+    external_stylesheets=[#dbc.themes.BOOTSTRAP,
+        #dbc.icons.FONT_AWESOME
+        ],
     use_pages=True,
     suppress_callback_exceptions=True
 )
@@ -110,7 +111,7 @@ def create_subfooter():
                             # legal
                             html.Div(
                                 [
-                                    html.A("Publisher", href="#"),
+                                    html.A("Publisher", href="/publisher"),
                                     html.A(
                                         "Privacy Policy",
                                         href="/privacy",
@@ -125,13 +126,13 @@ def create_subfooter():
                                 className="copyright",
                             ),
                         ],
-                        className="subfooter-inner",
+                        className="sub-footer-inner",
                     )
                 ],
                 className="col-12",
             ),
         ],
-        className="subfooter",
+        className="sub-footer",
     )
 
     return subfooter
@@ -148,17 +149,7 @@ app.layout = dbc.Container(
         # nav bar
         html.Div(
             [],
-        ),
-        # title row
-        dbc.Row(
-            [
-                dbc.Col(
-                    [html.H1("Wind Energy R&D Facilities Explorer (multipage App)")],
-                    width=12,
-                ),
-            ],
-            className="title h-10 pt-2 mb-2",
-        ),
+        ),        
         # content from other pages
         html.Div(
             [

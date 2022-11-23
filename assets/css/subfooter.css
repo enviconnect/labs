@@ -1,22 +1,22 @@
-.subfooter {
+.sub-footer {
 	font-size: smaller;
 	background: var(--black);
 	color: #ffffff;
 }
 
-.subfooter .copyright a {
+.sub-footer .copyright a {
     font-weight: bold;
     color: #ffffff;
 }
 
-.subfooter .sub-footer-inner {
+.sub-footer .sub-footer-inner {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 }
 
 @media (min-width: 768px) {
-	.subfooter .sub-footer-inner {
+	.sub-footer .sub-footer-inner {
 		background: "red";
 		flex-direction: row;
 	}
