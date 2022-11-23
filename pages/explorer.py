@@ -36,13 +36,14 @@ dash.register_page(__name__)
 # Get and prepare data
 # --------------------
 
-# Open the file and load the file
-with open("data/facilities.yaml") as f:
-    data = yaml.load(f, Loader=SafeLoader)
+def prepare_data(data_source):
+
+    # Open the file and load the file
+    with open(data_source) as f:
+        data = yaml.load(f, Loader=SafeLoader)
 
 
-def prepare_data(data):
-
+    
     # convert data to a datatable - easier later
     df_in = pd.DataFrame(data["features"])
     df_in.reset_index(inplace=True)
@@ -85,8 +86,9 @@ def prepare_data(data):
     return df
 
 
-df = prepare_data(data)
+df = prepare_data("data/facilities.yaml")
 
+#px.set_mapbox_access_token(open(".mapbox_token").read())
 
 # -----------
 # Filter data
@@ -160,66 +162,68 @@ def get_availabledata_label_value_pairs(df_in):
     return label_value_pairs
 
 
-# create a dropdown for the countries
-# TODO: Turn this into a function!
-countrySelector = dbc.Col(
-    [
-        dbc.Label("Country"),
-        dcc.Dropdown(
-            id="country_selector",
-            options=get_countries_label_value_pairs(df),
-            multi=True,
-            value="",
-        ),
-    ],
-    className="col-12 col-md-6 col-lg-3",
-)
+def create_selectors(df):
 
-facilityTypeSelector = dbc.Col(
-    [
-        dbc.Label("Facility type"),
-        dcc.Dropdown(
-            id="facilitytype_selector",
-            options=get_facility_types_label_value_pairs(df),
-            multi=True,
-            value="",
-        ),
-    ],
-    className="col-12 col-md-6 col-lg-3",
-)
+    countrySelector = dbc.Col(
+        [
+            dbc.Label("Country"),
+            dcc.Dropdown(
+                id="country_selector",
+                options=get_countries_label_value_pairs(df),
+                multi=True,
+                value="",
+            ),
+        ],
+        className="col-12 col-md-6 col-lg-3",
+    )
 
-infrastructureSelector = dbc.Col(
-    [
-        dbc.Label("Infrastructure"),
-        dcc.Dropdown(
-            id="infrastructure_selector",
-            options=get_infrastructure_label_value_pairs(df),
-            multi=True,
-            value="",
-        ),
-    ],
-    className="col-12 col-md-6 col-lg-3",
-)
+    facilityTypeSelector = dbc.Col(
+        [
+            dbc.Label("Facility type"),
+            dcc.Dropdown(
+                id="facilitytype_selector",
+                options=get_facility_types_label_value_pairs(df),
+                multi=True,
+                value="",
+            ),
+        ],
+        className="col-12 col-md-6 col-lg-3",
+    )
 
-availabledataSelector = dbc.Col(
-    [
-        dbc.Label("Available data"),
-        dcc.Dropdown(
-            id="availabledata_selector",
-            options=get_availabledata_label_value_pairs(df),
-            multi=True,
-            value="",
-        ),
-    ],
-    className="col-12 col-md-6 col-lg-3",
-)
+    infrastructureSelector = dbc.Col(
+        [
+            dbc.Label("Infrastructure"),
+            dcc.Dropdown(
+                id="infrastructure_selector",
+                options=get_infrastructure_label_value_pairs(df),
+                multi=True,
+                value="",
+            ),
+        ],
+        className="col-12 col-md-6 col-lg-3",
+    )
 
-filters = [
-    countrySelector,
-    facilityTypeSelector,
-    infrastructureSelector,
-    availabledataSelector,
-]
+    availabledataSelector = dbc.Col(
+        [
+            dbc.Label("Available data"),
+            dcc.Dropdown(
+                id="availabledata_selector",
+                options=get_availabledata_label_value_pairs(df),
+                multi=True,
+                value="",
+            ),
+        ],
+        className="col-12 col-md-6 col-lg-3",
+    )
+
+    filters = [
+        countrySelector,
+        facilityTypeSelector,
+        infrastructureSelector,
+        availabledataSelector,
+    ]
+
+    return filters
 
 
 def filterIcon():
@@ -363,8 +367,21 @@ def create_googlemaps_link_button(lat, lon):
 # Create the map
 # --------------
 
+def get_map_zoom(df_in):
+    # establish the bounds of the map
+    if len(df_in) >= 2:
+        dlat = 1 + df_in["lat"].max() - df_in["lat"].min() - 1
+        dlon = 1 + df_in["lon"].max() - df_in["lon"].min() - 1
+        max_bound = max(abs(dlat), abs(dlon)) * 111
+        map_zoom = math.floor(11.5 - np.log(max_bound))
+    elif len(df_in) == 0:
+        map_zoom = 1
+    else:
+        map_zoom = 5
 
-def create_facility_map(df_in, df_selected=""):
+    return map_zoom
+
+def create_facility_map(df_map):
     """
     Create the map of all facilities
 
@@ -381,37 +398,31 @@ def create_facility_map(df_in, df_selected=""):
 
     """
 
-    # establish the bounds of the map
-    if len(df_in) >= 2:
-        dlat = 1 + df_in["lat"].max() - df_in["lat"].min() - 1
-        dlon = 1 + df_in["lon"].max() - df_in["lon"].min() - 1
-        max_bound = max(abs(dlat), abs(dlon)) * 111
-        map_zoom = math.floor(11.5 - np.log(max_bound))
-    elif len(df_in) == 0:
-        map_zoom = 1
-    else:
-        map_zoom = 5
+    map_zoom= get_map_zoom(df_map)
 
+    fig = []
+    
     fig = px.scatter_mapbox(
-        df_in,
+        df_map,
         lat="lat",
         lon="lon",
         hover_name="name",
         hover_data=dict(
             lat=False,
             lon=False,
-        ),
-        mapbox_style="open-street-map",
+        ),        
         zoom=map_zoom,
-        # size = 5
     )
+
     fig.update_layout(
+        mapbox_style="open-street-map",
         hovermode="closest",
         margin={"r": 0, "t": 0, "l": 0, "b": 0},
     )
-    # fig.update_traces(
-    #    cluster=dict(enabled=True, size=2, step=3))
-
+    
+    fig.update_traces(marker=dict(size=7))
+    fig.update()
+    
     return fig
 
 
@@ -704,8 +715,9 @@ layout = dbc.Container(
                         dbc.Col(
                             [
                                 dcc.Graph(
-                                    figure=create_facility_map(df, ""),
-                                    id="facility_map",
+                                    #figure=create_facility_map(df),
+                                    #figure={},
+                                    id="facility_map"
                                 )
                             ],
                             className="col-12 col-lg-6 h-sm-60 h-md-33 h-lg-25",
@@ -724,8 +736,7 @@ layout = dbc.Container(
                         dbc.Col(
                             [
                                 dbc.Row(
-                                    # get_filters(df)
-                                    filters
+                                    create_selectors(df)
                                 )
                             ],
                             className="col-12 col-md-11",
@@ -786,12 +797,16 @@ layout = dbc.Container(
 # Update the map and table
 # -------------------------
 @dash.callback(
+    [
     Output("facility_map", "figure"),
     Output("sortable-facility-table", "data"),
+    ],
+    [    
     Input("country_selector", "value"),
     Input("facilitytype_selector", "value"),
     Input("infrastructure_selector", "value"),
     Input("availabledata_selector", "value"),
+    ]
 )
 def update_table_map(
     countries_selected="",
@@ -827,8 +842,9 @@ def update_table_map(
         availabledata_selected,
     )
 
-    fig = create_facility_map(dff, "")
-
+    #update the map data
+    fig = create_facility_map(dff)
+    
     df_table = dff[["name", "country", "type_property"]].copy()
     df_table["id"] = df_table.index
 
@@ -910,7 +926,7 @@ def update_information_tabs(clickData=None, active_cell={}):
             tab_infrastructure_disabled = False
         else:
             tab_infrastructure_element = html.P("no information about infrastructure available")
-            tab_infrastructure_disabled = True
+            tab_infrastructure_disabled = False
 
         if not dff_selected["availabledata"].isnull().values.any():
             tab_availabledata_element = get_card_availabledata_element(
@@ -918,7 +934,7 @@ def update_information_tabs(clickData=None, active_cell={}):
             tab_availabledata_disabled = False
         else:
             tab_availabledata_element = html.P("no information about data available")
-            tab_availabledata_disabled = True
+            tab_availabledata_disabled = False
 
     # and clear the selections
     selected_cells=[]
