@@ -5,10 +5,14 @@ import plotly.graph_objects as go
 # from jupyter_dash import JupyterDash
 
 import dash
-from dash import Dash, html, dcc, Input, Output
+from dash import Dash, html, Input, Output
+from dash import dcc
 from dash import dash_table
+from dash.dependencies import Input, Output, ALL
 
 import dash_bootstrap_components as dbc
+
+import dash_leaflet as dl
 
 # math routines
 import math
@@ -41,8 +45,6 @@ def prepare_data(data_source):
     # Open the file and load the file
     with open(data_source) as f:
         data = yaml.load(f, Loader=SafeLoader)
-
-
     
     # convert data to a datatable - easier later
     df_in = pd.DataFrame(data["features"])
@@ -82,6 +84,9 @@ def prepare_data(data_source):
     df_availabledata.reset_index(inplace=True)
 
     df = df.join(df_availabledata.set_index("index"))
+
+    # create an index column - useful
+    df.insert(0, column ="facility-id", value =df.index.values)
 
     return df
 
@@ -381,49 +386,60 @@ def get_map_zoom(df_in):
 
     return map_zoom
 
-def create_facility_map_plotly(df_map):
-    """
-    Create the map of all facilities
+def get_map_center(df_in):
+    if len(df_in) >= 2:
+        dlat = 1.0+df_in["lat"].max()-df_in["lat"].min()-1.0
+        dlon = 1.0+df_in["lon"].max()-df_in["lon"].min()-1.0
 
-    Maps all facilities that match the filters. The map is clickable.
+        map_center = (df_in["lat"].min()-1. + dlat/2.0, df_in["lon"].min()-1. + dlon/2.0)
+    elif len(df_in) == 1:
+        map_center = (df_in["lat"].min(), df_in["lon"].min())
+    else:
+        map_center = (0.0,0.0)
 
-    Parameters
-    ----------
-    dff : DataFrame
-        data frame containing the subset of facilities that match the filters.
+    return map_center
 
-    Returns
-    -------
-    fig : a plotly express figure object containing the map
+def create_facility_map_leaflet(df_map):
 
-    """
+    markers = []
+    #map_children.append(dl.TileLayer())
+    # based on https://lyz-code.github.io/blue-book/coding/python/dash_leaflet/#using-markers and https://github.com/mintproject/Dash/blob/master/leaflet.py
 
-    map_zoom= get_map_zoom(df_map)
+    # "on click" should use https://github.com/thedirtyfew/dash-leaflet/issues/5
 
-    fig = []
+    for index, facility in df_map.iterrows():
+        markers.append(
+                dl.CircleMarker(
+                    center = (facility["lat"], facility["lon"]),
+                    radius = 6,
+                    color = "#17a9ae",
+                    id = {
+                        "type": "facility",
+                        #"row": facility["facility-id"],
+                        "id" : "marker.{}".format(facility["facility-id"])
+                        },
+                    children=[
+                        dl.Tooltip(facility["name"],),
+                        dl.Popup(facility["name"],),
+                    ],
+                )
+            )
     
-    fig = px.scatter_mapbox(
-        df_map,
-        lat="lat",
-        lon="lon",
-        hover_name="name",
-        hover_data=dict(
-            lat=False,
-            lon=False,
-        ),        
-        zoom=map_zoom,
-    )
+    cluster = dl.MarkerClusterGroup(id="markers", children=markers)
 
-    fig.update_layout(
-        mapbox_style="open-street-map",
-        hovermode="closest",
-        margin={"r": 0, "t": 0, "l": 0, "b": 0},
-    )
     
-    fig.update_traces(marker=dict(size=7))
-    fig.update()
-    
-    return fig
+    leaflet_map = dl.Map(
+                [
+                    dl.TileLayer(),
+                    cluster
+                ],
+                zoom=get_map_zoom(df_map),
+                #center=(40.0884, -3.68042)
+                center = get_map_center(df_map),
+                style={'min-width': '500px', 'min-height': '400px'}
+           )
+
+    return leaflet_map
 
 # -----------------------
 # Create a sortable table
@@ -708,22 +724,29 @@ layout = dbc.Container(
         # content
         html.Div(
             [
+                # logging row
+                dbc.Row(
+                    dbc.Col(
+                        [                            
+                            html.Div(
+                                id="log"
+                            )
+                        ]
+                    ),
+                ),
                 # map and table content row
                 dbc.Row(
                     [                        
                         dbc.Col(
                             [
-                                dcc.Graph(
-                                    #figure=create_facility_map_plotly(df),                                  
-                                    #figure={},
-                                    id="facility_map"
-                                )
-                            ],
+                                create_facility_map_leaflet(df),
+                            ],                                
+                            id="facility-map-leaflet",
                             className="col-12 col-lg-6 h-sm-60 h-md-33 h-lg-25",
                         ),
                         dbc.Col(
                             [html.Div(create_sortable_facility_table(df))],
-                            className="col-12 col-lg-6",
+                            className="col-12 col-lg-6 mt-2 mt-lg-0",
                         ),
                     ],
                     className="pb-2 h-sm-60 h-md-33 h-lg-25",
@@ -797,7 +820,7 @@ layout = dbc.Container(
 # -------------------------
 @dash.callback(
     [
-    Output("facility_map", "figure"),
+    Output("facility-map-leaflet", "children"),
     Output("sortable-facility-table", "data"),
     ],
     [    
@@ -842,33 +865,34 @@ def update_table_map(
     )
 
     #update the map data
-    fig = create_facility_map_plotly(dff)
+    leaflet_map = create_facility_map_leaflet(dff)
     
     df_table = dff[["name", "country", "type_property"]].copy()
     df_table["id"] = df_table.index
 
     df_table.rename(columns={"type_property": "type"}, inplace=True)
 
-    return fig, df_table.to_dict("records")
+    return leaflet_map, df_table.to_dict("records")
 
 
 @dash.callback(
+        [
+            Output("tabs-title", "children"),
+            Output("tab-desc", "children"),
+            Output("tab-infrastructure", "children"),
+            Output("tab-infrastructure", "disabled"),
+            Output("tab-availabledata", "children"),
+            Output("tab-availabledata", "disabled"),            
+            Output("sortable-facility-table", "selected_cells"),
+            Output("sortable-facility-table", "active_cell"),
+            #Output("log", "children"), 
+        ],
     [
-        Output("tabs-title", "children"),
-        Output("tab-desc", "children"),
-        Output("tab-infrastructure", "children"),
-        Output("tab-infrastructure", "disabled"),
-        Output("tab-availabledata", "children"),
-        Output("tab-availabledata", "disabled"),
-        Output("sortable-facility-table", "selected_cells"),
-        Output("sortable-facility-table", "active_cell"),
-    ],
-    [
-        Input("facility_map", "clickData"),
-        Input("sortable-facility-table", "active_cell"),
-    ],
+        Input({'id': ALL, "type":"facility"}, 'n_clicks'),
+        Input('sortable-facility-table', 'active_cell')
+    ]
 )
-def update_information_tabs(clickData=None, active_cell={}):
+def update_information_tabs(n_clicks, active_cell):
     """
     Create an card containing information about the selected facility
 
@@ -889,31 +913,59 @@ def update_information_tabs(clickData=None, active_cell={}):
 
     """
 
-    # first check to see what triggered the callback
-
-    if (clickData is None) and (not active_cell):
-        tabs_title_element = html.H4(
+    # note that n_clicks is empty when the app initialises
+    
+    trigger = dash.callback_context.triggered_id
+    
+    # set default values
+    tabs_title_element = html.H4(
             [
                 html.I(className="fa-solid fa-circle-info"),
                 " ",
                 "Facility information"
             ]
         )
-        tab_description_element = html.P(
+    tab_description_element = html.P(
             "Click on a facility on the map or in the table to find out more")
-        tab_infrastructure_element = []
-        tab_infrastructure_disabled = True
-        tab_availabledata_element = []
-        tab_availabledata_disabled = True
-    else:
-        if not (clickData is None):
-            selected = clickData["points"][0]
-            dff_selected = df[(df['lat'] == selected['lat']) & (
-                df['lon'] == selected['lon'])] if selected else None
+    tab_infrastructure_element = []
+    tab_infrastructure_disabled = True
+    tab_availabledata_element = []
+    tab_availabledata_disabled = True
+    dff_selected = []
 
-        if active_cell:
-            dff_selected = df[df.index==active_cell['row_id']]
+    if isinstance(trigger,str):
+        # active cell is associated with a string id
+        log = "string"
+        log = trigger
+        trigger_component = "sortable-facility-table"
+    #elif isinstance(trigger,list):
+    #    log = "list"
+    elif isinstance(trigger, dict):
+        log = "dict"
+        trigger_component = "facility-map-leaflet"        
+        
+    if trigger_component == "facility-map-leaflet":
+        # then the trigger was the map
+        log = "triggered by the map"
+        if not any(n_clicks):
+            log = "no clicks on map"
+            return
+        else:
+            log = "clicks on map"
+            # now get the selected marker
+            clickedMarker = dash.callback_context.triggered_id
+            row_id = clickedMarker["id"].rsplit(".",1)[-1]
+            dff_selected = df[df.index == int(row_id)]
+            log = "Clicked on marker.{}".format(row_id)
+    
+    if trigger_component == "sortable-facility-table":
+        # then the trigger was the table
+        log = "triggered by the table"
+        # get the selected cell
+        dff_selected = df[df.index==active_cell['row_id']]
+        log = active_cell['row_id']
 
+    if not dff_selected.empty:
         tabs_title_element = get_card_facility_title_element(dff_selected)
 
         tab_description_element = get_card_facility_description_element(
@@ -925,7 +977,7 @@ def update_information_tabs(clickData=None, active_cell={}):
             tab_infrastructure_disabled = False
         else:
             tab_infrastructure_element = html.P("no information about infrastructure available")
-            tab_infrastructure_disabled = False
+            tab_infrastructure_disabled = True
 
         if not dff_selected["availabledata"].isnull().values.any():
             tab_availabledata_element = get_card_availabledata_element(
@@ -933,10 +985,12 @@ def update_information_tabs(clickData=None, active_cell={}):
             tab_availabledata_disabled = False
         else:
             tab_availabledata_element = html.P("no information about data available")
-            tab_availabledata_disabled = False
-
-    # and clear the selections
+            tab_availabledata_disabled = True
+        
+    # and finally, clear the selections
     selected_cells=[]
     active_cell=None
+    
 
-    return tabs_title_element, tab_description_element, tab_infrastructure_element, tab_infrastructure_disabled, tab_availabledata_element, tab_availabledata_disabled, selected_cells, active_cell
+
+    return tabs_title_element, tab_description_element, tab_infrastructure_element, tab_infrastructure_disabled, tab_availabledata_element, tab_availabledata_disabled, selected_cells, active_cell, #log
