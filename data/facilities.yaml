@@ -80,7 +80,7 @@ features:
   properties:
     name: IET & NCEPU wind turbine at Zhangbei
     type: wind turbine
-    country: 
+    country: China
   information:
     description: A 100-kW turbine with some meteorological data
     eawe: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf

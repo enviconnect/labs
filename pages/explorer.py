@@ -381,7 +381,7 @@ def get_map_zoom(df_in):
 
     return map_zoom
 
-def create_facility_map(df_map):
+def create_facility_map_plotly(df_map):
     """
     Create the map of all facilities
 
@@ -424,7 +424,6 @@ def create_facility_map(df_map):
     fig.update()
     
     return fig
-
 
 # -----------------------
 # Create a sortable table
@@ -711,11 +710,11 @@ layout = dbc.Container(
             [
                 # map and table content row
                 dbc.Row(
-                    [
+                    [                        
                         dbc.Col(
                             [
                                 dcc.Graph(
-                                    #figure=create_facility_map(df),
+                                    #figure=create_facility_map_plotly(df),                                  
                                     #figure={},
                                     id="facility_map"
                                 )
@@ -843,7 +842,7 @@ def update_table_map(
     )
 
     #update the map data
-    fig = create_facility_map(dff)
+    fig = create_facility_map_plotly(dff)
     
     df_table = dff[["name", "country", "type_property"]].copy()
     df_table["id"] = df_table.index

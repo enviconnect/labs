@@ -4,3 +4,4 @@ plotly>=5.11.0
 dash>=2.6.2
 dash_bootstrap_components>=1.2.1
 pyyaml>=6.0
+dash_leaflet>=0.1.23
