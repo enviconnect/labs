@@ -994,6 +994,8 @@ def update_information_tabs(n_clicks, active_cell):
     # note that n_clicks is empty when the app initialises
     
     trigger = dash.callback_context.triggered_id
+
+    trigger_component=""
     
     # set default values
     tabs_title_element = html.H4(
