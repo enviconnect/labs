@@ -54,7 +54,7 @@ def create_nav_bar():
             ),
             html.Div([html.A([
                 html.P("Labs", className="display-4 school")],
-                href="",
+                href="/",
                 style={"text-decoration": "none", "color":"black"})]),
         ],
         className="navbar-light bg-white px-0 pt-2",
