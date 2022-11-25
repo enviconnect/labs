@@ -1,10 +1,10 @@
 @font-face {
   font-family: "Montserrat";
-  src: url("assets/fonts/montserrat-v25-latin-regular.ttf") format(“truetype”);
+  src: url("/assets/fonts/montserrat-v25-latin-regular.ttf") format(“truetype”);
   font-family: "Raleway";
-  src: url("assets/fonts/raleway-v28-latin-regular.ttf") format(“truetype”);
+  src: url("/assets/fonts/raleway-v28-latin-regular.ttf") format(“truetype”);
   font-family: "Schoolbell";
-  src: url("assets/fonts/schoolbell-regular.ttf") format(“truetype”);
+  src: url("/assets/fonts/schoolbell-regular.ttf") format(“truetype”);
 }
 
 *,
