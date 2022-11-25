@@ -4,7 +4,7 @@
   font-family: "Raleway";
   src: url("fonts/raleway-v28-latin-regular.ttf") format(“truetype”);
   font-family: "Schoolbell";
-  src: url("/fonts/schoolbell-regular.ttf") format(“truetype”);
+  src: url("fonts/schoolbell-regular.ttf") format(“truetype”);
 }
 
 *,
