@@ -420,7 +420,7 @@ def create_facility_map_leaflet(df_map):
                         },
                     children=[
                         dl.Tooltip(facility["name"],),
-                        dl.Popup(facility["name"],),
+                        #dl.Popup(facility["name"],),
                     ],
                 )
             )
