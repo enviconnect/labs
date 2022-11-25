@@ -52,7 +52,10 @@ def create_nav_bar():
                 ],
                 className="d-flex flex-grow-1",
             ),
-            html.Div([html.P("Labs", className="display-4 school")]),
+            html.Div([html.A([
+                html.P("Labs", className="display-4 school")],
+                href="",
+                style={"text-decoration": "none", "color":"black"})]),
         ],
         className="navbar-light bg-white px-0 pt-2",
     )

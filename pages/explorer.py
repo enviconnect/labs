@@ -726,22 +726,25 @@ def create_about_element():
         [
             dbc.Col(
                 [
-                            html.P("This app "),
+                            html.P("This app is for demonstration purposes only"),
                             html.H3("Data sources"),
                             html.P("The data sources used in this app are all in the public domain, and include:"),
                             html.Ul(
                                 [
-                                    html.Li()
+                                    html.Li("A facility's own web page"),
+                                    html.Li("European Academy of Wind Energy (EAWE)")
                                    ]
                             ),
+                            html.P("These information sources have been acknowledged and listed where applicable."),
                             html.H3("Technical aspects"),
                             html.P(
                                 [
                                     "This app is built using ",
                                     html.A("Dash", href="https://dash.plotly.com/"),
-                                    ", an open source library for python. ",
+                                    ", an open source library for python used to create data visualisations. ",
                                 ]
                             ),
+                            html.P("The map is created using dash-leaflet, which is in turn uses the leaflet.js library and data from Open Street Map."),
                             html.P(
                                 [
                                     "The website is hosted on ",
@@ -751,6 +754,8 @@ def create_about_element():
                                     ),
                                 ]
                             ),
+                            html.H3("Disclaimer"),
+                            html.P("The information provided here is provided in good faith and is believed to be a reasonable representation of the facilities that are described. However, the information may be out of data or inaccurate for a variety of reasons including incorrect transcribing, incorrect information provided in sources, outdated information, changes in funding, and many other reasons. App users should therefore investigate any facilities themselves before making any decisions about the suitably of the facility for their needs. We take no responsibility for any inaccuracies or omissions or any losses or damages that may result from them.")
                         ],                        
                     ),
                 ]
@@ -787,7 +792,7 @@ layout = dbc.Container(
             dbc.Row(
                 [
                     dbc.Col(
-                        [html.H1("Wind Energy R&D Facilities Explorer")],
+                        [html.H1("Wind Energy R&D Facilities")],
                         width=12,
                     ),
                 ],
