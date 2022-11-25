@@ -22,6 +22,42 @@ app = Dash(
 )
 
 
+def create_header_row():
+    header =[]
+
+    return header
+
+def create_nav_bar():
+    navbar = dbc.Nav(
+        [
+            html.Div(
+                [
+                    # logo and tagline
+                    html.A(
+                        [
+                            html.Img(
+                                src=app.get_asset_url("Logo_100H.png"),
+                                style={"width": "100%", "max-height": "35px"},
+                            ),
+                            html.P(
+                                "Innovations for wind energy",
+                                className="tagline",
+                                style={"text-decoration": "none"},
+                            ),
+                        ],
+                        href="https://www.enviconnect.de",
+                        target="_blank",
+                        className="navbar-brand",
+                    )
+                ],
+                className="d-flex flex-grow-1",
+            ),
+            html.Div([html.P("Labs", className="display-4 school")]),
+        ],
+        className="navbar-light bg-white px-0 pt-2",
+    )
+    return navbar
+
 def create_footer_row():
     """
     Create the footer layout
@@ -43,13 +79,14 @@ def create_footer_row():
             dbc.Col(
                 html.Div(
                     [
-                        html.Img(
-                            src=app.get_asset_url("Logo_100H.png"),
-                            style={
-                                "width": "100%",
-                            },
-                            className="my-2",
-                        ),
+                        html.A([
+                        html.Img(src=app.get_asset_url('Logo_100H.png'),
+                                 style={"max-width": "100%", "height":"35px" },
+                                 className="my-2")
+                                 ],
+                    href="https://www.enviconnect.de",
+                    target="_blank"
+                    ),
                         html.P(
                             "We're experts in finding and deploying new technologies for wind energy applications"
                         ),
@@ -147,7 +184,9 @@ app.layout = dbc.Container(
     [
         # nav bar
         html.Div(
-            [],
+            [
+                create_nav_bar()
+            ],
         ),        
         # content from other pages
         html.Div(

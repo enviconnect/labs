@@ -3,6 +3,8 @@
   src: url(“fonts/montserrat-v25-latin-regular.ttf”) format(“truetype”);
   font-family: "Raleway";
   src: url(“fonts/raleway-v28-latin-regular.ttf”) format(“truetype”);
+  font-family: "Schoolbell";
+  src: url(“/fonts/schoolbell-regular.ttf”) format(“truetype”);
 }
 
 *,
@@ -21,4 +23,8 @@ body {
   padding-top: 5px;
   padding-bottom: 5px;
   border-left: 3px solid #17a9ae;
+}
+
+.school {
+  font-family: "Schoolbell";
 }

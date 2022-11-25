@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 # from jupyter_dash import JupyterDash
 
 import dash
-from dash import Dash, html, Input, Output
+from dash import Dash, html, Input, Output, State
 from dash import dcc
 from dash import dash_table
 from dash.dependencies import Input, Output, ALL
@@ -427,16 +427,17 @@ def create_facility_map_leaflet(df_map):
     
     cluster = dl.MarkerClusterGroup(id="markers", children=markers)
 
+    attribution = '&copy; <a href="https://www.openstreetmap.org/about/">OpenStreetMap</a> '
     
     leaflet_map = dl.Map(
                 [
-                    dl.TileLayer(),
+                    dl.TileLayer(attribution=attribution),
                     cluster
                 ],
                 zoom=get_map_zoom(df_map),
                 #center=(40.0884, -3.68042)
                 center = get_map_center(df_map),
-                style={'min-width': '500px', 'min-height': '400px'}
+                style={'height': '33vh', 'min-height': '400px'}
            )
 
     return leaflet_map
@@ -698,6 +699,79 @@ def get_card_availabledata_element(dff_selected):
     ]        
     return availabledata_element
     
+def create_action_buttons():
+    action_element = html.Div(
+        [
+        create_about_button()
+        ]
+    )
+
+    return action_element
+
+def create_about_button():
+    about_button = dbc.Button(
+                        "About this app",
+                        id="about-button",
+                        className="mb-3",
+                        color="secondary",
+                        n_clicks=0,
+                    )
+    
+    return about_button
+
+def create_about_element():
+    about_element = dbc.Collapse(
+                        [
+                        dbc.Row(
+        [
+            dbc.Col(
+                [
+                            html.P("This app "),
+                            html.H3("Data sources"),
+                            html.P("The data sources used in this app are all in the public domain, and include:"),
+                            html.Ul(
+                                [
+                                    html.Li()
+                                   ]
+                            ),
+                            html.H3("Technical aspects"),
+                            html.P(
+                                [
+                                    "This app is built using ",
+                                    html.A("Dash", href="https://dash.plotly.com/"),
+                                    ", an open source library for python. ",
+                                ]
+                            ),
+                            html.P(
+                                [
+                                    "The website is hosted on ",
+                                    html.A(
+                                        "eu.pythonanywhere.com",
+                                        href="https://eu.pythonanywhere.com",
+                                    ),
+                                ]
+                            ),
+                        ],                        
+                    ),
+                ]
+            ),
+        ],
+        id="about",
+        is_open=False,
+        className="px-1 py-2 mx-0 my-2 text-muted small",
+    )
+
+    return about_element
+
+@dash.callback(
+    Output("about", "is_open"),
+    [Input("about-button", "n_clicks")],
+    [State("about", "is_open")],
+)
+def toggle_collapse(n, is_open):
+    if n:
+        return not is_open
+    return is_open
 
 # -----------------------------
 # Create the layout for this page
@@ -771,9 +845,9 @@ layout = dbc.Container(
                     [
                         html.H4(
                             [
-                                html.I(className="fa-solid fa-circle-info"),
-                                " ",
-                                "Select a facility",
+                                #html.I(className="fa-solid fa-circle-info"),
+                                #" ",
+                                "Information about the facility",
                             ],
                             id="tabs-title",
                         ),
@@ -804,6 +878,10 @@ layout = dbc.Container(
                     ],
                     className="p-2 mb-2 info-tab-box",
                 ),
+                # button row
+                create_action_buttons(),
+                #info row
+                create_about_element()
             ],
             className="content",
             style={"min-height": "80vh"},

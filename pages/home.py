@@ -17,7 +17,7 @@ layout = dbc.Container(
         # title row
         dbc.Row(
             [
-                dbc.Col([html.H1("Wind Energy Apps")], width=12),
+                dbc.Col([html.H1("Apps")], width=12),
             ],
             className="title h-10 pt-2 mb-2",
         ),
@@ -33,11 +33,11 @@ layout = dbc.Container(
                             dbc.CardBody(
                                 [
                                     html.H4(
-                                        "Wind Energy R&D Facilities",
+                                        "R&D Facilities",
                                         className="card-title",
                                     ),
                                     html.P(
-                                        "A searchable overview of wind energy R&D facilities",
+                                        "A searchable overview of global wind energy R&D facilities",
                                         className="card-text",
                                     ),
                                     html.Div(
