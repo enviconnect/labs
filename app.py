@@ -37,7 +37,7 @@ def create_nav_bar():
                         [
                             html.Img(
                                 src=app.get_asset_url("Logo_100H.png"),
-                                style={"width": "100%", "max-height": "35px"},
+                                style={"max-width": "100%", "max-height": "35px"},
                             ),
                             html.P(
                                 "Innovations for wind energy",
