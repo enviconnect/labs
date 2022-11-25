@@ -81,7 +81,7 @@ def create_footer_row():
                     [
                         html.A([
                         html.Img(src=app.get_asset_url('Logo_100H.png'),
-                                 style={"max-width": "100%", "height":"35px" },
+                                 style={"max-width": "100%", "max-height":"35px" },
                                  className="my-2")
                                  ],
                     href="https://www.enviconnect.de",
