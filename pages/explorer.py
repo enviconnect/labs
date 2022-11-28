@@ -30,11 +30,17 @@ import numpy as np
 # get domain from URLs
 from urllib.parse import urlparse
 
-# --------------------
-# Register this page
-# --------------------
+# ------------------------------------
+# Register this page and add meta data
+# ------------------------------------
 
-dash.register_page(__name__)
+dash.register_page(
+        __name__,
+        title = "Wind energy R&D facilities explorer",
+        name = "Wind energy R&D facilities explorer",
+        description ="A searchable map and database of global wind energy R&D facilities",
+        image = "images/explorer.png"
+)
 
 # --------------------
 # Get and prepare data
