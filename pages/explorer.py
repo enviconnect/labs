@@ -86,7 +86,7 @@ def prepare_data(data_source):
     df = df.join(df_availabledata.set_index("index"))
 
     # create an index column - useful
-    df.insert(0, column ="facility-id", value =df.index.values)
+    df.insert(0, column ="facility_id", value =df.index.values)
 
     return df
 
@@ -399,7 +399,7 @@ def get_map_center(df_in):
 
     return map_center
 
-def create_facility_map_leaflet(df_map):
+def create_facility_map_leaflet(df_map, dff_selected):
 
     markers = []
     #map_children.append(dl.TileLayer())
@@ -416,7 +416,7 @@ def create_facility_map_leaflet(df_map):
                     id = {
                         "type": "facility",
                         #"row": facility["facility-id"],
-                        "id" : "marker.{}".format(facility["facility-id"])
+                        "id" : "marker.{}".format(facility["facility_id"])
                         },
                     children=[
                         dl.Tooltip(facility["name"],),
@@ -425,21 +425,54 @@ def create_facility_map_leaflet(df_map):
                 )
             )
     
-    cluster = dl.MarkerClusterGroup(id="markers", children=markers)
+    marker_cluster = dl.MarkerClusterGroup(id="markers", children=markers)
+
+    map_zoom= get_map_zoom(df_map)
+    map_center = get_map_center(df_map)
 
     attribution = '&copy; <a href="https://www.openstreetmap.org/about/">OpenStreetMap</a> '
-    
-    leaflet_map = dl.Map(
+
+        
+    if dff_selected.empty:
+        attribution = 'dff_selected is empty'
+        leaflet_map = dl.Map(
                 [
                     dl.TileLayer(attribution=attribution),
-                    cluster
+                    marker_cluster,
                 ],
-                zoom=get_map_zoom(df_map),
-                #center=(40.0884, -3.68042)
-                center = get_map_center(df_map),
+                zoom=map_zoom,
+                center = map_center,
                 style={'height': '33vh', 'min-height': '400px'}
            )
-
+        
+    else:
+        for index, facility in dff_selected.iterrows():
+            selected_marker = dl.CircleMarker(
+                    center = (facility["lat"], facility["lon"]),
+                    radius = 10,
+                    color = "#666",
+                    id = {
+                        "type": "facility",
+                        #"row": facility["facility-id"],
+                        "id" : "marker.{}".format(facility["facility_id"])
+                        },
+                    children=[
+                        dl.Tooltip(facility["name"],),
+                        #dl.Popup(facility["name"],),
+                    ],
+                )
+            
+        leaflet_map = dl.Map(
+                [
+                    dl.TileLayer(attribution=attribution),
+                    marker_cluster,
+                    selected_marker
+                ],
+                zoom=map_zoom,
+                center = map_center,
+                style={'height': '33vh', 'min-height': '400px'}
+           )
+    
     return leaflet_map
 
 # -----------------------
@@ -465,58 +498,62 @@ def create_sortable_facility_table(df_in):
 
     """
 
-    df_table = df_in[["name", "country", "type_property"]].copy()
+    df_table = df_in[["name", "country", "type_property","facility_id"]].copy()
 
-    df_table["id"] = df_table.index
+    df_table["id"] =df_table.facility_id
 
     df_table.rename(columns={"type_property": "type"}, inplace=True)
 
     # create a list of columns to display
-    show_columns = ["name", "country", "type"]
+    show_columns = ["name","country","type"]
 
-    sortable_facility_table = (
-        dash_table.DataTable(
-            id="sortable-facility-table",
-            columns=[
-                {"name": i, "id": i, "deletable": False, "selectable": False}
-                for i in show_columns  # df_table.columns
-            ],
-            data=df_table.to_dict("records"),
-            # data = df_table.to_dict('index'),
-            style_data={"whiteSpace": "normal", "height": "auto", "lineHeight": "15px"},
-            style_cell_conditional=[
-                {"if": {"column_id": "id"}, "width": "10%"},
-                {"if": {"column_id": "name"}, "width": "30%"},
-                {"if": {"column_id": "country"}, "width": "25%"},
-                {"if": {"column_id": "type"}, "width": "30%"},
-            ],
-            style_as_list_view=True,
-            style_cell={
-                "padding": "5px",
-                "border-bottom": "1px solid #E9E9E9",
-                "border-top": "1px solid #E9E9E9",
-            },
-            style_header={
-                "backgroundColor": "#E9E9E9",
-                #'color': "#FFFFFF",
-                "fontWeight": "bold",
-                "border": "1px solid #E9E9E9",
-            },
-            editable=False,
-            filter_action="native",
-            sort_action="native",
-            sort_mode="multi",
-            column_selectable="single",
-            # row_selectable="multi",
-            row_deletable=False,
-            selected_columns=[],
-            selected_rows=[],
-            page_action="native",
-            style_table={"overflow-y": "none", "border": "1px solid #E9E9E9"},
-            page_current=0,
-            page_size=7,
-        ),
-    )
+    sortable_facility_table = dash_table.DataTable(
+        id="sortable-facility-table",
+        columns=[
+            {"name": i, "id": i, "deletable": False, "selectable": False} for i in show_columns #df_table.columns
+        ],
+        data=df_table.to_dict('records'),
+        #data = df_table.to_dict('index'),
+        style_data={
+            'whiteSpace': 'normal',
+            'height': 'auto',
+            'lineHeight': '15px'
+        },
+        style_cell_conditional=[
+            {'if': {'column_id': 'id'},
+             'width': '10%'},
+            {'if': {'column_id': 'name'},
+             'width': '30%'},
+            {'if': {'column_id': 'country'},
+             'width': '25%'},
+            {'if': {'column_id': 'type'},
+             'width': '30%'},
+        ],
+        style_as_list_view=True,
+        style_cell={'padding': '5px',
+        "border-bottom": "1px solid #E9E9E9",
+        "border-top": "1px solid #E9E9E9"},
+        style_header={
+            'backgroundColor': '#E9E9E9',
+            #'color': "#FFFFFF",
+            'fontWeight': 'bold',
+            'border': "1px solid #E9E9E9"
+        },
+        editable=False,
+        filter_action="native",
+        sort_action="native",
+        sort_mode="multi",
+        column_selectable="single",
+        # row_selectable="multi",
+        row_deletable=False,
+        selected_columns=[],
+        selected_rows=[],
+        page_action="native",
+        style_table={"overflow-y":"none",
+            'border': "1px solid #E9E9E9"},
+        page_current=0,
+        page_size=7,
+    ),
 
     return sortable_facility_table
 
@@ -782,8 +819,6 @@ def toggle_collapse(n, is_open):
 # Create the layout for this page
 # -----------------------------
 
-# Create a layout with two columns:
-# 3 cols on the left for filters, 9 on the right for map & information
 layout = dbc.Container(
     [
         # title row
@@ -818,7 +853,8 @@ layout = dbc.Container(
                     [                        
                         dbc.Col(
                             [
-                                create_facility_map_leaflet(df),
+                                create_facility_map_leaflet(df,
+                                    pd.DataFrame()),
                             ],                                
                             id="facility-map-leaflet",
                             className="col-12 col-lg-6 h-sm-60 h-md-33 h-lg-25",
@@ -859,6 +895,9 @@ layout = dbc.Container(
                         dbc.Tabs(
                             [
                                 dbc.Tab(
+                                    html.P(
+                                        "Click on a facility on the map or in the table to find out more"
+                                    ),
                                     label="Description",
                                     tab_id="tab-1",
                                     id="tab-desc",
@@ -886,149 +925,109 @@ layout = dbc.Container(
                 # button row
                 create_action_buttons(),
                 #info row
-                create_about_element()
+                create_about_element(),
+                # dcc.Store stores intermediate values
+                dcc.Store(id='selected-facility-store'),
+                dcc.Store(id='filtered-facilities-store', data = df.to_json(orient='records'))
             ],
             className="content",
             style={"min-height": "80vh"},
-        ),
+        ),        
     ],
     fluid=True,
     className="dbc h-80",
     style={"min-height": "80vh"},
 )
 
-
-# ------------------------
-# Update the map and table
-# -------------------------
 @dash.callback(
-    [
-    Output("facility-map-leaflet", "children"),
-    Output("sortable-facility-table", "data"),
-    ],
-    [    
-    Input("country_selector", "value"),
-    Input("facilitytype_selector", "value"),
-    Input("infrastructure_selector", "value"),
-    Input("availabledata_selector", "value"),
-    ]
+    Output('filtered-facilities-store', 'data'),
+    Input('country_selector', 'value'),
+    Input('facilitytype_selector', 'value'),
+    Input('infrastructure_selector', 'value'),
+    Input('availabledata_selector', 'value')
 )
-def update_table_map(
-    countries_selected="",
-    facilitytypes_selected="",
-    infrastructure_selected="",
-    availabledata_selected="",
-):
-    """
-    Update the map when filter values change
-
-    Parameters
-    ----------
-    countries_selected : list
-        a list of the countries selected in the filters
-    facilitytypes_selected : list
-        a list of the facility types selected in the filters
-    infrastructure_selected : list
-        a list of the infrastructure selected in the filters
-    availabledata_selected : list
-        a list of the available data selected in the filters
-
-    Returns
-    -------
-    fig : a plotly express figure object containing the map
-
-    """
+def get_filtered_facilities(countries_selected="", facilitytypes_selected="", infrastructure_selected="", availabledata_selected=""):
 
     dff = filter_facilities(
         df,
         countries_selected,
         facilitytypes_selected,
         infrastructure_selected,
-        availabledata_selected,
+        availabledata_selected
     )
 
-    #update the map data
-    leaflet_map = create_facility_map_leaflet(dff)
-    
-    df_table = dff[["name", "country", "type_property"]].copy()
-    df_table["id"] = df_table.index
+    return dff.to_json(orient='records')
+
+@dash.callback(
+    Output("sortable-facility-table", "data"),
+    Input('filtered-facilities-store', 'data')
+)
+def update_table(jsonified_filtered_facilities):
+
+    dff = pd.read_json(jsonified_filtered_facilities, orient="records")
+
+    df_table = dff[["name", "country", "type_property", "facility_id"]].copy()
+    df_table["id"] = df_table.facility_id
 
     df_table.rename(columns={"type_property": "type"}, inplace=True)
 
-    return leaflet_map, df_table.to_dict("records")
-
+    return df_table.to_dict("records")
 
 @dash.callback(
-        [
-            Output("tabs-title", "children"),
-            Output("tab-desc", "children"),
-            Output("tab-infrastructure", "children"),
-            Output("tab-infrastructure", "disabled"),
-            Output("tab-availabledata", "children"),
-            Output("tab-availabledata", "disabled"),            
-            Output("sortable-facility-table", "selected_cells"),
-            Output("sortable-facility-table", "active_cell"),
-            #Output("log", "children"), 
-        ],
-    [
-        Input({'id': ALL, "type":"facility"}, 'n_clicks'),
-        Input('sortable-facility-table', 'active_cell')
-    ]
+        Output('facility-map-leaflet', 'children'),
+        #Output('log','children'),
+        Input('filtered-facilities-store', 'data'),
+        Input('selected-facility-store','data')
 )
-def update_information_tabs(n_clicks, active_cell):
-    """
-    Create an card containing information about the selected facility
+def update_map(jsonified_filtered_facilities, jsonified_selected_facility):
+    # its possible this callback could be called before a filtering step has taken place.
+    try:
+        dff = pd.read_json(jsonified_filtered_facilities, orient="records")
+    except: 
+        dff = df
 
-    Wrapper. Identifies the facility that has been selected. Then generates an information block, list of infrastructure, and list of available data at that facility.
-
-    Parameters
-    ----------
-    clickData : dictionary
-        information about the location clicked on the map
-
-    active_cell : dictionary
-        information about the cell clicked on the table
-
-    Returns
-    -------
-    HTML element
-        A Dash element for the selected facility
-
-    """
-
-    # note that n_clicks is empty when the app initialises
+    try:
+        dff_selected = pd.read_json(jsonified_selected_facility, orient="records")
+    except:
+        dff_selected = pd.DataFrame()
     
+    if not dff_selected.empty:
+        log = dff_selected.name        
+    else:
+        log = "no site selected"
+        
+    leaflet_map = create_facility_map_leaflet(dff, dff_selected)
+    
+    return leaflet_map#, log
+
+@dash.callback(
+    Output('selected-facility-store', 'data'),
+    Output("sortable-facility-table", "selected_cells"),
+    Output("sortable-facility-table", "active_cell"),     
+    Input({"id": ALL, "type": "facility"}, "n_clicks"),
+    Input('sortable-facility-table', 'active_cell'),
+)
+def select_facility(n_clicks,active_cell):
+
+    dff_selected = pd.DataFrame()
+
+    # first establish where the trigger came from
+
     trigger = dash.callback_context.triggered_id
 
-    trigger_component=""
-    
-    # set default values
-    tabs_title_element = html.H4(
-            [
-                html.I(className="fa-solid fa-circle-info"),
-                " ",
-                "Facility information"
-            ]
-        )
-    tab_description_element = html.P(
-            "Click on a facility on the map or in the table to find out more")
-    tab_infrastructure_element = []
-    tab_infrastructure_disabled = True
-    tab_availabledata_element = []
-    tab_availabledata_disabled = True
-    dff_selected = []
+    trigger_component=""    
 
-    if isinstance(trigger,str):
+    if isinstance(trigger, str):
         # active cell is associated with a string id
         log = "string"
         log = trigger
         trigger_component = "sortable-facility-table"
-    #elif isinstance(trigger,list):
+    # elif isinstance(trigger,list):
     #    log = "list"
     elif isinstance(trigger, dict):
         log = "dict"
-        trigger_component = "facility-map-leaflet"        
-        
+        trigger_component = "facility-map-leaflet"
+
     if trigger_component == "facility-map-leaflet":
         # then the trigger was the map
         log = "triggered by the map"
@@ -1039,43 +1038,67 @@ def update_information_tabs(n_clicks, active_cell):
             log = "clicks on map"
             # now get the selected marker
             clickedMarker = dash.callback_context.triggered_id
-            row_id = clickedMarker["id"].rsplit(".",1)[-1]
-            dff_selected = df[df.index == int(row_id)]
+            row_id = clickedMarker["id"].rsplit(".", 1)[-1]
+            dff_selected = df[df.facility_id == int(row_id)]
             log = "Clicked on marker.{}".format(row_id)
-    
+
     if trigger_component == "sortable-facility-table":
         # then the trigger was the table
         log = "triggered by the table"
         # get the selected cell
-        dff_selected = df[df.index==active_cell['row_id']]
-        log = active_cell['row_id']
+        dff_selected = df[df.facility_id == active_cell["row_id"]]
+        log = active_cell["row_id"]
 
-    if not dff_selected.empty:
+    # and finally, clear the selections
+    selected_cells = []
+    active_cell = None
+        
+    return dff_selected.to_json(orient='records'), selected_cells, active_cell
+
+@dash.callback(
+    Output("tabs-title", "children"),
+    Output("tab-desc", "children"),
+    Output("tab-infrastructure", "children"),
+    Output("tab-infrastructure", "disabled"),
+    Output("tab-availabledata", "children"),
+    Output("tab-availabledata", "disabled"),
+    Input("selected-facility-store",'data')
+)
+def update_information_tabs(jsonified_selected_facility):
+    
+    # set default values
+    tabs_title_element = html.H4(
+        [html.I(className="fa-solid fa-circle-info"), " ", "Facility information"]
+    )
+    tab_description_element = html.P(
+        "Click on a facility on the map or in the table to find out more"
+    )
+    tab_infrastructure_element = []
+    tab_infrastructure_disabled = True
+    tab_availabledata_element = []
+    tab_availabledata_disabled = True
+    
+    dff_selected = pd.read_json(jsonified_selected_facility, orient="records")
+    
+    if len(dff_selected)>=1:
         tabs_title_element = get_card_facility_title_element(dff_selected)
 
-        tab_description_element = get_card_facility_description_element(
-            dff_selected)
+        tab_description_element = get_card_facility_description_element(dff_selected)
 
         if not dff_selected["infrastructure"].isnull().values.any():
-            tab_infrastructure_element = get_card_infrastructure_element(
-                dff_selected)
+            tab_infrastructure_element = get_card_infrastructure_element(dff_selected)
             tab_infrastructure_disabled = False
         else:
-            tab_infrastructure_element = html.P("no information about infrastructure available")
+            tab_infrastructure_element = html.P(
+                "no information about infrastructure available"
+            )
             tab_infrastructure_disabled = True
 
         if not dff_selected["availabledata"].isnull().values.any():
-            tab_availabledata_element = get_card_availabledata_element(
-            dff_selected)
+            tab_availabledata_element = get_card_availabledata_element(dff_selected)
             tab_availabledata_disabled = False
         else:
             tab_availabledata_element = html.P("no information about data available")
             tab_availabledata_disabled = True
-        
-    # and finally, clear the selections
-    selected_cells=[]
-    active_cell=None
-    
 
-
-    return tabs_title_element, tab_description_element, tab_infrastructure_element, tab_infrastructure_disabled, tab_availabledata_element, tab_availabledata_disabled, selected_cells, active_cell, #log
+    return tabs_title_element, tab_description_element, tab_infrastructure_element, tab_infrastructure_disabled, tab_availabledata_element, tab_availabledata_disabled

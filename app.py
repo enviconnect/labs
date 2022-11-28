@@ -18,6 +18,7 @@ app = Dash(
         #dbc.icons.FONT_AWESOME
         ],
     use_pages=True,
+    prevent_initial_callbacks=True,
     suppress_callback_exceptions=True
 )
 
@@ -217,4 +218,5 @@ app.layout = dbc.Container(
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    #app.run_server(debug=True)
+    app.run_server()
