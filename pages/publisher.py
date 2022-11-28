@@ -10,7 +10,12 @@ import dash_bootstrap_components as dbc
 # Register this page
 # --------------------
 
-dash.register_page(__name__)
+dash.register_page(__name__,
+        title = "Publisher",
+        name = "Publisher",
+        description ="Information about the website publisher",
+        image = "images/explorer.png"
+)
 
 
 def basis():

@@ -10,7 +10,12 @@ import dash_bootstrap_components as dbc
 # Register this page
 # --------------------
 
-dash.register_page(__name__, path="/")
+dash.register_page(__name__, 
+    path="/",
+    title = "enviConnect Labs",
+        name = "enviConnect Labs",
+        description ="A collection of demo or early-stage software created by us for wind energy applications",
+        image = "images/explorer.png")
 
 layout = dbc.Container(
     [
@@ -43,7 +48,7 @@ layout = dbc.Container(
                                     html.Div(
                                         [
                                             dbc.Button(
-                                                "Go", color="primary", href="explorer"
+                                                "Go", color="primary", href="explorer", className="stretched-link"
                                             ),
                                         ],
                                         className="d-grid gap-2 col-6 mx-auto",

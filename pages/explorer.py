@@ -440,7 +440,6 @@ def create_facility_map_leaflet(df_map, dff_selected):
 
         
     if dff_selected.empty:
-        attribution = 'dff_selected is empty'
         leaflet_map = dl.Map(
                 [
                     dl.TileLayer(attribution=attribution),

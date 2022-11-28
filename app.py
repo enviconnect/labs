@@ -14,9 +14,6 @@ import dash_bootstrap_components as dbc
 
 app = Dash(
     __name__,
-    external_stylesheets=[#dbc.themes.BOOTSTRAP,
-        #dbc.icons.FONT_AWESOME
-        ],
     use_pages=True,
     prevent_initial_callbacks=True,
     suppress_callback_exceptions=True
@@ -120,7 +117,7 @@ def create_footer_row():
                 className="col-12 col-md-3",
             ),
         ],
-        className="h-md-20 pt-2 footer",
+        className="pt-2 footer",
     )
 
     return footer
@@ -162,17 +159,17 @@ def create_subfooter():
                             ),
                             # copyright notice
                             html.Div(
-                                [html.P("\u00A9 enviConnect 2022")],
+                                [html.P("\u00A9 enviConnect 2022", className="mb-0")],
                                 className="copyright",
                             ),
                         ],
                         className="sub-footer-inner",
                     )
                 ],
-                className="col-12",
+                className="col-12 py-1",
             ),
         ],
-        className="sub-footer",
+        className="sub-footer py-1",
     )
 
     return subfooter
@@ -197,26 +194,25 @@ app.layout = dbc.Container(
             [
             dash.page_container
             ],
-            className="content"
+            className="content",
+            style = {"min-height":"50vh"}
         ),
         # footer
         html.Div(
             [
                 create_footer_row(),
             ],
-            className="h-20 footer",
+            className="footer",
         ),
         # subfooter
-        html.Div([create_subfooter()], className="h-10 sub-footer"),
-        # dcc.Store stores the intermediate value
-        # dcc.Store(id='intermediate-value')
+        html.Div([create_subfooter()], className="sub-footer"),
     ],
     fluid=True,
-    className="dbc h-100",
+    className="dbc",
     style={"min-height": "100vh"},
 )
 
 
 if __name__ == "__main__":
-    #app.run_server(debug=True)
-    app.run_server()
+    app.run_server(debug=True)
+    #app.run_server()

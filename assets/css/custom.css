@@ -14,9 +14,9 @@
 --dark: var(--color-3);
 
 --off-white: #E9E9E9;
---dark-gray: color-mix(in srgb, var(--white), var(--black) 60%);
---light-gray: color-mix(in srgb, var(--white), var(--black) 30%);
 
 --logo-gray: #48484a;
+
+--bs-primary: #17a9ae;
 
 }
