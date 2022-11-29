@@ -4,5 +4,5 @@
 }
 
 .btn {
-    --bs-btn-font-family: "Raleway";
+    font-family: "Raleway";
 }

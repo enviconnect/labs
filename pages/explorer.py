@@ -342,7 +342,7 @@ def create_www_link_button(url, button_text="link", button_classes="fa-solid fa-
             target="_blank",
             color=button_color,
             disabled=True,
-            className="me-1 btn btn-outline-primary btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1",
+            className="me-1 btn btn-outline-primary btn-sm px-sm-2 px-lg-2 py-sm-2 py-lg-1",
         )
     else:
         return dbc.Button(
@@ -351,7 +351,7 @@ def create_www_link_button(url, button_text="link", button_classes="fa-solid fa-
             target="_blank",
             color=button_color,
             active=True,
-            className="me-1 btn btn-outline-primary btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1",
+            className="me-1 btn btn-outline-primary btn-sm px-sm-2 px-lg-2 py-sm-2 py-lg-1",
         )
 
 
