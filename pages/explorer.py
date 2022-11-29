@@ -95,6 +95,9 @@ def prepare_data(data_source):
     # create an index column - useful
     df.insert(0, column="facility_id", value=df.index.values)
 
+    # and finally, sort all by name
+    df.sort_values(by=['name'],inplace=True)
+
     return df
 
 
@@ -243,11 +246,12 @@ def filterIcon():
     Define an icon for the filter row
 
     """
-    filterIcon = [
-        html.I(className="fa-solid fa-filter me-2"),
-        html.B("Filter facilities"),
-    ]
-    return filterIcon
+    filter_icon_element = html.H4([
+        html.I(className="fa-solid fa-filter"),
+        " ",
+        "Filter facilities",
+    ])
+    return filter_icon_element
 
 
 def filter_facilities(
@@ -332,26 +336,26 @@ def create_www_link(url):
     return www_link
 
 
-def create_www_link_button(url, button_text="link", button_classes="fa-solid fa-globe", button_color="primary",
+def create_www_link_button(url, button_text="link", icon_classes="fa-solid fa-globe", button_color="", button_classes=""
 ):
 
     if not url.strip():
         return dbc.Button(
-            [html.I(className=button_classes), " ", button_text],
+            [html.I(className=icon_classes), " ", button_text],
             href="#",
             target="_blank",
             color=button_color,
             disabled=True,
-            className="me-1 btn btn-outline-primary btn-sm px-sm-2 px-lg-2 py-sm-2 py-lg-1",
+            className="me-1 btn btn-outline px-sm-2 px-lg-2 py-sm-2 py-lg-1 btn-sm"+" "+button_classes
         )
     else:
         return dbc.Button(
-            [html.I(className=button_classes), " ", button_text],
+            [html.I(className=icon_classes), " ", button_text],
             href="".join(url),
             target="_blank",
             color=button_color,
             active=True,
-            className="me-1 btn btn-sm px-sm-2 px-lg-2 py-sm-2 py-lg-1",
+            className="me-1 btn px-sm-2 px-lg-2 py-sm-2 py-lg-1 btn-sm"+" "+button_classes
         )
 
 
@@ -370,7 +374,9 @@ def create_googlemaps_link_button(lat, lon):
 
         return create_www_link_button("".join(url_str), 
             button_text="Google maps",
-            button_classes="fa-solid fa-map-location-dot"
+            icon_classes="fa-solid fa-map-location-dot",
+            button_color="primary",
+            button_classes="btn-sm"
             )
 
         
@@ -386,12 +392,12 @@ def get_map_zoom(df_in):
     if len(df_in) >= 2:
         dlat = 1 + df_in["lat"].max() - df_in["lat"].min() - 1
         dlon = 1 + df_in["lon"].max() - df_in["lon"].min() - 1
-        max_bound = max(abs(dlat), abs(dlon)) * 111
+        max_bound = max(max(abs(dlat),1.0), max(abs(dlon),1.0)) * 111
         map_zoom = math.floor(11.5 - np.log(max_bound))
     elif len(df_in) == 0:
         map_zoom = 1
     else:
-        map_zoom = 9
+        map_zoom = 3
 
     return map_zoom
 
@@ -647,12 +653,12 @@ def get_card_facility_description_element(dff_selected):
 
         # create links to go with it
         if info_dict.get("homepage"):
-            link_button_home = create_www_link_button(info_dict["homepage"], "homepage")
+            link_button_home = create_www_link_button(info_dict["homepage"], button_text="Homepage",button_color="primary")
         else:
-            link_button_home = create_www_link_button("", "homepage")
+            link_button_home = create_www_link_button("", button_text="Homepage",button_color="primary")
 
         if info_dict.get("eawe-pdf"):
-            link_button_eawe_pdf = create_www_link_button(info_dict["eawe-pdf"], "EAWE information", "fa-solid fa-file-pdf")
+            link_button_eawe_pdf = create_www_link_button(info_dict["eawe-pdf"], button_text="EAWE information", icon_classes="fa-solid fa-file-pdf", button_color="primary")
         else:
             link_button_eawe_pdf = []
 
@@ -660,7 +666,7 @@ def get_card_facility_description_element(dff_selected):
         description_text_element = html.P("No information found")
         description_source_element = []
         description_note_element = []
-        link_button_home = create_www_link_button("", "homepage")
+        link_button_home = create_www_link_button("", button_text="homepage")
         link_button_eawe_pdf = []
 
     link_button_GoogleMaps = create_googlemaps_link_button(
@@ -779,7 +785,7 @@ def create_feedback_button():
 
     feedback_button = create_www_link_button(url = "https://forms.office.com/e/DfjQ6yPuyQ",
         button_text ="Send feedback",
-        button_classes="fa-regular fa-comment",
+        icon_classes="fa-regular fa-comment",
         button_color = "secondary")
 
     return feedback_button
@@ -912,10 +918,10 @@ layout = dbc.Container(
                 # filter row
                 dbc.Row(
                     [
-                        dbc.Col(filterIcon(), className="col-12 col-md-1"),
+                        dbc.Col(filterIcon(), className="col-12 col-lg-2"),
                         dbc.Col(
                             [dbc.Row(create_selectors(df))],
-                            className="col-12 col-md-11",
+                            className="col-12 col-lg-10",
                         ),
                     ],
                     className="filter_row px-1 py-2 mx-0 my-2",
@@ -925,9 +931,9 @@ layout = dbc.Container(
                     [
                         html.H4(
                             [
-                                # html.I(className="fa-solid fa-circle-info"),
-                                # " ",
-                                "Information about the facility",
+                                html.I(className="fa-solid fa-circle-info"),
+                                " ",
+                                "Facility information",
                             ],
                             id="tabs-title",
                         ),
@@ -959,7 +965,7 @@ layout = dbc.Container(
                             active_tab="tab-1",
                         ),
                     ],
-                    className="p-2 mb-2 info-tab-box",
+                    className="p-3 mb-2 info-tab-box",
                 ),
                 # button row
                 create_action_buttons(),

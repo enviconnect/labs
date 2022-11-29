@@ -100,6 +100,7 @@ features:
   information:
     description: This is one of two neighbouring test turbines. One is owned by ETH Zürich. The other is owned by OST (see separate entry).    
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ETH-aventa-research-wind-turbine.pdf    
+
 - type: Feature
   geometry:
     type: Point
@@ -116,6 +117,7 @@ features:
     description: The wind turbine Taggenberg 1, type AV-7, is manufactured by Aventa AG in Switzerland and was commissioned in December 2002.
     homepage: https://www.ost.ch/en/research-and-consulting-services/technology/renewable-energies-and-environmental-engineering/iet-institute-for-energy-technology/wind-energy/infrastructure
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ost-twt-facility.pdf
+
 - type: Feature
   geometry:
     type: Point
@@ -326,6 +328,22 @@ features:
     name: Oceanic Platform of the Canary Islands (PLOCAN)
     type: wind energy research center
     country: Spain
+  information:
+    description: "The Oceanic Platform of the Canary Islands (PLOCAN) is a Research Infrastructure (RI) labeled by the ICTS (Unique Scientific and Technological Infrastructure) Spanish National Roadmap, co-funded by the Ministry of Science, Innovation and Universities of the Spanish government and the Canary Islands government and by the European Regional Development Fund (ERDF) under the Operational Programme of the Canary Islands.
+
+    PLOCAN is a multipurpose technical-scientific service infrastructure that provides support for research, technological development and innovation in the marine and maritime sectors, available to public and private users. PLOCAN offers both onshore and offshore experimental facilities and laboratories, operational throughout the whole year thanks to the Canary Islands excellent climatic conditions. PLOCAN also brings a broad experience in large national and EU marine/maritime projects."
+    copied: True 
+    source: https://www.plocan.eu/en/description/
+    homepage: https://www.plocan.eu/en/
+  infrastructure:
+  - oceanic offshore platform
+  - test site
+  - oceanic observatory
+  - autonomous ocean vehicles
+  - onshore facilities
+  availabledata:
+  - data portal
+
 
 - type: Feature
   geometry:
@@ -343,3 +361,48 @@ features:
     copied: True
     source: https://www.nrel.gov/wind/facilities.html
     homepage: https://www.nrel.gov/wind/facilities.html
+
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -102.049348
+    - 33.609772
+    - 0
+  properties:
+    name: Scaled Wind Farm Technology (SWiFT) facility
+    type: wind energy research center
+    country: United States of America
+  information:
+    description: "The Scaled Wind Farm Technology (SWiFT) facility, located at Texas Tech University's National Wind Institute Research Center in Lubbock, TX, is the first public facility to use multiple wind turbines to measure turbine performance in a wind farm environment. Funded by the U.S. Department of Energy, SWiFT partners with industry and academia to:
+
+        - Reduce turbine-to-turbine interaction and wind plant underperformance,
+        - Develop advanced wind turbine rotors, and
+        - Improve the validity of advanced simulation models."
+    copied: True
+    source: https://energy.sandia.gov/programs/renewable-energy/wind-power/swift-facilities/
+    homepage: https://energy.sandia.gov/programs/renewable-energy/wind-power/swift-facilities/
+  infrastructure:
+    - wind turbines
+    - research-scale turbines
+
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 4.926244
+    - 51.97
+    - 0
+  properties:
+    name: KNMI-mast Cabauw
+    type: met mast
+    country: Netherlands
+  information:
+    description: "The KNMI-mast Cabauw is a 213-metre-high guyed mast for meteorological measurements at Cabauw, the Netherlands. In 1972 at Cabauw (06348) a 213 m high mast was specifically built for meteorological research to establish relations between the state of the atmospheric boundary layer (ABL), land surface conditions and the general weather situation for all seasons. The Cabauw mast is located in the western part of the Netherlands (51.971 °N, 4.927 °E) in a polder 0.7 m below average sealevel. This site was chosen, because it is rather representative for this part of the Netherlands and because only minor landscape developments were planned in this region. However, significant changes are the removal of the trees along a road east of the mast in 1975, and the building of houses in the village of Lopik east of the mast in more recent years."
+    copied: True
+    source: https://en.wikipedia.org/wiki/KNMI-mast_Cabauw
+    homepage: https://www.knmi.nl/research/observations-data-technology/projects/cabauw-in-situ-measurements
+  infrastructure:
+    - met mast
+  availabledata:
+    - multi-year wind and weather data
