@@ -148,7 +148,12 @@ def retention():
                 ),
                 html.Ul(
                     [
-                        html.Li(html.B("Server logs")),
+                        html.Li(
+                            [
+                                html.B("Server logs"),
+                                " are retained each day until midnight to allow us to monitor and improve site security."
+                                ]
+                            ),
                         html.Li(
                             [
                                 html.B("Contact emails"),                               
@@ -182,18 +187,28 @@ def protection():
                 html.Ul(
                     [
                         html.Li(
-                            "Administrator access. Access to our services on the server side is limited to selected staff who have been trained on our data protection policy."
-                        ),
-                        html.Li(
                             [
-                                "Server security. We use python anywhere to host this website. We use servers operated by them and located in the European Union."
+                                html.B("Administrator access."),
+                            " Access to our services on the server side is limited to selected staff who have been trained on our data protection policy."
                             ]
                         ),
                         html.Li(
-                            "Logging. We collect server logs to help monitor the traffic to this service for security purposes. We analyse those logs to look for attacks or security risks."
+                            [
+                                html.B("Server security."),
+                                "We use python anywhere to host this website. We use servers operated by them and located in the European Union."
+                            ]
                         ),
                         html.Li(
-                            "Regular software updates. We aim to keep the software used for this service as up-to-date as possible."
+                            [
+                                html.B("Logging."),
+                                " We collect server logs to help monitor the traffic to this service for security purposes. We analyse those logs to look for attacks or security risks."
+                            ]
+                        ),
+                        html.Li(
+                            [
+                                html.B("Regular software updates."),
+                                " We aim to keep the software used for this service as up-to-date as possible."
+                            ]
                         ),
                     ]
                 ),
@@ -321,15 +336,17 @@ def fonts():
                     [
                         html.Li(
                             [
-                                html.B("Bootstrap layout. "),
-                                "This website uses locally hosted styles and scripts from Bootstrap.  This means that they are stored in the website files on our servers and served to you at the time of use (like the text and images). No data is transferred to, or from, Bootstrap to display them to you. These styles and scripts are used under the MIT license. Details about Bootstrap can be found ",
+                                html.B("Bootstrap layout."),
+                                " ",
+                                "This website uses locally hosted styles and scripts from Bootstrap. This means that they are stored in the website files on our servers and served to you at the time of use (like the text and images). No data is transferred to, or from, Bootstrap to display them to you. These styles and scripts are used under the MIT license. Details about Bootstrap can be found ",
                                 html.A("here", href="https://getbootstrap.com/"),
                                 ".",
                             ]
                         ),
                         html.Li(
                             [
-                                html.B("Fontawesome icons. "),
+                                html.B("Fontawesome icons."),
+                                " ",
                                 "This website uses locally hosted fonts from Font Awesome. This means that they are stored in the website files on our servers and served to you at the time of use (like the text and images). No data is transferred to, or from, Font Awesome to display them to you. The font provider is Fonticons, Inc. ('Fonticons', registered at 307 S Main St Ste 202 Bentonville, AR, 72712-9214 United States). Details about Font Awesome fonts can be found ",
                                 html.A("here", href="https://fontawesome.com/"),
                                 ".",
@@ -338,6 +355,7 @@ def fonts():
                         html.Li(
                             [
                                 html.B("Google Fonts."),
+                                " ",
                                 "This website uses locally hosted fonts from Google. This means that they are stored in the website files on our servers and served to you at the time of use (like the text and images). No data is transferred to, or from, Google to display them to you. The font provider is Google Inc, 1600 Amphitheatre Parkway, Mountain View, CA 94043, USA (also 'Google'). Details about Google fonts can be found ",
                                 html.A(
                                     "here",
