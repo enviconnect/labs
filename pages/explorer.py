@@ -351,7 +351,7 @@ def create_www_link_button(url, button_text="link", button_classes="fa-solid fa-
             target="_blank",
             color=button_color,
             active=True,
-            className="me-1 btn btn-outline-primary btn-sm px-sm-2 px-lg-2 py-sm-2 py-lg-1",
+            className="me-1 btn btn-sm px-sm-2 px-lg-2 py-sm-2 py-lg-1",
         )
 
 
@@ -391,7 +391,7 @@ def get_map_zoom(df_in):
     elif len(df_in) == 0:
         map_zoom = 1
     else:
-        map_zoom = 5
+        map_zoom = 9
 
     return map_zoom
 
@@ -779,7 +779,8 @@ def create_feedback_button():
 
     feedback_button = create_www_link_button(url = "https://forms.office.com/e/DfjQ6yPuyQ",
         button_text ="Send feedback",
-        button_classes="fa-regular fa-comment")
+        button_classes="fa-regular fa-comment",
+        button_color = "secondary")
 
     return feedback_button
 
@@ -787,7 +788,7 @@ def create_about_button():
     about_button = dbc.Button(
         "About this app",
         id="about-button",
-        className="me-1 btn btn-secondary btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1",
+        className="me-1 btn btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1",
         color="secondary",
         n_clicks=0,
     )
