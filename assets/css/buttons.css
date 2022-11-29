@@ -2,3 +2,7 @@
     background-color: #17a9ae;
     border-color: #17a9ae;
 }
+
+.btn {
+    --bs-btn-font-family: "Raleway";
+}

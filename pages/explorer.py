@@ -35,23 +35,24 @@ from urllib.parse import urlparse
 # ------------------------------------
 
 dash.register_page(
-        __name__,
-        title = "Wind energy R&D facilities explorer",
-        name = "Wind energy R&D facilities explorer",
-        description ="A searchable map and database of global wind energy R&D facilities",
-        image = "images/explorer.png"
+    __name__,
+    title="Wind energy R&D facilities explorer",
+    name="Wind energy R&D facilities explorer",
+    description="A searchable map and database of global wind energy R&D facilities",
+    image="images/explorer.png",
 )
 
 # --------------------
 # Get and prepare data
 # --------------------
 
+
 def prepare_data(data_source):
 
     # Open the file and load the file
     with open(data_source) as f:
         data = yaml.load(f, Loader=SafeLoader)
-    
+
     # convert data to a datatable - easier later
     df_in = pd.DataFrame(data["features"])
     df_in.reset_index(inplace=True)
@@ -92,14 +93,14 @@ def prepare_data(data_source):
     df = df.join(df_availabledata.set_index("index"))
 
     # create an index column - useful
-    df.insert(0, column ="facility_id", value =df.index.values)
+    df.insert(0, column="facility_id", value=df.index.values)
 
     return df
 
 
 df = prepare_data("data/facilities.yaml")
 
-#px.set_mapbox_access_token(open(".mapbox_token").read())
+# px.set_mapbox_access_token(open(".mapbox_token").read())
 
 # -----------
 # Filter data
@@ -331,25 +332,26 @@ def create_www_link(url):
     return www_link
 
 
-def create_www_link_button(url, button_text=" link"):
+def create_www_link_button(url, button_text="link", button_classes="fa-solid fa-globe", button_color="primary",
+):
 
     if not url.strip():
         return dbc.Button(
-            [html.I(className="fa-solid fa-globe"), " ", button_text],
+            [html.I(className=button_classes), " ", button_text],
             href="#",
             target="_blank",
-            color="primary",
+            color=button_color,
             disabled=True,
-            className="me-1 btn btn-outline-primary btn-sm",
+            className="me-1 btn btn-outline-primary btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1",
         )
     else:
         return dbc.Button(
-            [html.I(className="fa-solid fa-globe"), " ", button_text],
+            [html.I(className=button_classes), " ", button_text],
             href="".join(url),
             target="_blank",
-            color="primary",
+            color=button_color,
             active=True,
-            className="me-1 btn btn-primary btn-sm",
+            className="me-1 btn btn-outline-primary btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1",
         )
 
 
@@ -365,18 +367,19 @@ def create_googlemaps_link_button(lat, lon):
             + lon.apply(str)
             + ""
         )
-        return dbc.Button(
-            [html.I(className="fa-solid fa-map-location-dot"), " Google maps"],
-            href="".join(url_str),
-            target="_blank",
-            active=True,
-            className="me-1 btn btn-primary btn-sm",
-        )
+
+        return create_www_link_button("".join(url_str), 
+            button_text="Google maps",
+            button_classes="fa-solid fa-map-location-dot"
+            )
+
+        
 
 
 # --------------
 # Create the map
 # --------------
+
 
 def get_map_zoom(df_in):
     # establish the bounds of the map
@@ -392,93 +395,100 @@ def get_map_zoom(df_in):
 
     return map_zoom
 
+
 def get_map_center(df_in):
     if len(df_in) >= 2:
-        dlat = 1.0+df_in["lat"].max()-df_in["lat"].min()-1.0
-        dlon = 1.0+df_in["lon"].max()-df_in["lon"].min()-1.0
+        dlat = 1.0 + df_in["lat"].max() - df_in["lat"].min() - 1.0
+        dlon = 1.0 + df_in["lon"].max() - df_in["lon"].min() - 1.0
 
-        map_center = (df_in["lat"].min()-1. + dlat/2.0, df_in["lon"].min()-1. + dlon/2.0)
+        map_center = (
+            df_in["lat"].min() - 1.0 + dlat / 2.0,
+            df_in["lon"].min() - 1.0 + dlon / 2.0,
+        )
     elif len(df_in) == 1:
         map_center = (df_in["lat"].min(), df_in["lon"].min())
     else:
-        map_center = (0.0,0.0)
+        map_center = (0.0, 0.0)
 
     return map_center
+
 
 def create_facility_map_leaflet(df_map, dff_selected):
 
     markers = []
-    #map_children.append(dl.TileLayer())
+    # map_children.append(dl.TileLayer())
     # based on https://lyz-code.github.io/blue-book/coding/python/dash_leaflet/#using-markers and https://github.com/mintproject/Dash/blob/master/leaflet.py
 
     # "on click" should use https://github.com/thedirtyfew/dash-leaflet/issues/5
 
     for index, facility in df_map.iterrows():
         markers.append(
-                dl.CircleMarker(
-                    center = (facility["lat"], facility["lon"]),
-                    radius = 6,
-                    color = "#17a9ae",
-                    id = {
-                        "type": "facility",
-                        #"row": facility["facility-id"],
-                        "id" : "marker.{}".format(facility["facility_id"])
-                        },
-                    children=[
-                        dl.Tooltip(facility["name"],),
-                        #dl.Popup(facility["name"],),
-                    ],
-                )
+            dl.CircleMarker(
+                center=(facility["lat"], facility["lon"]),
+                radius=6,
+                color="#17a9ae",
+                id={
+                    "type": "facility",
+                    # "row": facility["facility-id"],
+                    "id": "marker.{}".format(facility["facility_id"]),
+                },
+                children=[
+                    dl.Tooltip(
+                        facility["name"],
+                    ),
+                    # dl.Popup(facility["name"],),
+                ],
             )
-    
+        )
+
     marker_cluster = dl.MarkerClusterGroup(id="markers", children=markers)
 
-    map_zoom= get_map_zoom(df_map)
+    map_zoom = get_map_zoom(df_map)
     map_center = get_map_center(df_map)
 
-    attribution = '&copy; <a href="https://www.openstreetmap.org/about/">OpenStreetMap</a> '
+    attribution = (
+        '&copy; <a href="https://www.openstreetmap.org/about/">OpenStreetMap</a> '
+    )
 
-        
     if dff_selected.empty:
         leaflet_map = dl.Map(
-                [
-                    dl.TileLayer(attribution=attribution),
-                    marker_cluster,
-                ],
-                zoom=map_zoom,
-                center = map_center,
-                style={'height': '33vh', 'min-height': '400px'}
-           )
-        
+            [
+                dl.TileLayer(attribution=attribution),
+                marker_cluster,
+            ],
+            zoom=map_zoom,
+            center=map_center,
+            style={"height": "33vh", "min-height": "400px"},
+        )
+
     else:
         for index, facility in dff_selected.iterrows():
             selected_marker = dl.CircleMarker(
-                    center = (facility["lat"], facility["lon"]),
-                    radius = 10,
-                    color = "#666",
-                    id = {
-                        "type": "facility",
-                        #"row": facility["facility-id"],
-                        "id" : "marker.{}".format(facility["facility_id"])
-                        },
-                    children=[
-                        dl.Tooltip(facility["name"],),
-                        #dl.Popup(facility["name"],),
-                    ],
-                )
-            
-        leaflet_map = dl.Map(
-                [
-                    dl.TileLayer(attribution=attribution),
-                    marker_cluster,
-                    selected_marker
+                center=(facility["lat"], facility["lon"]),
+                radius=10,
+                color="#666",
+                id={
+                    "type": "facility",
+                    # "row": facility["facility-id"],
+                    "id": "marker.{}".format(facility["facility_id"]),
+                },
+                children=[
+                    dl.Tooltip(
+                        facility["name"],
+                    ),
+                    # dl.Popup(facility["name"],),
                 ],
-                zoom=map_zoom,
-                center = map_center,
-                style={'height': '33vh', 'min-height': '400px'}
-           )
-    
+            )
+
+        leaflet_map = dl.Map(
+            [dl.TileLayer(attribution=attribution), marker_cluster, selected_marker],
+            zoom=map_zoom,
+            center=map_center,
+            style={"height": "33vh", "min-height": "400px"},
+        )
+
     return leaflet_map
+
 
 # -----------------------
 # Create a sortable table
@@ -503,62 +513,58 @@ def create_sortable_facility_table(df_in):
 
     """
 
-    df_table = df_in[["name", "country", "type_property","facility_id"]].copy()
+    df_table = df_in[["name", "country", "type_property", "facility_id"]].copy()
 
-    df_table["id"] =df_table.facility_id
+    df_table["id"] = df_table.facility_id
 
     df_table.rename(columns={"type_property": "type"}, inplace=True)
 
     # create a list of columns to display
-    show_columns = ["name","country","type"]
+    show_columns = ["name", "country", "type"]
 
-    sortable_facility_table = dash_table.DataTable(
-        id="sortable-facility-table",
-        columns=[
-            {"name": i, "id": i, "deletable": False, "selectable": False} for i in show_columns #df_table.columns
-        ],
-        data=df_table.to_dict('records'),
-        #data = df_table.to_dict('index'),
-        style_data={
-            'whiteSpace': 'normal',
-            'height': 'auto',
-            'lineHeight': '15px'
-        },
-        style_cell_conditional=[
-            {'if': {'column_id': 'id'},
-             'width': '10%'},
-            {'if': {'column_id': 'name'},
-             'width': '30%'},
-            {'if': {'column_id': 'country'},
-             'width': '25%'},
-            {'if': {'column_id': 'type'},
-             'width': '30%'},
-        ],
-        style_as_list_view=True,
-        style_cell={'padding': '5px',
-        "border-bottom": "1px solid #E9E9E9",
-        "border-top": "1px solid #E9E9E9"},
-        style_header={
-            'backgroundColor': '#E9E9E9',
-            #'color': "#FFFFFF",
-            'fontWeight': 'bold',
-            'border': "1px solid #E9E9E9"
-        },
-        editable=False,
-        filter_action="native",
-        sort_action="native",
-        sort_mode="multi",
-        column_selectable="single",
-        # row_selectable="multi",
-        row_deletable=False,
-        selected_columns=[],
-        selected_rows=[],
-        page_action="native",
-        style_table={"overflow-y":"none",
-            'border': "1px solid #E9E9E9"},
-        page_current=0,
-        page_size=7,
-    ),
+    sortable_facility_table = (
+        dash_table.DataTable(
+            id="sortable-facility-table",
+            columns=[
+                {"name": i, "id": i, "deletable": False, "selectable": False}
+                for i in show_columns  # df_table.columns
+            ],
+            data=df_table.to_dict("records"),
+            # data = df_table.to_dict('index'),
+            style_data={"whiteSpace": "normal", "height": "auto", "lineHeight": "15px"},
+            style_cell_conditional=[
+                {"if": {"column_id": "id"}, "width": "10%"},
+                {"if": {"column_id": "name"}, "width": "30%"},
+                {"if": {"column_id": "country"}, "width": "25%"},
+                {"if": {"column_id": "type"}, "width": "30%"},
+            ],
+            style_as_list_view=True,
+            style_cell={
+                "padding": "5px",
+                "border-bottom": "1px solid #E9E9E9",
+                "border-top": "1px solid #E9E9E9",
+            },
+            style_header={
+                "backgroundColor": "#E9E9E9",
+                #'color': "#FFFFFF",
+                "fontWeight": "bold",
+                "border": "1px solid #E9E9E9",
+            },
+            editable=False,
+            filter_action="native",
+            sort_action="native",
+            sort_mode="multi",
+            column_selectable="single",
+            # row_selectable="multi",
+            row_deletable=False,
+            selected_columns=[],
+            selected_rows=[],
+            page_action="native",
+            style_table={"overflow-y": "none", "border": "1px solid #E9E9E9"},
+            page_current=0,
+            page_size=7,
+        ),
+    )
 
     return sortable_facility_table
 
@@ -618,18 +624,26 @@ def get_card_facility_description_element(dff_selected):
         # check if it has a source we need to acknowledge
         if info_dict.get("copied"):
             description_text_element = html.Blockquote('"' + description_text + '"')
-            description_source_element = html.P(
-                [
-                    "source: ",
-                    html.A(
-                        urlparse(info_dict.get("source")).netloc,
-                        href="".join(info_dict.get("source")),
-                    ),
-                ]
-            )
+            description_source_element = html.Footer(
+                    [
+                        "from ",
+                        html.Cite([
+                        html.A(
+                            urlparse(info_dict.get("source")).netloc,
+                            href="".join(info_dict.get("source")),
+                        ),
+                        ])
+                    ],
+                    className="blockquote-footer"
+                )
         else:
             description_text_element = html.P(description_text)
             description_source_element = []
+
+        if info_dict.get("note"):
+            description_note_element = html.P("N.B.:{}.".format(info_dict.get("note")))
+        else:
+            description_note_element = []
 
         # create links to go with it
         if info_dict.get("homepage"):
@@ -637,14 +651,23 @@ def get_card_facility_description_element(dff_selected):
         else:
             link_button_home = create_www_link_button("", "homepage")
 
+        if info_dict.get("eawe-pdf"):
+            link_button_eawe_pdf = create_www_link_button(info_dict["eawe-pdf"], "EAWE information", "fa-solid fa-file-pdf")
+        else:
+            link_button_eawe_pdf = []
+
     else:
         description_text_element = html.P("No information found")
         description_source_element = []
+        description_note_element = []
         link_button_home = create_www_link_button("", "homepage")
+        link_button_eawe_pdf = []
 
     link_button_GoogleMaps = create_googlemaps_link_button(
         dff_selected["lat"], dff_selected["lon"]
     )
+
+    link_button_feedback = create_feedback_button()
 
     card_content = dbc.Row(
         [
@@ -652,7 +675,14 @@ def get_card_facility_description_element(dff_selected):
                 [
                     description_text_element,
                     description_source_element,
-                    html.Div([link_button_home, link_button_GoogleMaps]),
+                    description_note_element,
+                    html.Div(
+                    [
+                        html.Div([link_button_home, link_button_eawe_pdf, link_button_GoogleMaps]),
+                        html.Div([link_button_feedback])
+                    ],
+                    className= "d-flex justify-content-between"
+                    )
                 ]
             )
         ]
@@ -705,12 +735,9 @@ def get_card_infrastructure_element(dff_selected):
 
     """
 
-    infrastructure_list = create_Ul(dff_selected['infrastructure'].squeeze())
+    infrastructure_list = create_Ul(dff_selected["infrastructure"].squeeze())
 
-    infrastructure_element = [
-        html.P("Available infrastructure:"),
-        infrastructure_list
-    ]        
+    infrastructure_element = [html.P("Available infrastructure:"), infrastructure_list]
     return infrastructure_element
 
 
@@ -733,51 +760,62 @@ def get_card_availabledata_element(dff_selected):
 
     """
 
-    availabledata_list = create_Ul(dff_selected['availabledata'].squeeze())
+    availabledata_list = create_Ul(dff_selected["availabledata"].squeeze())
 
-    availabledata_element = [
-        html.P("Available data:"),
-        availabledata_list
-    ]        
+    availabledata_element = [html.P("Available data:"), availabledata_list]
     return availabledata_element
-    
+
+
 def create_action_buttons():
-    action_element = html.Div(
-        [
-        create_about_button()
-        ]
-    )
+    action_element = dbc.Row([
+            dbc.Col(
+                [create_feedback_button(), create_about_button()]
+            )
+    ],className="mb-2")
 
     return action_element
 
+def create_feedback_button():
+
+    feedback_button = create_www_link_button(url = "https://forms.office.com/e/DfjQ6yPuyQ",
+        button_text ="Send feedback",
+        button_classes="fa-regular fa-comment")
+
+    return feedback_button
+
 def create_about_button():
     about_button = dbc.Button(
-                        "About this app",
-                        id="about-button",
-                        className="mb-3",
-                        color="secondary",
-                        n_clicks=0,
-                    )
-    
+        "About this app",
+        id="about-button",
+        className="me-1 btn btn-secondary btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1",
+        color="secondary",
+        n_clicks=0,
+    )
+
     return about_button
+
 
 def create_about_element():
     about_element = dbc.Collapse(
-                        [
-                        dbc.Row(
         [
-            dbc.Col(
+            dbc.Row(
                 [
+                    dbc.Col(
+                        [
                             html.P("This app is for demonstration purposes only"),
                             html.H3("Data sources"),
-                            html.P("The data sources used in this app are all in the public domain, and include:"),
+                            html.P(
+                                "The data sources used in this app are all in the public domain, and include:"
+                            ),
                             html.Ul(
                                 [
                                     html.Li("A facility's own web page"),
-                                    html.Li("European Academy of Wind Energy (EAWE)")
-                                   ]
+                                    html.Li("European Academy of Wind Energy (EAWE)"),
+                                ]
                             ),
-                            html.P("These information sources have been acknowledged and listed where applicable."),
+                            html.P(
+                                "These information sources have been acknowledged and listed where applicable."
+                            ),
                             html.H3("Technical aspects"),
                             html.P(
                                 [
@@ -786,7 +824,9 @@ def create_about_element():
                                     ", an open source library for python used to create data visualisations. ",
                                 ]
                             ),
-                            html.P("The map is created using dash-leaflet, which is in turn uses the leaflet.js library and data from Open Street Map."),
+                            html.P(
+                                "The map is created using dash-leaflet, which is in turn uses the leaflet.js library and data from Open Street Map."
+                            ),
                             html.P(
                                 [
                                     "The website is hosted on ",
@@ -797,8 +837,10 @@ def create_about_element():
                                 ]
                             ),
                             html.H3("Disclaimer"),
-                            html.P("The information provided here is provided in good faith and is believed to be a reasonable representation of the facilities that are described. However, the information may be out of data or inaccurate for a variety of reasons including incorrect transcribing, incorrect information provided in sources, outdated information, changes in funding, and many other reasons. App users should therefore investigate any facilities themselves before making any decisions about the suitably of the facility for their needs. We take no responsibility for any inaccuracies or omissions or any losses or damages that may result from them.")
-                        ],                        
+                            html.P(
+                                "The information provided here is provided in good faith and is believed to be a reasonable representation of the facilities that are described. However, the information may be out of data or inaccurate for a variety of reasons including incorrect transcribing, incorrect information provided in sources, outdated information, changes in funding, and many other reasons. App users should therefore investigate any facilities themselves before making any decisions about the suitably of the facility for their needs. We take no responsibility for any inaccuracies or omissions or any losses or damages that may result from them."
+                            ),
+                        ],
                     ),
                 ]
             ),
@@ -810,6 +852,7 @@ def create_about_element():
 
     return about_element
 
+
 @dash.callback(
     Output("about", "is_open"),
     [Input("about-button", "n_clicks")],
@@ -820,6 +863,7 @@ def toggle_collapse(n, is_open):
         return not is_open
     return is_open
 
+
 # -----------------------------
 # Create the layout for this page
 # -----------------------------
@@ -829,15 +873,15 @@ layout = dbc.Container(
         # title row
         html.Div(
             [
-            dbc.Row(
-                [
-                    dbc.Col(
-                        [html.H1("Wind Energy R&D Facilities")],
-                        width=12,
-                    ),
-                ],
-                className="title h-10 pt-2 mx-0 mb-2",
-            ),
+                dbc.Row(
+                    [
+                        dbc.Col(
+                            [html.H1("Wind Energy R&D Facilities")],
+                            width=12,
+                        ),
+                    ],
+                    className="title h-10 pt-2 mx-0 mb-2",
+                ),
             ]
         ),
         # content
@@ -845,22 +889,15 @@ layout = dbc.Container(
             [
                 # logging row
                 dbc.Row(
-                    dbc.Col(
-                        [                            
-                            html.Div(
-                                id="log"
-                            )
-                        ]
-                    ),
+                    dbc.Col([html.Div(id="log")]),
                 ),
                 # map and table content row
                 dbc.Row(
-                    [                        
+                    [
                         dbc.Col(
                             [
-                                create_facility_map_leaflet(df,
-                                    pd.DataFrame()),
-                            ],                                
+                                create_facility_map_leaflet(df, pd.DataFrame()),
+                            ],
                             id="facility-map-leaflet",
                             className="col-12 col-lg-6 h-sm-60 h-md-33 h-lg-25",
                         ),
@@ -876,11 +913,7 @@ layout = dbc.Container(
                     [
                         dbc.Col(filterIcon(), className="col-12 col-md-1"),
                         dbc.Col(
-                            [
-                                dbc.Row(
-                                    create_selectors(df)
-                                )
-                            ],
+                            [dbc.Row(create_selectors(df))],
                             className="col-12 col-md-11",
                         ),
                     ],
@@ -891,8 +924,8 @@ layout = dbc.Container(
                     [
                         html.H4(
                             [
-                                #html.I(className="fa-solid fa-circle-info"),
-                                #" ",
+                                # html.I(className="fa-solid fa-circle-info"),
+                                # " ",
                                 "Information about the facility",
                             ],
                             id="tabs-title",
@@ -929,43 +962,52 @@ layout = dbc.Container(
                 ),
                 # button row
                 create_action_buttons(),
-                #info row
+                # info row
                 create_about_element(),
                 # dcc.Store stores intermediate values
-                dcc.Store(id='selected-facility-store'),
-                dcc.Store(id='filtered-facilities-store', data = df.to_json(orient='records'))
+                dcc.Store(id="selected-facility-store"),
+                dcc.Store(
+                    id="filtered-facilities-store", data=df.to_json(orient="records")
+                ),
             ],
             className="content",
             style={"min-height": "80vh"},
-        ),        
+        ),
     ],
     fluid=True,
     className="dbc h-80",
     style={"min-height": "80vh"},
 )
 
+
 @dash.callback(
-    Output('filtered-facilities-store', 'data'),
-    Input('country_selector', 'value'),
-    Input('facilitytype_selector', 'value'),
-    Input('infrastructure_selector', 'value'),
-    Input('availabledata_selector', 'value')
+    Output("filtered-facilities-store", "data"),
+    Input("country_selector", "value"),
+    Input("facilitytype_selector", "value"),
+    Input("infrastructure_selector", "value"),
+    Input("availabledata_selector", "value"),
 )
-def get_filtered_facilities(countries_selected="", facilitytypes_selected="", infrastructure_selected="", availabledata_selected=""):
+def get_filtered_facilities(
+    countries_selected="",
+    facilitytypes_selected="",
+    infrastructure_selected="",
+    availabledata_selected="",
+):
 
     dff = filter_facilities(
         df,
         countries_selected,
         facilitytypes_selected,
         infrastructure_selected,
-        availabledata_selected
+        availabledata_selected,
     )
 
-    return dff.to_json(orient='records')
+    return dff.to_json(orient="records")
+
 
 @dash.callback(
     Output("sortable-facility-table", "data"),
-    Input('filtered-facilities-store', 'data')
+    Input("filtered-facilities-store", "data"),
 )
 def update_table(jsonified_filtered_facilities):
 
@@ -978,41 +1020,43 @@ def update_table(jsonified_filtered_facilities):
 
     return df_table.to_dict("records")
 
+
 @dash.callback(
-        Output('facility-map-leaflet', 'children'),
-        #Output('log','children'),
-        Input('filtered-facilities-store', 'data'),
-        Input('selected-facility-store','data')
+    Output("facility-map-leaflet", "children"),
+    # Output('log','children'),
+    Input("filtered-facilities-store", "data"),
+    Input("selected-facility-store", "data"),
 )
 def update_map(jsonified_filtered_facilities, jsonified_selected_facility):
     # its possible this callback could be called before a filtering step has taken place.
     try:
         dff = pd.read_json(jsonified_filtered_facilities, orient="records")
-    except: 
+    except:
         dff = df
 
     try:
         dff_selected = pd.read_json(jsonified_selected_facility, orient="records")
     except:
         dff_selected = pd.DataFrame()
-    
+
     if not dff_selected.empty:
-        log = dff_selected.name        
+        log = dff_selected.name
     else:
         log = "no site selected"
-        
+
     leaflet_map = create_facility_map_leaflet(dff, dff_selected)
-    
-    return leaflet_map#, log
+
+    return leaflet_map  # , log
+
 
 @dash.callback(
-    Output('selected-facility-store', 'data'),
+    Output("selected-facility-store", "data"),
     Output("sortable-facility-table", "selected_cells"),
-    Output("sortable-facility-table", "active_cell"),     
+    Output("sortable-facility-table", "active_cell"),
     Input({"id": ALL, "type": "facility"}, "n_clicks"),
-    Input('sortable-facility-table', 'active_cell'),
+    Input("sortable-facility-table", "active_cell"),
 )
-def select_facility(n_clicks,active_cell):
+def select_facility(n_clicks, active_cell):
 
     dff_selected = pd.DataFrame()
 
@@ -1020,7 +1064,7 @@ def select_facility(n_clicks,active_cell):
 
     trigger = dash.callback_context.triggered_id
 
-    trigger_component=""    
+    trigger_component = ""
 
     if isinstance(trigger, str):
         # active cell is associated with a string id
@@ -1057,8 +1101,9 @@ def select_facility(n_clicks,active_cell):
     # and finally, clear the selections
     selected_cells = []
     active_cell = None
-        
-    return dff_selected.to_json(orient='records'), selected_cells, active_cell
+
+    return dff_selected.to_json(orient="records"), selected_cells, active_cell
+
 
 @dash.callback(
     Output("tabs-title", "children"),
@@ -1067,10 +1112,10 @@ def select_facility(n_clicks,active_cell):
     Output("tab-infrastructure", "disabled"),
     Output("tab-availabledata", "children"),
     Output("tab-availabledata", "disabled"),
-    Input("selected-facility-store",'data')
+    Input("selected-facility-store", "data"),
 )
 def update_information_tabs(jsonified_selected_facility):
-    
+
     # set default values
     tabs_title_element = html.H4(
         [html.I(className="fa-solid fa-circle-info"), " ", "Facility information"]
@@ -1082,10 +1127,10 @@ def update_information_tabs(jsonified_selected_facility):
     tab_infrastructure_disabled = True
     tab_availabledata_element = []
     tab_availabledata_disabled = True
-    
+
     dff_selected = pd.read_json(jsonified_selected_facility, orient="records")
-    
-    if len(dff_selected)>=1:
+
+    if len(dff_selected) >= 1:
         tabs_title_element = get_card_facility_title_element(dff_selected)
 
         tab_description_element = get_card_facility_description_element(dff_selected)
@@ -1106,4 +1151,11 @@ def update_information_tabs(jsonified_selected_facility):
             tab_availabledata_element = html.P("no information about data available")
             tab_availabledata_disabled = True
 
-    return tabs_title_element, tab_description_element, tab_infrastructure_element, tab_infrastructure_disabled, tab_availabledata_element, tab_availabledata_disabled
+    return (
+        tabs_title_element,
+        tab_description_element,
+        tab_infrastructure_element,
+        tab_infrastructure_disabled,
+        tab_availabledata_element,
+        tab_availabledata_disabled,
+    )

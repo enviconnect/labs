@@ -37,7 +37,7 @@ features:
     url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
   information:
     homepage:
-    eawe: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
 - type: Feature
   geometry:
     type: Point
@@ -83,7 +83,7 @@ features:
     country: China
   information:
     description: A 100-kW turbine with some meteorological data
-    eawe: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf
+    eawe-pdf: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf
   
 - type: Feature
   geometry:
@@ -99,8 +99,7 @@ features:
     country: Switzerland
   information:
     description: This is one of two neighbouring test turbines. One is owned by ETH Zürich. The other is owned by OST (see separate entry).    
-    eawe: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ETH-aventa-research-wind-turbine.pdf
-    
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ETH-aventa-research-wind-turbine.pdf    
 - type: Feature
   geometry:
     type: Point
@@ -115,7 +114,8 @@ features:
     country: Switzerland
   information:
     description: The wind turbine Taggenberg 1, type AV-7, is manufactured by Aventa AG in Switzerland and was commissioned in December 2002.
-    eawe: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ost-twt-facility.pdf.
+    homepage: https://www.ost.ch/en/research-and-consulting-services/technology/renewable-energies-and-environmental-engineering/iet-institute-for-energy-technology/wind-energy/infrastructure
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ost-twt-facility.pdf
 - type: Feature
   geometry:
     type: Point
@@ -146,7 +146,7 @@ features:
     country: France
   information:
     description: A commercial 2MW Senvion Turbine operated by VALEMO within a park of 6 identical turbines
-    eawe: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-saint-hilaire-de-chaleons.pdf.
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-saint-hilaire-de-chaleons.pdf
 
 - type: Feature
   geometry:
@@ -162,7 +162,7 @@ features:
     country: Germany
   information:
     description: WINSENT – wind science and engineering test site in complex terrain, Stöttener Berg, Germany.
-    eawe: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-winsent.pdf
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-winsent.pdf
 
   availabledata:
   - "multi-year wind data"
@@ -181,7 +181,7 @@ features:
     country: Canada
   information:
     description: 5 x 2.0 MW turbines.
-    eawe: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-weican-twt-facilities.pdf.
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-weican-twt-facilities.pdf
 
 - type: Feature
   geometry:
@@ -198,7 +198,7 @@ features:
   information:
     description: The German Aerospace Center (DLR) is developing the research wind farm (referred to as WiValdi) at its Krummendeich site together with partners from the Research Alliance Wind Energy in Lower Saxony, Germany. WiValdi is scheduled to be put into operation during the course of 2022 and will have a predicted service life of 20 years. WiValdi stands for wind validation.
     homepage: https://windenergy-researchfarm.com/
-    eawe: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-WiValdi-research-wind-farm.pdf
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-WiValdi-research-wind-farm.pdf
     
 - type: Feature
   geometry:
@@ -276,7 +276,6 @@ features:
   information:
     description: The HAW Hamburg research facility includes 5 Nordex N117 wind turbines, a met mast, and a battery storage facility.
     homepage: https://www.haw-hamburg.de/cc4e/infrastruktur-und-technische-forschungsausstattung/windpark-curslack/
-    note: Information is in German only.
   infrastructure:
     - battery storage
     - met mast

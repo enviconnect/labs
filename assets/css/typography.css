@@ -28,3 +28,9 @@ body {
 .school {
   font-family: "Schoolbell";
 }
+
+blockquote{
+  font-style: italic;
+  border-left: 3px solid #17a9ae;
+  padding-left: 10px;
+}
