@@ -345,7 +345,7 @@ def create_www_link_button(url, button_text="link", icon_classes="fa-solid fa-gl
             href="#",
             target="_blank",
             disabled=True,
-            className="me-1 btn btn-outline-secondary px-sm-2 px-lg-2 py-sm-2 mb-sm-2 mb-lg-1 py-lg-1 btn-sm"+" "+button_classes
+            className="me-1 btn btn-outline-secondary px-sm-2 px-lg-2 py-sm-2  py-lg-1 mb-sm-2 mb-lg-1 btn-sm"+" "+button_classes
         )
     else:
         return dbc.Button(
@@ -789,7 +789,7 @@ def create_about_button():
     about_button = dbc.Button(
         "About this app",
         id="about-button",
-        className="me-1 btn btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1",
+        className="me-1 btn btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1 mb-sm-2 mb-lg-1",
         color="secondary",
         n_clicks=0,
     )
