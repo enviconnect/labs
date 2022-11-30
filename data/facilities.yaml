@@ -375,9 +375,11 @@ features:
   information:
     description: "The Scaled Wind Farm Technology (SWiFT) facility, located at Texas Tech University's National Wind Institute Research Center in Lubbock, TX, is the first public facility to use multiple wind turbines to measure turbine performance in a wind farm environment. Funded by the U.S. Department of Energy, SWiFT partners with industry and academia to:
 
-        - Reduce turbine-to-turbine interaction and wind plant underperformance,
-        - Develop advanced wind turbine rotors, and
-        - Improve the validity of advanced simulation models."
+          - Reduce turbine-to-turbine interaction and wind plant underperformance,
+
+          - Develop advanced wind turbine rotors, and
+          
+          - Improve the validity of advanced simulation models."
     copied: True
     source: https://energy.sandia.gov/programs/renewable-energy/wind-power/swift-facilities/
     homepage: https://energy.sandia.gov/programs/renewable-energy/wind-power/swift-facilities/
