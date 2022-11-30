@@ -14,7 +14,7 @@ features:
     type: wind farm
     country: Spain
   information:
-    description: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
+    description: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
     copied: True
     source: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
     homepage: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
@@ -76,7 +76,6 @@ features:
     - 114.71987
     - 41.1586199
     - 0
-    note: "Location shown on map is approximate. According to information from EAWE, 'The turbine is situated 20 km west of Zhangbei County and 200 km northwest of Beijing.'"
   properties:
     name: IET & NCEPU wind turbine at Zhangbei
     type: wind turbine
@@ -84,7 +83,7 @@ features:
   information:
     description: A 100-kW turbine with some meteorological data
     eawe-pdf: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf
-  
+    note: "Location shown on map is approximate. According to information from EAWE, 'The turbine is situated 20 km west of Zhangbei County and 200 km northwest of Beijing.'"  
 - type: Feature
   geometry:
     type: Point
@@ -159,11 +158,11 @@ features:
     - 0
     note: Location is approximate
   properties:
-    name: WINSENT – wind science and engineering test site in complex terrain
+    name: WINSENT - wind science and engineering test site in complex terrain
     type: wind turbine
     country: Germany
   information:
-    description: WINSENT – wind science and engineering test site in complex terrain, Stöttener Berg, Germany.
+    description: WINSENT - wind science and engineering test site in complex terrain, Stöttener Berg, Germany.
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-winsent.pdf
 
   availabledata:
@@ -329,7 +328,7 @@ features:
     type: wind energy research center
     country: Spain
   information:
-    description: "The Oceanic Platform of the Canary Islands (PLOCAN) is a Research Infrastructure (RI) labeled by the ICTS (Unique Scientific and Technological Infrastructure) Spanish National Roadmap, co-funded by the Ministry of Science, Innovation and Universities of the Spanish government and the Canary Islands government and by the European Regional Development Fund (ERDF) under the Operational Programme of the Canary Islands.
+    description: "The Oceanic Platform of the Canary Islands (PLOCAN) is a Research Infrastructure (RI) labeled by the ICTS (Unique Scientific and Technological Infrastructure) Spanish National Roadmap, co-funded by the Ministry of Science, Innovation and Universities of the Spanish government and the Canary Islands government and by the European Regional Development Fund (ERDF) under the Operational Programme of the Canary Islands.<br><br>
 
     PLOCAN is a multipurpose technical-scientific service infrastructure that provides support for research, technological development and innovation in the marine and maritime sectors, available to public and private users. PLOCAN offers both onshore and offshore experimental facilities and laboratories, operational throughout the whole year thanks to the Canary Islands excellent climatic conditions. PLOCAN also brings a broad experience in large national and EU marine/maritime projects."
     copied: True 
@@ -405,4 +404,32 @@ features:
   infrastructure:
     - met mast
   availabledata:
-    - multi-year wind and weather data
+    - multiyear wind and weather data
+
+- type: Feature
+  geometry:
+    type: point
+    coordinates:
+    - -102.0573596
+    - 33.6050769
+    - 0
+  properties:
+    name: National Wind Institute
+    type: wind energy research center
+    country: United States of America
+  information:
+    description: The National Wind Institute (NWI) has evolved from its traditional singular focus on wind hazards to three main research pillars of Energy Systems, Atmospheric Measurement & Simulation, and Wind Engineering. Though all three of these pillars focus on distinct issues, they also maintain common ground via cross cutting themes. All research seeks to benefit communities at micro and macro scales.
+    copied: True
+    source: https://www.depts.ttu.edu/nwi/
+    homepage: https://www.depts.ttu.edu/nwi/
+  infrastructure:
+    - Regional weather station network
+    - Met tower
+    - Wind radar
+    - Microgrid
+    - Radiosondes
+    - Lightning mapping
+    - Tornado simulator
+    - Boundary layer wind tunnel
+  availabledata:
+    - Multiyear wind and weather data

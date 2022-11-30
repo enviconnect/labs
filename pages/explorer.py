@@ -344,9 +344,8 @@ def create_www_link_button(url, button_text="link", icon_classes="fa-solid fa-gl
             [html.I(className=icon_classes), " ", button_text],
             href="#",
             target="_blank",
-            color=button_color,
             disabled=True,
-            className="me-1 btn btn-outline px-sm-2 px-lg-2 py-sm-2 py-lg-1 btn-sm"+" "+button_classes
+            className="me-1 btn btn-outline-secondary px-sm-2 px-lg-2 py-sm-2 mb-sm-2 mb-lg-1 py-lg-1 btn-sm"+" "+button_classes
         )
     else:
         return dbc.Button(
@@ -354,8 +353,8 @@ def create_www_link_button(url, button_text="link", icon_classes="fa-solid fa-gl
             href="".join(url),
             target="_blank",
             color=button_color,
-            active=True,
-            className="me-1 btn px-sm-2 px-lg-2 py-sm-2 py-lg-1 btn-sm"+" "+button_classes
+            disabled=False,
+            className="me-1 btn px-sm-2 px-lg-2 py-sm-2 py-lg-1 mb-sm-2 mb-lg-1 btn-sm"+" "+button_classes
         )
 
 
@@ -464,7 +463,6 @@ def create_facility_map_leaflet(df_map, dff_selected):
             ],
             zoom=map_zoom,
             center=map_center,
-            style={"height": "33vh", "min-height": "400px"},
         )
 
     else:
@@ -490,7 +488,6 @@ def create_facility_map_leaflet(df_map, dff_selected):
             [dl.TileLayer(attribution=attribution), marker_cluster, selected_marker],
             zoom=map_zoom,
             center=map_center,
-            style={"height": "33vh", "min-height": "400px"},
         )
 
     return leaflet_map
@@ -629,21 +626,19 @@ def get_card_facility_description_element(dff_selected):
 
         # check if it has a source we need to acknowledge
         if info_dict.get("copied"):
-            description_text_element = html.Blockquote('"' + description_text + '"')
+            description_text_element = dcc.Markdown('> ' + description_text + '', dangerously_allow_html=True)
             description_source_element = html.Footer(
                     [
                         "from ",
-                        html.Cite([
                         html.A(
                             urlparse(info_dict.get("source")).netloc,
                             href="".join(info_dict.get("source")),
                         ),
-                        ])
                     ],
                     className="blockquote-footer"
                 )
         else:
-            description_text_element = html.P(description_text)
+            description_text_element = dcc.Markdown(description_text)
             description_source_element = []
 
         if info_dict.get("note"):
@@ -906,14 +901,15 @@ layout = dbc.Container(
                                 create_facility_map_leaflet(df, pd.DataFrame()),
                             ],
                             id="facility-map-leaflet",
-                            className="col-12 col-lg-6 h-sm-60 h-md-33 h-lg-25",
+                            className="col-12 col-lg-6 h-sm-33 h-md-33 h-lg-25",
+                            style={"min-height": "200px"}
                         ),
                         dbc.Col(
                             [html.Div(create_sortable_facility_table(df))],
                             className="col-12 col-lg-6 mt-2 mt-lg-0",
                         ),
                     ],
-                    className="pb-2 h-sm-60 h-md-33 h-lg-25",
+                    className="pb-2 h-sm-33 h-md-33 h-lg-25",
                 ),
                 # filter row
                 dbc.Row(
