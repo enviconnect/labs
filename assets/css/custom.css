@@ -61,6 +61,12 @@ body {
   font-style: italic;
   border-left: 3px solid #17a9ae;
   padding-left: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.content blockquote p {
+    margin-bottom: 0px;
 }
 
 .filter_row {
@@ -150,12 +156,12 @@ body {
 }
 
 .info-tab-box .btn {
-    #margin-right: 4px
+    margin-right: 4px
 }
 
 .school {
     font-family: "Schoolbell";
-  }
+}
 
 .sub-footer {
 	font-size: smaller;

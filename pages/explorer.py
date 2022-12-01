@@ -80,11 +80,11 @@ def prepare_data(data_source):
     df_information.reset_index(inplace=True)
     df = df.join(df_information.set_index("index"))
 
-    # infrastructure is a column of lists
-    df_infrastructure = pd.DataFrame(df_in.pop("infrastructure"))
+    # infrastructure is a dictionary
+    df_infrastructure = pd.json_normalize(df_in["infrastructure"])
     df_infrastructure.reset_index(inplace=True)
-
-    df = df.join(df_infrastructure.set_index("index"))
+    df["infrastructure_desc"] = df_infrastructure.description
+    df["infrastructure_list"] = df_infrastructure.list
 
     # data is a column of lists
     df_availabledata = pd.DataFrame(df_in.pop("availabledata"))
@@ -138,7 +138,7 @@ def get_facility_types_label_value_pairs(df_in):
 def get_infrastructure_info(df_in):
 
     infrastructure_list = []
-    for sublist in df_in.infrastructure.dropna():
+    for sublist in df_in.infrastructure_list.dropna():
         infrastructure_list.extend(sublist)
 
     infrastructure_list = list(set(infrastructure_list))
@@ -285,9 +285,9 @@ def filter_facilities(
         infrastructure_i = df_in.index
     else:
         # infrastructure_i = df_in.index
-        df_infrastructure = df_in.dropna(subset=["infrastructure"], inplace=False)
+        df_infrastructure = df_in.dropna(subset=["infrastructure_list"], inplace=False)
         infrastructure_i = df_infrastructure.index[
-            pd.DataFrame(df_infrastructure["infrastructure"].tolist())
+            pd.DataFrame(df_infrastructure["infrastructure_list"].tolist())
             .isin(infrastructure_selected)
             .any(1)
             .values
@@ -736,7 +736,7 @@ def get_card_infrastructure_element(dff_selected):
 
     """
 
-    infrastructure_list = create_Ul(dff_selected["infrastructure"].squeeze())
+    infrastructure_list = create_Ul(dff_selected["infrastructure_list"].squeeze())
 
     infrastructure_element = [html.P("Available infrastructure:"), infrastructure_list]
     return infrastructure_element
@@ -1138,7 +1138,7 @@ def update_information_tabs(jsonified_selected_facility):
 
         tab_description_element = get_card_facility_description_element(dff_selected)
 
-        if not dff_selected["infrastructure"].isnull().values.any():
+        if not dff_selected["infrastructure_list"].isnull().values.any():
             tab_infrastructure_element = get_card_infrastructure_element(dff_selected)
             tab_infrastructure_disabled = False
         else:

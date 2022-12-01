@@ -19,6 +19,8 @@ features:
     source: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
     homepage: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
   infrastructure:
+    description: test test
+    list:
       - wind turbines
   availabledata:
 
@@ -262,6 +264,7 @@ features:
   information:
     description: 
     homepage: https://ore.catapult.org.uk/what-we-do/testing-validation/powertrain-facilities/.
+
 - type: Feature
   geometry:
     type: Point
@@ -278,6 +281,8 @@ features:
     description: The HAW Hamburg research facility includes 5 Nordex N117 wind turbines, a met mast, and a battery storage facility.
     homepage: https://www.haw-hamburg.de/cc4e/infrastruktur-und-technische-forschungsausstattung/windpark-curslack/
   infrastructure:
+    description:
+    list:
     - battery storage
     - met mast
 
@@ -297,8 +302,10 @@ features:
     description: A micro grid with integrated Vanadium-Redox-Flow battery, connected to a 2-MW wind turbine.
     homepage: https://www.ict.fraunhofer.de/de/presse_mediathek/pressemitteilungen/2021/2021-12-13.html
   infrastructure:
-    - Vanadium-Redox-Flow battery
-    - microgrid
+    description:
+    list:
+      - Vanadium-Redox-Flow battery
+      - microgrid
 
 - type: Feature
   geometry:
@@ -315,6 +322,10 @@ features:
   information:
     description: A 101-m met tower and platform in the North Sea. Data are available for use.
     hompage: https://www.fino1.de/en/.
+  infrastructure:
+    description:
+    list:
+      - met tower
 
 - type: Feature
   geometry:
@@ -335,13 +346,15 @@ features:
     source: https://www.plocan.eu/en/description/
     homepage: https://www.plocan.eu/en/
   infrastructure:
-  - oceanic offshore platform
-  - test site
-  - oceanic observatory
-  - autonomous ocean vehicles
-  - onshore facilities
+    description:
+    list:
+      - oceanic offshore platform
+      - test site
+      - oceanic observatory
+      - autonomous ocean vehicles
+      - onshore facilities
   availabledata:
-  - data portal
+      - data portal
 
 
 - type: Feature
@@ -384,8 +397,10 @@ features:
     source: https://energy.sandia.gov/programs/renewable-energy/wind-power/swift-facilities/
     homepage: https://energy.sandia.gov/programs/renewable-energy/wind-power/swift-facilities/
   infrastructure:
-    - wind turbines
-    - research-scale turbines
+    description:
+    list:
+      - wind turbines
+      - research-scale turbines
 
 - type: Feature
   geometry:
@@ -404,7 +419,9 @@ features:
     source: https://en.wikipedia.org/wiki/KNMI-mast_Cabauw
     homepage: https://www.knmi.nl/research/observations-data-technology/projects/cabauw-in-situ-measurements
   infrastructure:
-    - met mast
+    description:
+    list:
+      - met mast
   availabledata:
     - multiyear wind and weather data
 
@@ -425,13 +442,15 @@ features:
     source: https://www.depts.ttu.edu/nwi/
     homepage: https://www.depts.ttu.edu/nwi/
   infrastructure:
-    - Regional weather station network
-    - Met tower
-    - Wind radar
-    - Microgrid
-    - Radiosondes
-    - Lightning mapping
-    - Tornado simulator
-    - Boundary layer wind tunnel
+    description:
+    list:
+      - regional weather station network
+      - met tower
+      - wind radar
+      - microgrid
+      - radiosondes
+      - lightning mapping
+      - tornado simulator
+      - boundary layer wind tunnel
   availabledata:
     - Multiyear wind and weather data

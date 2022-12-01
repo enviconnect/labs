@@ -1,0 +1,84 @@
+---
+type: FeatureCollection
+features:
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - -1.5776411
+    - 42.6862012
+    - 0
+    note: 
+  properties:
+    name: CENER Alaiz experimental wind farm
+    type: wind farm
+    country: Spain
+  information:
+    description: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
+    copied: True
+    source: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
+    homepage: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
+  infrastructure:
+    description:
+    list:
+      - wind turbines
+  availabledata:
+
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 11.6822258
+    - 57.7302907
+    - 0
+    note: Location is approximate
+  properties:
+    name: Chalmers test wind turbine
+    type: wind turbine
+    country: Sweden
+    url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
+  information:
+    homepage:
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
+
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 10.218597
+    - 53.469263
+    - 0
+    note: Location is approximate
+  properties:
+    name: Windpark Curslack
+    type: wind farm 
+    country: Germany
+  information:
+    description: The HAW Hamburg research facility includes 5 Nordex N117 wind turbines, a met mast, and a battery storage facility.
+    homepage: https://www.haw-hamburg.de/cc4e/infrastruktur-und-technische-forschungsausstattung/windpark-curslack/
+  infrastructure:
+    description:
+    list:
+      - battery storage
+      - met mast
+
+- type: Feature
+  geometry:
+    type: Point
+    coordinates:
+    - 8.52327
+    - 49.0150481
+    - 0
+    note: Location is approximate
+  properties:
+    name: Fraunhofer-Institut für Chemische Technologie (ICT)
+    type: Energy systems research center
+    country: Germany
+  information:
+    description: A micro grid with integrated Vanadium-Redox-Flow battery, connected to a 2-MW wind turbine.
+    homepage: https://www.ict.fraunhofer.de/de/presse_mediathek/pressemitteilungen/2021/2021-12-13.html
+  infrastructure:
+    description:
+    list:
+      - Vanadium-Redox-Flow battery
+      - microgrid
