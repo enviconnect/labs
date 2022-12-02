@@ -38,8 +38,16 @@ features:
     country: Sweden
     url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
   information:
+    description: Chalmers wind turbine has variable speed operation with a direct driven generator and a frequency converter, it also has a digital control system developed by Chalmers. The wind turbine has a rated power of 45 kW and rated speed of 75 rpm. The wooden tower is 30 m high, the blades of carbon fibres are 7.5 m long, and the turbine diameter is 15.9 m. The individually blade pitch system is electrical. The wind turbine is simulated in FAST and Ashes.
+    copied: True
+    source: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
     homepage:
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
+  infrastructure:
+    description:
+    list:
+      - wind turbine
+
 - type: Feature
   geometry:
     type: Point
@@ -56,6 +64,13 @@ features:
     copied: True
     source: https://wind.dtu.dk/Facilities
     homepage: https://wind.dtu.dk/Facilities
+  infrastructure:
+    description:
+    list:
+      - wind tunnel
+      - test site
+      - blade test facility
+
 - type: Feature
   geometry:
     type: Point
@@ -69,8 +84,13 @@ features:
     type: wind farm
     country: Netherlands
   information:
-    description: 5 turbines of 2.5 MW 
-    homepage: https://repository.tudelft.nl/islandora/object/uuid%3A92123c07-cc12-4945-973f-103bd744ec87.
+    description: 
+    homepage: https://windparkwieringermeer.nl/
+  infrastructure:
+    description:
+    list:
+      - wind turbines
+
 - type: Feature
   geometry:
     type: Point
@@ -216,10 +236,22 @@ features:
     type: wind farm
     country: Germany
   information:
-    description: Certain data from the Alpha Ventus wind farm are available for research purposes.
-    homepage: https://rave-offshore.de/en/about-rave.html
+    description: "The research initiative RAVE carries out research and development work on the offshore test field alpha ventus. Research and development at Germany's first offshore wind farm generates experience and knowledge that advance the construction and further development of offshore wind energy. RAVE is funded by the Federal Ministry for Economic Affairs and Climate Action (BMWK) and coordinated by the Fraunhofer Institute for Wind Energy Systems (IWES).<br><br>
+
+        In more than 35 research projects, more than 60 partners from science and industry have been working on a wide range of research questions since 2008. The topics range from ecological questions and the further development of plants and foundations to the optimization of operations. The financial support from the BMWK so far amounted to more than 120 million euros."
+
+    copied: True
+    source: https://rave-offshore.de/en/start.html
+    homepage: https://rave-offshore.de/en/start.html
   availabledata:
   - multi-year wind data
+  - wind turbine data
+  - jacket and tripod data
+  - electrical measurements
+  infrastructure:
+    description:
+    list:
+      - wind turbines
 
 - type: Feature
   geometry:
@@ -248,6 +280,22 @@ features:
     name: Center for Wind Power Drives RWTH Aachen
     type: wind energy research center
     country: Germany
+  information:
+    description: "With the foundation of the Center for Wind Power Drives (CWD) another milestone in the research of wind turbines (WT) is set in Aachen. The Center is equipped with an innovative 4MW-WindTurbine-system test rig. RWTH Aachen University thus strengthening the research efforts in the field of onshore wind turbines.<br><br>
+
+The CWD navigates and organises the interdisciplinary research activities at RWTH Aachen University in the area of WT drive train systems. These research activities contain both fundamental scientific analyses and pre-competitive research and development projects.<br><br>
+
+The scientists of the seven institutes combined in the CWD that deal with the system technology of wind turbines will all work together in the same office building at the CWD. This will help to intensify the networking and the boost of innovations. The scientific and organisational responsibility for the planning, usage and operation of the WT system test rigs is taken by the directorate of the CWD which interdisciplinary consists of the directors of the seven institutes mentioned above. To transfer results the Conference for Wind Power Drives in Aachen, amongst others, provides a platform."
+    copied: True
+    source: https://www.cwd.rwth-aachen.de/cms/CWD/Das-Center/~mkbom/Struktur-des-CWD/lidx/1/
+    homepage: https://www.cwd.rwth-aachen.de/cms/~lkcfw/CWD/?lidx=1
+  infrastructure:
+    description: https://www.cwd.rwth-aachen.de/cms/CWD/Das-Center/~mkdti/Infrastruktur/lidx/1/
+    list: 
+    - wind turbine test rig (1 MW)
+    - wind turbine test rig (4 MW)
+    - Real time digital simulator
+    - wind tunnel
 
 - type: Feature
   geometry:

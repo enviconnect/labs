@@ -137,14 +137,8 @@ body {
     border-radius: 0.25rem;
 }
 
-.info-tab-box .tab-content {
-    border-left: 1px solid rgba(0,0,0,0.125);
-    border-bottom: 1px solid rgba(0,0,0,0.125);
-    border-bottom: 1px solid rgba(0,0,0,0.125);
-    background-color: #FFFFFF;
-    border-top-right-radius: 0.25rem;
-    border-bottom-left-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
+.info-tab-box .nav-tabs {
+    border: none;
 }
 
 .info-tab-box .nav-item {
@@ -153,10 +147,25 @@ body {
     border-top-right-radius: 0.25rem;
     margin-bottom: -1px;
     background-color: #D5D5D5;
+    border-left: 0.5px solid rgba(0,0,0,0.25);
+    border-right: 0.5px solid rgba(0,0,0,0.25);
+    border-top: 0.5px solid rgba(0,0,0,0.25);
+}
+
+.info-tab-box .tab-content {
+    border-left: 1px solid rgba(0,0,0,0.25);
+    border-bottom: 1px solid rgba(0,0,0,0.25);
+    border-right: 1px solid rgba(0,0,0,0.25);
+    border-top: 1px solid rgba(0,0,0,0.25);
+    background-color: #FFFFFF;
+    border-top-right-radius: 0.25rem;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
 }
 
 .info-tab-box .btn {
-    margin-right: 4px
+    margin-top: 4px;
+    margin-right: 4px;
 }
 
 .school {
