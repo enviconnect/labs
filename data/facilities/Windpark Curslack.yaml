@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     description: The HAW Hamburg research facility includes 5 Nordex N117 wind turbines,
       a met mast, and a battery storage facility.

@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     description: A 7MW turbine just offshore
     hompage: https://ore.catapult.org.uk/what-we-do/testing-validation/levenmouth/

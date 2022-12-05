@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     copied: true
     description: Chalmers wind turbine has variable speed operation with a direct

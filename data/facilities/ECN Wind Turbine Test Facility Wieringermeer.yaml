@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     description: null
     homepage: https://windparkwieringermeer.nl/

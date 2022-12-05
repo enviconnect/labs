@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: met mast
   information:
     description: A 101-m met tower and platform in the North Sea. Data are available
       for use.
@@ -19,5 +20,5 @@
   properties:
     country: Germany
     name: FINO 1
-    type: wind measurement site
+    type: wind measurement site    
   type: Feature

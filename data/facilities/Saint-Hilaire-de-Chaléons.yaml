@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     description: A commercial 2MW Senvion MM92 turbine (T6) operated by VALEMO within
       a park of 6 identical turbines

@@ -4,6 +4,7 @@
     - 41.1586199
     - 0
     type: Point
+    icon: wind turbine
   information:
     description: A 100-kW turbine with some meteorological data
     eawe-pdf: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf

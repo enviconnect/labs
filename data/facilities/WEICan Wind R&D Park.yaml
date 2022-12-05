@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     description: 5 x 2.0 MW turbines.
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-weican-twt-facilities.pdf

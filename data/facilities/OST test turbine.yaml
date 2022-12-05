@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     description: The wind turbine Taggenberg 1, type AV-7, is manufactured by Aventa
       AG in Switzerland and was commissioned in December 2002.

@@ -8,6 +8,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     description: The wind turbine Taggenberg 1, type AV-7, is manufactured by Aventa
       AG in Switzerland and was commissioned in December 2002.
@@ -32,6 +33,7 @@ features:
     - 39.9140081
     - 0
     type: Point
+    icon: wind energy research center
   information:
     copied: true
     description: NREL's Flatirons Campus features state-of-the-art equipment and facilities
@@ -117,6 +119,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind energy research center
   information:
     copied: true
     description: "ORE Catapult operates the world\u2019s most comprehensive open-access\
@@ -182,6 +185,7 @@ features:
     - 33.6050769
     - 0
     type: point
+    icon: wind energy research center
   information:
     copied: true
     description: The National Wind Institute (NWI) has evolved from its traditional
@@ -297,6 +301,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     copied: true
     description: Chalmers wind turbine has variable speed operation with a direct
@@ -329,6 +334,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     description: null
     homepage: https://windparkwieringermeer.nl/
@@ -352,6 +358,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     description: "This is one of two neighbouring test turbines. One is owned by ETH\
       \ Z\xFCrich. The other is owned by OST (see separate entry)."
@@ -378,6 +385,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     description: The HAW Hamburg research facility includes 5 Nordex N117 wind turbines,
       a met mast, and a battery storage facility.
@@ -416,6 +424,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: met mast
   information:
     description: A 101-m met tower and platform in the North Sea. Data are available
       for use.
@@ -430,7 +439,7 @@ features:
   properties:
     country: Germany
     name: FINO 1
-    type: wind measurement site
+    type: wind measurement site    
   type: Feature
 
 
@@ -445,6 +454,7 @@ features:
     - 51.97
     - 0
     type: Point
+    icon: met mast
   information:
     copied: true
     description: "The KNMI-mast Cabauw is a 213-metre-high guyed mast for meteorological measurements at Cabauw, the Netherlands. In 1972 at Cabauw (06348) a 213 m high mast was specifically built for meteorological research to establish relations between the state of the atmospheric boundary layer (ABL), land surface conditions and the general weather situation for all seasons. The Cabauw mast is located in the western part of the Netherlands (51.971 \xB0 N, 4.927 \xB0E) in a polder 0.7 m below average sealevel. This site was chosen, because it is rather representative for this part of the Netherlands and because only minor landscape developments were planned in this region. However, significant changes are the removal of the trees along a road east of the mast in 1975, and the building of houses in the village of Lopik east of the mast in more recent years."
@@ -470,6 +480,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     description: A commercial 2MW Senvion MM92 turbine (T6) operated by VALEMO within
       a park of 6 identical turbines
@@ -505,6 +516,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     description: 5 x 2.0 MW turbines.
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-weican-twt-facilities.pdf
@@ -539,6 +551,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     description: A 7MW turbine just offshore
     hompage: https://ore.catapult.org.uk/what-we-do/testing-validation/levenmouth/
@@ -562,6 +575,7 @@ features:
     - 0
     note: null
     type: Point
+    icon: wind farm
   information:
     copied: true
     description: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
@@ -586,6 +600,7 @@ features:
     - 41.1586199
     - 0
     type: Point
+    icon: wind turbine
   information:
     description: A 100-kW turbine with some meteorological data
     eawe-pdf: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf
@@ -612,6 +627,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     description: The German Aerospace Center (DLR) is developing the research wind
       farm (referred to as WiValdi) at its Krummendeich site together with partners
@@ -663,6 +679,7 @@ features:
     - 12.956613
     - 0
     type: points
+    icon: wind energy research center
   information:
     copied: true
     description: The National Institute of Wind Energy is at the forefront supporting
@@ -733,8 +750,9 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: vertical profiling lidar
   information:
-    description: North Sea wind profiles with 10 minute averages measured by the ZephIR 300M wind lidar. Data are daily files reported by the instrument. Locations are the TenneT platforms BSA, BSB, HKZA, HKZB, HKN (operational starting 2019-2023), located within the wind farms BS [Borssele], HKZ [Hollandse Kust (zuid)] and HKN [Hollandse Kust (noord)].
+    description: North Sea wind profiles with 10 minute averages measured by the ZephIR 300M wind lidar. Data are daily files reported by the instrument. Locations are the TenneT platforms BSA, BSB, HKZA, HKZB, HKN (operational starting 2019-2023), located within the wind farms BS (Borssele), HKZ (Hollandse Kust (zuid)) and HKN (Hollandse Kust (noord)).
     copied: True
     source: https://dataplatform.knmi.nl/dataset/windlidar-nz-wp-platform-10min-1
     homepage: https://dataplatform.knmi.nl/dataset/windlidar-nz-wp-platform-10min-1  
@@ -759,6 +777,7 @@ features:
     - 55.6925969
     - 0
     type: Point
+    icon: wind energy research center
   information:
     copied: true
     description: "DTU Wind operates several wind-energy related facilities, including\
@@ -791,6 +810,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     copied: true
     description: The research initiative RAVE carries out research and development work on the offshore test field alpha ventus. Research and development at Germany's first offshore wind farm generates experience and knowledge that advance the construction and further development of offshore wind energy. RAVE is funded by the Federal Ministry for Economic Affairs and Climate Action (BMWK) and coordinated by the Fraunhofer Institute for Wind Energy Systems (IWES).<br><br>
@@ -826,6 +846,7 @@ features:
     generic: 
       - data portal
     specific:
+      - data portal
   geometry:
     coordinates:
     - -15.368656

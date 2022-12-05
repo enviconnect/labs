@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind farm
   information:
     description: The German Aerospace Center (DLR) is developing the research wind
       farm (referred to as WiValdi) at its Krummendeich site together with partners

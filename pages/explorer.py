@@ -399,7 +399,7 @@ def get_map_zoom(df_in):
     elif len(df_in) == 0:
         map_zoom = 1
     else:
-        map_zoom = 3
+        map_zoom = 6
 
     return map_zoom
 
@@ -420,6 +420,42 @@ def get_map_center(df_in):
 
     return map_center
 
+def get_icon(icon):
+
+    def get_icon_url(icon):
+        if icon == "vertical profiling lidar":
+            return dash.get_asset_url("facility-icons/vertical-profiling-lidar.png")
+        elif icon == "met mast":
+            return dash.get_asset_url("facility-icons/met-mast.png")
+        elif icon == "wind turbine":
+            return dash.get_asset_url("facility-icons/wind-turbine.png")
+        elif icon == "wind farm":
+            return dash.get_asset_url("facility-icons/wind-farm.png")
+        elif icon == "wind energy research center":
+            return dash.get_asset_url("facility-icons/wind-energy-research-center.png")
+        else:
+            return dash.get_asset_url("facility-icons/default.png")
+
+    # define a basic icon
+    icon = {
+        "iconUrl": get_icon_url(icon),
+        "shadowUrl": dash.get_asset_url("facility-icons/shadow.png"),
+        "iconSize": [25, 41],  # size of the icon
+        "shadowSize": [40, 25],  # size of the shadow
+        "iconAnchor": [
+            12,
+            41,
+        ],  # point of the icon which will correspond to marker's location
+        "shadowAnchor": [40, 25],  # the same for the shadow
+        "popupAnchor": [
+            -3,
+            -76,
+        ],  # point from which the popup should open relative to the iconAnchor
+    }
+
+    return icon
+        
+
 
 def create_facility_map_leaflet(df_map, dff_selected):
 
@@ -431,10 +467,25 @@ def create_facility_map_leaflet(df_map, dff_selected):
 
     for index, facility in df_map.iterrows():
         markers.append(
-            dl.CircleMarker(
-                center=(facility["lat"], facility["lon"]),
-                radius=6,
-                color="#17a9ae",
+            # dl.CircleMarker(
+            #     center=(facility["lat"], facility["lon"]),
+            #     radius=6,
+            #     color="#17a9ae",
+            #     id={
+            #         "type": "facility",
+            #         # "row": facility["facility-id"],
+            #         "id": "marker.{}".format(facility["facility_id"]),
+            #     },
+            #     children=[
+            #         dl.Tooltip(
+            #             facility["name"],
+            #         ),
+            #         # dl.Popup(facility["name"],),
+            #     ],
+            # )
+            dl.Marker(
+                position=(facility["lat"], facility["lon"]),
+                icon = get_icon(facility["icon"]),
                 id={
                     "type": "facility",
                     # "row": facility["facility-id"],
@@ -489,8 +540,8 @@ def create_facility_map_leaflet(df_map, dff_selected):
 
         leaflet_map = dl.Map(
             [dl.TileLayer(attribution=attribution), marker_cluster, selected_marker],
-            zoom=map_zoom,
-            center=map_center,
+            zoom=get_map_zoom(dff_selected),
+            center=get_map_center(dff_selected),
         )
 
     return leaflet_map
@@ -1083,7 +1134,8 @@ def select_facility(n_clicks, active_cell):
         # active cell is associated with a string id
         log = "string"
         log = trigger
-        trigger_component = "sortable-facility-table"
+        if trigger == "sortable-facility-table":
+            trigger_component = "sortable-facility-table"
     # elif isinstance(trigger,list):
     #    log = "list"
     elif isinstance(trigger, dict):

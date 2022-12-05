@@ -5,6 +5,7 @@
     - 0
     note: Location is approximate
     type: Point
+    icon: wind turbine
   information:
     description: "This is one of two neighbouring test turbines. One is owned by ETH\
       \ Z\xFCrich. The other is owned by OST (see separate entry)."
