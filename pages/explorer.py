@@ -433,6 +433,10 @@ def get_icon(icon):
             return dash.get_asset_url("facility-icons/wind-farm.png")
         elif icon == "wind energy research center":
             return dash.get_asset_url("facility-icons/wind-energy-research-center.png")
+        elif icon == "wind energy test site":
+            return dash.get_asset_url("facility-icons/wind-energy-test-site.png")
+        elif icon == "power systems research center":
+            return dash.get_asset_url("facility-icons/power-systems-research-center.png")
         else:
             return dash.get_asset_url("facility-icons/default.png")
 

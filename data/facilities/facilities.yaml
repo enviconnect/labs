@@ -93,6 +93,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: wind energy test site
   information:
     description: "WINSENT - wind science and engineering test site in complex terrain,\
       \ St\xF6ttener Berg, Germany."
@@ -654,6 +655,7 @@ features:
     - 0
     note: Location is approximate
     type: Point
+    icon: power systems research center
   information:
     description: A micro grid with integrated Vanadium-Redox-Flow battery, connected
       to a 2-MW wind turbine.
