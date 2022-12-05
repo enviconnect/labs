@@ -69,6 +69,17 @@ body {
     margin-bottom: 0px;
 }
 
+.content #facility-map-leaflet {
+    min-height: 25vh;
+}
+
+@media (min-width: 992px) {
+    .content #facility-map-leaflet {
+        min-height: 33vh;
+    }
+}
+
+
 .filter_row {
     background-color: #E9E9E9;
     border: 1px solid #E9E9E9;
@@ -191,7 +202,6 @@ body {
 
 @media (min-width: 768px) {
 	.sub-footer .sub-footer-inner {
-		background: "red";
 		flex-direction: row;
 	}
 }

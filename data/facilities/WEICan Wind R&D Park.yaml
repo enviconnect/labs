@@ -1,0 +1,32 @@
+- geometry:
+    coordinates:
+    - -64.01637
+    - 47.03222
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: 5 x 2.0 MW turbines.
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-weican-twt-facilities.pdf
+    homepage: https://www.weican.ca
+  infrastructure:
+    description: null
+    generic:
+    - wind turbines
+    - met mast
+    - photovoltaic array
+    - substation
+    - condition monitoring system
+    specific:
+    - five 2-MW DeWind turbines (92-m dia, 80-m hub height)
+    - 80 m met mast for wind and atmospheric measurements
+    - Strain gauges on blade on one wind turbine
+    - Accelerometer-based condition monitoring system on a gearbox
+    - 10 m met mast for PV array
+    - 109 kW photovoltaic array
+    - substation with site electrical measurements
+  properties:
+    country: Canada
+    name: WEICan Wind R&D Park
+    type: wind farm
+  type: Feature

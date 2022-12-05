@@ -1,0 +1,33 @@
+- geometry:
+    coordinates:
+    - -1.864344
+    - 47.103143
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: A commercial 2MW Senvion MM92 turbine (T6) operated by VALEMO within
+      a park of 6 identical turbines
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-saint-hilaire-de-chaleons.pdf
+    homepage: https://www7.obs-mip.fr/awit/
+  infrastructure:
+    description: null
+    generic:
+    - wind turbine
+    - met mast
+    - nacelle lidar
+    - scanning lidar
+    - radiometer
+    - ceilometer
+    specific:
+    - 2MW Senvion wind turbine
+    - 80-m met mast
+    - nacelle lidar
+    - scanning lidar
+    - radiometer
+    - ceilometer
+  properties:
+    country: France
+    name: "Saint-Hilaire-de-Chal\xE9ons"
+    type: wind turbine
+  type: Feature

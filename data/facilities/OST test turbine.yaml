@@ -1,0 +1,23 @@
+- geometry:
+    coordinates:
+    - 8.68214
+    - 47.52006
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: The wind turbine Taggenberg 1, type AV-7, is manufactured by Aventa
+      AG in Switzerland and was commissioned in December 2002.
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ost-twt-facility.pdf
+    homepage: https://www.ost.ch/en/research-and-consulting-services/technology/renewable-energies-and-environmental-engineering/iet-institute-for-energy-technology/wind-energy/infrastructure
+  infrastructure:
+    description: null
+    generic:
+    - wind turbine
+    specific:
+    - Aventa AV-7 6.5 kW wind turbine
+  properties:
+    country: Switzerland
+    name: OST test turbine
+    type: wind turbine
+  type: Feature

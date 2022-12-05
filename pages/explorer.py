@@ -84,13 +84,16 @@ def prepare_data(data_source):
     df_infrastructure = pd.json_normalize(df_in["infrastructure"])
     df_infrastructure.reset_index(inplace=True)
     df["infrastructure_desc"] = df_infrastructure.description
-    df["infrastructure_list"] = df_infrastructure.list
+    df["infrastructure_list"] = df_infrastructure.generic
+    df["infrastructure_specific"] = df_infrastructure.specific
 
     # data is a column of lists
-    df_availabledata = pd.DataFrame(df_in.pop("availabledata"))
+    df_availabledata = pd.json_normalize(df_in["availabledata"])
     df_availabledata.reset_index(inplace=True)
-
-    df = df.join(df_availabledata.set_index("index"))
+    df["availabledata_desc"] = df_availabledata.description
+    df["availabledata_list"] = df_availabledata.generic
+    df["availabledata_specific"] = df_availabledata.specific
+    df["availabledata_portal"] = df_availabledata.portal
 
     # create an index column - useful
     df.insert(0, column="facility_id", value=df.index.values)
@@ -101,7 +104,7 @@ def prepare_data(data_source):
     return df
 
 
-df = prepare_data("data/facilities.yaml")
+df = prepare_data("data/facilities/facilities.yaml")
 
 # px.set_mapbox_access_token(open(".mapbox_token").read())
 
@@ -156,10 +159,10 @@ def get_infrastructure_label_value_pairs(df_in):
     return label_value_pairs
 
 
-def get_availabledata(df_in):
+def get_availabledata_info(df_in):
 
     availabledata_list = []
-    for sublist in df["availabledata"].dropna():
+    for sublist in df.availabledata_list.dropna():
         availabledata_list.extend(sublist)
 
     availabledata_list = list(set(availabledata_list))
@@ -171,7 +174,7 @@ def get_availabledata(df_in):
 def get_availabledata_label_value_pairs(df_in):
 
     label_value_pairs = []
-    for i in get_availabledata(df_in):
+    for i in get_availabledata_info(df_in):
         label_value_pairs.append({"label": i, "value": i})
 
     return label_value_pairs
@@ -298,9 +301,9 @@ def filter_facilities(
         availabledata_i = df_in.index
     else:
         # availabledata_i = df_in.index
-        df_availabledata = df_in.dropna(subset=["availabledata"], inplace=False)
+        df_availabledata = df_in.dropna(subset=["availabledata_list"], inplace=False)
         availabledata_i = df_availabledata.index[
-            pd.DataFrame(df_availabledata["availabledata"].tolist())
+            pd.DataFrame(df_availabledata["availabledata_list"].tolist())
             .isin(availabledata_selected)
             .any(1)
             .values
@@ -638,7 +641,7 @@ def get_card_facility_description_element(dff_selected):
                     className="blockquote-footer"
                 )
         else:
-            description_text_element = dcc.Markdown(description_text)
+            description_text_element = dcc.Markdown(description_text, dangerously_allow_html=True)
             description_source_element = []
 
         if info_dict.get("note"):
@@ -714,7 +717,7 @@ def create_Ul(contents):
         if isinstance(i, list):
             h.append(create_Ul(i))
         else:
-            h.append(html.Li(i))
+            h.append(html.Li(dcc.Markdown(i, dangerously_allow_html=True)))
     return html.Ul(h)
 
 
@@ -736,7 +739,7 @@ def get_card_infrastructure_element(dff_selected):
 
     """
 
-    infrastructure_list = create_Ul(dff_selected["infrastructure_list"].squeeze())
+    infrastructure_list = create_Ul(dff_selected["infrastructure_specific"].squeeze())
 
     infrastructure_element = [html.P("Available infrastructure:"), infrastructure_list]
     return infrastructure_element
@@ -761,9 +764,17 @@ def get_card_availabledata_element(dff_selected):
 
     """
 
-    availabledata_list = create_Ul(dff_selected["availabledata"].squeeze())
+    availabledata_list = create_Ul(dff_selected["availabledata_specific"].squeeze())
 
-    availabledata_element = [html.P("Available data:"), availabledata_list]
+    if dff_selected["availabledata_portal"].any():
+        dataportal_button = create_www_link_button(dff_selected["availabledata_portal"].squeeze(), button_text="data portal", button_color="primary", icon_classes="fa-solid fa-database")
+
+    else:
+        dataportal_button = []
+
+    availabledata_element = [html.P("Available data:"), availabledata_list, dataportal_button]
+    
+        
     return availabledata_element
 
 
@@ -901,8 +912,7 @@ layout = dbc.Container(
                                 create_facility_map_leaflet(df, pd.DataFrame()),
                             ],
                             id="facility-map-leaflet",
-                            className="col-12 col-lg-6 h-sm-33 h-md-33 h-lg-25",
-                            style={"min-height": "200px"}
+                            className="col-12 col-lg-6"
                         ),
                         dbc.Col(
                             [html.Div(create_sortable_facility_table(df))],
@@ -1147,7 +1157,7 @@ def update_information_tabs(jsonified_selected_facility):
             )
             tab_infrastructure_disabled = True
 
-        if not dff_selected["availabledata"].isnull().values.any():
+        if not dff_selected["availabledata_list"].isnull().values.any():
             tab_availabledata_element = get_card_availabledata_element(dff_selected)
             tab_availabledata_disabled = False
         else:

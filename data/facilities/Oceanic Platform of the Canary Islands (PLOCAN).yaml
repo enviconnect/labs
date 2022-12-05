@@ -1,0 +1,47 @@
+- availabledata:
+    description:
+    generic: 
+      - data portal
+    specific:
+  geometry:
+    coordinates:
+    - -15.368656
+    - 27.992053
+    - 0
+    type: Point
+  information:
+    copied: true
+    description: 'The Oceanic Platform of the Canary Islands (PLOCAN) is a Research
+      Infrastructure (RI) labeled by the ICTS (Unique Scientific and Technological
+      Infrastructure) Spanish National Roadmap, co-funded by the Ministry of Science,
+      Innovation and Universities of the Spanish government and the Canary Islands
+      government and by the European Regional Development Fund (ERDF) under the Operational
+      Programme of the Canary Islands.<br><br>
+
+      PLOCAN is a multipurpose technical-scientific service infrastructure that provides
+      support for research, technological development and innovation in the marine
+      and maritime sectors, available to public and private users. PLOCAN offers both
+      onshore and offshore experimental facilities and laboratories, operational throughout
+      the whole year thanks to the Canary Islands excellent climatic conditions. PLOCAN
+      also brings a broad experience in large national and EU marine/maritime projects.'
+    homepage: https://www.plocan.eu/en/
+    source: https://www.plocan.eu/en/description/
+  infrastructure:
+    description: null
+    generic:
+    - oceanic offshore platform
+    - test site
+    - oceanic observatory
+    - autonomous ocean vehicles
+    - onshore facilities
+    specific:
+    - oceanic offshore platform
+    - test site
+    - oceanic observatory
+    - autonomous ocean vehicles
+    - onshore facilities
+  properties:
+    country: Spain
+    name: Oceanic Platform of the Canary Islands (PLOCAN)
+    type: wind energy research center
+  type: Feature

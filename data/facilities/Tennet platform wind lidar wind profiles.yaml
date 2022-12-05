@@ -1,0 +1,25 @@
+- geometry:
+    coordinates:
+    - 3.08
+    - 51.7
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: North Sea wind profiles with 10 minute averages measured by the ZephIR 300M wind lidar. Data are daily files reported by the instrument. Locations are the TenneT platforms BSA, BSB, HKZA, HKZB, HKN (operational starting 2019-2023), located within the wind farms BS [Borssele], HKZ [Hollandse Kust (zuid)] and HKN [Hollandse Kust (noord)].
+    copied: True
+    source: https://dataplatform.knmi.nl/dataset/windlidar-nz-wp-platform-10min-1
+    homepage: https://dataplatform.knmi.nl/dataset/windlidar-nz-wp-platform-10min-1  
+  availabledata:
+    description:
+    generic:
+      - wind profiles
+      - offshore wind profiles
+    specific:
+      - North Sea wind profiles with 10 minute averages measured by the ZephIR 300M wind lidar
+    portal: https://dataplatform.knmi.nl/dataset/windlidar-nz-wp-platform-10min-1
+  properties:
+    country: Netherlands
+    name: Wind - lidar wind profiles measured at North Sea wind farm TenneT platforms
+    type: dataset
+  type: Feature

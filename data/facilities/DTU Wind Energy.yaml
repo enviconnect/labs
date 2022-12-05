@@ -1,0 +1,29 @@
+- geometry:
+    coordinates:
+    - 12.0974455
+    - 55.6925969
+    - 0
+    type: Point
+  information:
+    copied: true
+    description: "DTU Wind operates several wind-energy related facilities, including\
+      \ a materials lab, the Poul La Cour Tunnel, the Large Scale Facility for blade\
+      \ testing, and the \xD8sterild National Test Center, capable of trialling the\
+      \ new generation of mega-turbines up to 330 metres tall."
+    homepage: https://wind.dtu.dk/Facilities
+    source: https://wind.dtu.dk/Facilities
+  infrastructure:
+    description: null
+    generic:
+    - wind tunnel
+    - test site
+    - blade test facility
+    specific:
+    - Poul La Cour wind tunnel
+    - "\xD8sterild National Test Center"
+    - Large Scale Facility for blade testing
+  properties:
+    country: Denmark
+    name: DTU Wind Energy
+    type: wind energy research center
+  type: Feature

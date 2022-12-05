@@ -1,0 +1,21 @@
+- geometry:
+    coordinates:
+    - -3.0199977
+    - 56.1743314
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: A 7MW turbine just offshore
+    hompage: https://ore.catapult.org.uk/what-we-do/testing-validation/levenmouth/
+  infrastructure:
+    description: null
+    generic:
+    - offshore wind turbine
+    specific:
+    - 7-MW wind turbine
+  properties:
+    country: United Kingdom
+    name: 'Offshore Renewable Energy Catapult: Levenmouth Demonstration Turbine'
+    type: wind turbine
+  type: Feature

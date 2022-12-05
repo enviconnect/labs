@@ -1,0 +1,30 @@
+- geometry:
+    coordinates:
+    - 80.2143182
+    - 12.956613
+    - 0
+    type: points
+  information:
+    copied: true
+    description: The National Institute of Wind Energy is at the forefront supporting
+      the Ministry of New and Renewable Energy for the orderly development of wind
+      power in the country, for 25 years now. We offer our services to the wind energy
+      sector in R&D, Wind Resource Assessment (onshore and offshore), development
+      of Standards, Testing, Certification and Skill Development. As the Nodal Agency
+      for offshore wind development in the country, we also support the Ministry in
+      the implementation of the National offshore wind energy policy.
+    homepage: https://niwe.res.in/
+    source: https://niwe.res.in/index.php
+  infrastructure:
+    description: null
+    generic:
+    - solar resource measurement calibration
+    - wind measurement station network
+    specific:
+    - solar resource measurement calibration
+    - wind measurement station network
+  properties:
+    country: India
+    name: National Institute of Wind Energy
+    type: wind energy research center
+  type: Feature

@@ -1,0 +1,24 @@
+- geometry:
+    coordinates:
+    - 8.52327
+    - 49.0150481
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: A micro grid with integrated Vanadium-Redox-Flow battery, connected
+      to a 2-MW wind turbine.
+    homepage: https://www.ict.fraunhofer.de/de/presse_mediathek/pressemitteilungen/2021/2021-12-13.html
+  infrastructure:
+    description: null
+    generic:
+    - battery storage
+    - microgrid
+    specific:
+    - Vanadium-Redox-Flow battery
+    - microgrid
+  properties:
+    country: Germany
+    name: "Fraunhofer-Institut f\xFCr Chemische Technologie (ICT)"
+    type: Energy systems research center
+  type: Feature

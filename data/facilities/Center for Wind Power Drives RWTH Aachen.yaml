@@ -1,0 +1,35 @@
+- geometry:
+    coordinates:
+    - 6.0428709
+    - 50.7845058
+    - 0
+    type: Point
+  information:
+    copied: true
+    description: "With the foundation of the Center for Wind Power Drives (CWD) another milestone in the research of wind turbines (WT) is set in Aachen. The Center is equipped with an innovative 4MW-WindTurbine-system test rig. RWTH Aachen University thus strengthening the research efforts in the field of onshore wind turbines.<br><br>
+
+      The CWD navigates and organises the interdisciplinary research activities at RWTH Aachen University in the area of WT drive train systems. These research activities contain both fundamental scientific analyses and pre-competitive research and development projects.<br><br>
+
+      The scientists of the seven institutes combined in the CWD that deal with the system technology of wind turbines will all work together in the same office building at the CWD. This will help to intensify the networking and the boost of innovations. The scientific and organisational responsibility for the planning, usage and operation of the WT system test rigs is taken by the directorate of the CWD which interdisciplinary consists of the directors of the seven institutes mentioned above. To transfer results the Conference for Wind Power Drives in Aachen, amongst others, provides a platform."
+    homepage: https://www.cwd.rwth-aachen.de/cms/~lkcfw/CWD/?lidx=1
+    source: https://www.cwd.rwth-aachen.de/cms/CWD/Das-Center/~mkbom/Struktur-des-CWD/lidx/1/
+  infrastructure:
+    description: null
+    generic:
+    - drivetrain test facility
+    - power system simulation tools
+    - wind tunnel
+    homepage: https://www.cwd.rwth-aachen.de/cms/CWD/Das-Center/~mkdti/Infrastruktur/lidx/1/
+    specific:
+    - Wind turbine test rig (1 MW)
+    - Wind turbine test rig (4 MW)
+    - High Power Test Bench
+    - Real time digital simulator RTDS to simulate power systems with pervasive power
+      electronics, including distribution and transmission systems
+    - open test section wind tunnel
+    - open- or close test section wind tunnel
+  properties:
+    country: Germany
+    name: Center for Wind Power Drives RWTH Aachen
+    type: wind energy research center
+  type: Feature

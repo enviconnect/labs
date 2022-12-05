@@ -1,0 +1,35 @@
+- geometry:
+    coordinates:
+    - 6.6
+    - 54.0166666666667
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    copied: true
+    description: The research initiative RAVE carries out research and development work on the offshore test field alpha ventus. Research and development at Germany's first offshore wind farm generates experience and knowledge that advance the construction and further development of offshore wind energy. RAVE is funded by the Federal Ministry for Economic Affairs and Climate Action (BMWK) and coordinated by the Fraunhofer Institute for Wind Energy Systems (IWES).<br><br>
+
+        In more than 35 research projects, more than 60 partners from science and industry have been working on a wide range of research questions since 2008. The topics range from ecological questions and the further development of plants and foundations to the optimization of operations. The financial support from the BMWK so far amounted to more than 120 million euros.
+    homepage: https://rave-offshore.de/en/start.html
+    source: https://rave-offshore.de/en/start.html
+  infrastructure:
+    description: null
+    generic:
+    - offshore wind turbines
+    specific:
+    - wind turbines
+  availabledata:
+    description:
+    generic:
+      - offshore structure data
+      - structural data
+    specific:
+      - multiyear wind data
+      - wind turbine data
+      - jacket and tripod data
+      - electrical measurements
+  properties:
+    country: Germany
+    name: Alpha Ventus
+    type: wind farm
+  type: Feature

@@ -1,0 +1,21 @@
+- geometry:
+    coordinates:
+    - 4.9350001
+    - 52.832082
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: null
+    homepage: https://windparkwieringermeer.nl/
+  infrastructure:
+    description: null
+    generic:
+    - wind turbines
+    specific:
+    - wind turbines
+  properties:
+    country: Netherlands
+    name: ECN Wind Turbine Test Facility Wieringermeer
+    type: wind farm
+  type: Feature

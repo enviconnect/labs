@@ -1,0 +1,58 @@
+- geometry:
+    coordinates:
+    - -1.5081364
+    - 55.1304836
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    copied: true
+    description: "ORE Catapult operates the world\u2019s most comprehensive open-access\
+      \ research, test, innovation and validation services to accelerate the deployment\
+      \ of new and innovative offshore renewable energy technology. With highly experienced\
+      \ teams of technical researchers, test engineers and technology specialists,\
+      \ we are equipped to deliver industry-leading services to drive down the cost\
+      \ of offshore renewable energy."
+    homepage: https://ore.catapult.org.uk/what-we-do/testing-validation/
+    source: https://ore.catapult.org.uk/what-we-do/testing-validation/
+  infrastructure:
+    description: "ORE Catapult operates the world\u2019s most comprehensive open-access\
+      \ research, test, innovation and validation services to accelerate the deployment\
+      \ of new and innovative offshore renewable energy technology. With highly experienced\
+      \ teams of technical researchers, test engineers and technology specialists,\
+      \ we are equipped to deliver industry-leading services to drive down the cost\
+      \ of offshore renewable energy."
+    generic:
+    - blade test facility
+    - drivetrain test facility
+    - offshore met mast
+    - subsea testing facility
+    - high voltage laboratory
+    - cable test rig
+    - grid connection simulator
+    specific:
+    - 100m blade test facility
+    - 50 m R&D Blade test facility
+    - Blade rain erosion test rig & laboratory
+    - 15 MW powertrain test facility; a powertrain testing facility for offshore wind
+      turbine systems, with 6 degrees of freedom Non-Torque Loading (NTL).
+    - 3 MW powertrain test facility; a horizontal axes powertrain testing facility
+      for tidal turbine systems, with 6 degrees of freedom Non-Torque Loading (NTL).
+    - 1 MW powertrain test facility; a sub-megawatt powertrain and component testing
+      facility for small-scale turbine powertrain systems.
+    - Subsea docks; three subsea docks for both wet and dry conditions, including
+      a replica seabed, for controlled subsea testing
+    - National offshore Anemometry Hub (NOAH)
+    - High voltage laboratory
+    - Materials laboratory
+    - "Dynamic cable test rig; a bespoke, state-of-the-art cable bend fatigue test\
+      \ rig supporting the development \u2013 and improving the performance and reliability\
+      \ of \u2013 subsea cables. The rig is capable of testing floating wind and tidal\
+      \ cables, carrying out operational research, and acting as a representative\
+      \ test bed for all aspects of subsea cable development."
+    - eGrid grid connection emulator
+  properties:
+    country: United Kingdom
+    name: Offshore Renewable Energy Catapult
+    type: wind energy research center
+  type: Feature

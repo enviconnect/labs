@@ -1,0 +1,30 @@
+- geometry:
+    coordinates:
+    - 11.6822258
+    - 57.7302907
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    copied: true
+    description: Chalmers wind turbine has variable speed operation with a direct
+      driven generator and a frequency converter, it also has a digital control system
+      developed by Chalmers. The wind turbine has a rated power of 45 kW and rated
+      speed of 75 rpm. The wooden tower is 30 m high, the blades of carbon fibres
+      are 7.5 m long, and the turbine diameter is 15.9 m. The individually blade pitch
+      system is electrical. The wind turbine is simulated in FAST and Ashes.
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
+    homepage: null
+    source: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
+  infrastructure:
+    description: null
+    generic:
+    - wind turbine
+    specific:
+    - 45-kW wind turbine
+  properties:
+    country: Sweden
+    name: Chalmers test wind turbine
+    type: wind turbine
+    url: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
+  type: Feature

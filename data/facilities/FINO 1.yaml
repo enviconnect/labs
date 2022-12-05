@@ -1,0 +1,23 @@
+- geometry:
+    coordinates:
+    - 6.58777
+    - 54.015
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: A 101-m met tower and platform in the North Sea. Data are available
+      for use.
+    hompage: https://www.fino1.de/en/.
+  infrastructure:
+    description: null
+    generic:
+    - met mast
+    - offshore met mast
+    specific:
+    - 101-m met tower
+  properties:
+    country: Germany
+    name: FINO 1
+    type: wind measurement site
+  type: Feature

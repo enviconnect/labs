@@ -1,0 +1,32 @@
+- availabledata:
+    description:
+    generic:
+      - multiyear wind data
+      - wind profiles
+    specific:
+      - vertical profiling wind lidar measurement campaigns
+      - data from multiple 100-m met mast data
+  geometry:
+    coordinates:
+    - 9.8514181
+    - 48.6605881
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: "WINSENT - wind science and engineering test site in complex terrain,\
+      \ St\xF6ttener Berg, Germany."
+    eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-winsent.pdf
+    homepage: https://www.windfors.de/projects/test-site/winsent/
+  infrastructure:
+    description: null
+    generic:
+    - met mast
+    - wind turbine
+    specific:
+    - multiple 100-m met masts
+  properties:
+    country: Germany
+    name: WINSENT - wind science and engineering test site in complex terrain
+    type: wind turbine
+  type: Feature

@@ -1,0 +1,27 @@
+- availabledata:
+    description:
+    generic:
+      - multiyear wind and weather data
+    specific:  
+  geometry:
+    coordinates:
+    - 4.926244
+    - 51.97
+    - 0
+    type: Point
+  information:
+    copied: true
+    description: "The KNMI-mast Cabauw is a 213-metre-high guyed mast for meteorological measurements at Cabauw, the Netherlands. In 1972 at Cabauw (06348) a 213 m high mast was specifically built for meteorological research to establish relations between the state of the atmospheric boundary layer (ABL), land surface conditions and the general weather situation for all seasons. The Cabauw mast is located in the western part of the Netherlands (51.971 \xB0 N, 4.927 \xB0E) in a polder 0.7 m below average sealevel. This site was chosen, because it is rather representative for this part of the Netherlands and because only minor landscape developments were planned in this region. However, significant changes are the removal of the trees along a road east of the mast in 1975, and the building of houses in the village of Lopik east of the mast in more recent years."
+    homepage: https://www.knmi.nl/research/observations-data-technology/projects/cabauw-in-situ-measurements
+    source: https://en.wikipedia.org/wiki/KNMI-mast_Cabauw
+  infrastructure:
+    description: null
+    generic:
+    - met mast
+    specific:
+    - 213-m met mast
+  properties:
+    country: Netherlands
+    name: KNMI-mast Cabauw
+    type: met mast
+  type: Feature

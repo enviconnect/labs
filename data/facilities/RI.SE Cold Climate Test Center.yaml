@@ -1,0 +1,22 @@
+- geometry:
+    coordinates:
+    - 17.6166667
+    - 65.9666667
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: A test site for wind energy in cold climates at Uljabuouda, operated
+      by RI.SE.
+    homepage: https://www.ri.se/en/what-we-do/test-demo/cold-climate-test-centre
+  infrastructure:
+    description: null
+    generic:
+    - wind farm
+    specific:
+    - wind farm
+  properties:
+    country: Sweden
+    name: RI.SE Cold Climate Test Center
+    type: wind farm
+  type: Feature

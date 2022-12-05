@@ -1,0 +1,59 @@
+- availabledata:
+    description:
+    generic:
+      - multiyear wind and weather data
+    specific:
+      - Multiyear wind and weather data
+  geometry:
+    coordinates:
+    - -102.0573596
+    - 33.6050769
+    - 0
+    type: point
+  information:
+    copied: true
+    description: The National Wind Institute (NWI) has evolved from its traditional
+      singular focus on wind hazards to three main research pillars of Energy Systems,
+      Atmospheric Measurement & Simulation, and Wind Engineering. Though all three
+      of these pillars focus on distinct issues, they also maintain common ground
+      via cross cutting themes. All research seeks to benefit communities at micro
+      and macro scales.
+    homepage: https://www.depts.ttu.edu/nwi/
+    source: https://www.depts.ttu.edu/nwi/
+  infrastructure:
+    description: null
+    generic:
+    - regional weather station network
+    - met mast
+    - wind radar
+    - microgrid
+    - radiosondes
+    - lightning mapping
+    - tornado simulator
+    - boundary layer wind tunnel
+    - numerical weather prediction model
+    specific:
+    - West Texas Mesonet; a regional weather station network of over 100 10-m surface
+      stations and vertical profilers (sodar / lidar).
+    - 200-m instrumented tower
+    - 48 adaptable, rapidy deployable, StickNet platforms
+    - NWI field site
+    - Two mobile TTUKa REsearch radars
+    - One movable DOE-X radar
+    - Mobile radiosonde system and coordination vehicle
+    - West Texas lightning mapping array
+    - Real-Time WRF Modeling System
+    - WRF Ensemble Modeling System
+    - VorTECH tornado simulator
+    - Boundary layer wind tunnel
+    - Wind engineering research field laboratory
+    - OPAL-RT Real-Time Digital Simulator
+    - West Texas grid Monitoring Synchrophasor Setup
+    - SMART Simulation and Research Center
+    - 1MW Grid-Tied Microgrid
+    - Power System Design and Simulation Tools e.g. PowerWorld, PSS/E, ePHORSIM
+  properties:
+    country: United States of America
+    name: National Wind Institute
+    type: wind energy research center
+  type: Feature

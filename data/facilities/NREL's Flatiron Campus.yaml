@@ -1,0 +1,48 @@
+- geometry:
+    coordinates:
+    - -105.2176253
+    - 39.9140081
+    - 0
+    type: Point
+  information:
+    copied: true
+    description: NREL's Flatirons Campus features state-of-the-art equipment and facilities
+      that support fundamental wind energy research, technology development, experimentation,
+      and validation of components and systems. More than a renewable energy research
+      site, Flatirons Campus is also home to the National Wind Technology Center (NWTC).
+      Since 1992, NWTC scientists and engineers have pioneered the advancement of
+      wind energy technology. Using field validation sites, dynamometers, structural
+      research facilities, and composites manufacturing and integrated energy systems
+      facilities, NWTC researchers and industry partners pursue wind energy innovations
+      to create a clean, sustainable energy future powered by reliable, low-cost wind
+      energy.
+    homepage: https://www.nrel.gov/wind/facilities.html
+    source: https://www.nrel.gov/wind/facilities.html
+  infrastructure:
+    description: null
+    generic:
+    - composites manufacturing
+    - grid connection simulator
+    - met mast
+    - wind turbine
+    - blade test facility
+    specific:
+    - Composites Manufacturing Education and Technology Facility (CoMET)
+    - Structural Validation Laboratory for property validation, dynamic characterization,
+      static strength verification, and fatigue durability verification. See [https://www.nrel.gov/water/facilities-structural.html](https://www.nrel.gov/water/facilities-structural.html).
+    - Controllable grid interface (CGI) with connection to on-site facilities and
+      NREL's high performance computing. See https://www.nrel.gov/wind/facilities-cgi.html.
+    - 225-kW dynamometer
+    - 2.5-MW dynamometer
+    - 5-MW dynamometer. For details see https://www.nrel.gov/wind/facilities-dynamometer.html.
+    - US DoE 1.5-MW Turbine. For details of turbines see https://www.nrel.gov/wind/facilities-research.html.
+    - SGRE 2.3 MW SWT-2.3-108 Turbine
+    - SGRE 2 MW G97 Turbine
+    - Controls Advanced Research Wind Turbine (CART) 600-kW turbine
+    - Two 135-m met towers
+    - 80-m met tower with multi-decade data history.
+  properties:
+    country: United States of America
+    name: NREL's Flatiron Campus
+    type: wind energy research center
+  type: Feature

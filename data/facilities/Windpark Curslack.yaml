@@ -1,0 +1,36 @@
+- geometry:
+    coordinates:
+    - 10.218597
+    - 53.469263
+    - 0
+    note: Location is approximate
+    type: Point
+  information:
+    description: The HAW Hamburg research facility includes 5 Nordex N117 wind turbines,
+      a met mast, and a battery storage facility.
+    homepage: https://www.haw-hamburg.de/cc4e/forschungswindpark-curslack/
+  infrastructure:
+    description: null
+    generic:
+    - bird and bat monitoring
+    - battery storage
+    - met mast
+    - nacelle lidar
+    - profiling lidar
+    - radar
+    - condition monitoring system
+    specific:
+    - Five wind turbines 2.4 - 3.15 MW
+    - battery storage infrastructure (a lithium ion battery was installed in a previous
+      project, but has now been removed; the connection infrastructure is still available
+      and is expected to be reused in future projects)
+    - 120-m met mast
+    - nacelle lidar
+    - ground-based, profiling lidar
+    - Bat radar
+    - Acoustic bat detection system
+  properties:
+    country: Germany
+    name: Windpark Curslack
+    type: wind farm
+  type: Feature
