@@ -423,10 +423,14 @@ def get_map_center(df_in):
 def get_icon(icon):
 
     def get_icon_url(icon):
-        if icon == "vertical profiling lidar":
-            return dash.get_asset_url("facility-icons/vertical-profiling-lidar.png")
+        if icon == "data portal":
+            return dash.get_asset_url("facility-icons/data-portal.png")        
         elif icon == "met mast":
             return dash.get_asset_url("facility-icons/met-mast.png")
+        elif icon == "power systems research center":
+            return dash.get_asset_url("facility-icons/power-systems-research-center.png")
+        elif icon == "vertical profiling lidar":
+            return dash.get_asset_url("facility-icons/vertical-profiling-lidar.png")
         elif icon == "wind turbine":
             return dash.get_asset_url("facility-icons/wind-turbine.png")
         elif icon == "wind farm":
@@ -434,13 +438,11 @@ def get_icon(icon):
         elif icon == "wind energy research center":
             return dash.get_asset_url("facility-icons/wind-energy-research-center.png")
         elif icon == "wind energy test site":
-            return dash.get_asset_url("facility-icons/wind-energy-test-site.png")
-        elif icon == "power systems research center":
-            return dash.get_asset_url("facility-icons/power-systems-research-center.png")
+            return dash.get_asset_url("facility-icons/wind-energy-test-site.png")        
         else:
             return dash.get_asset_url("facility-icons/default.png")
 
-    # define a basic icon
+    # define the icon object
     icon = {
         "iconUrl": get_icon_url(icon),
         "shadowUrl": dash.get_asset_url("facility-icons/shadow.png"),
@@ -650,8 +652,25 @@ def get_card_facility_title_element(dff_selected):
 
     """
 
-    return html.H4(dff_selected["name"])
+    title_element = html.Div(
+        [
+            html.H4(dff_selected["name"],
+                style ={"display":"inline-block",
+                "float": "left",
+                "margin-right": "1em"}),
+            html.Span(
+                dff_selected["type_property"],
+                id = "tabs-tags",
+                className = "badge rounded-pill text-bg-primary align-top",
+                style={"vertical-align": "top", 
+                    "font-size":"x-small",
+                    "display":"inline-block"}
+                )
+        ],
+        style={"display":"inline-block"}
+    )
 
+    return title_element
 
 def get_card_facility_description_element(dff_selected):
     """
@@ -679,28 +698,32 @@ def get_card_facility_description_element(dff_selected):
         # get the description text
         if info_dict.get("description"):
             description_text = info_dict.get("description")
-        else:
-            description_text = "Description is empty"
-
-        # check if it has a source we need to acknowledge
-        if info_dict.get("copied"):
-            description_text_element = dcc.Markdown('> ' + description_text + '', dangerously_allow_html=True)
-            description_source_element = html.Footer(
-                    [
-                        "from ",
-                        html.A(
-                            urlparse(info_dict.get("source")).netloc,
-                            href="".join(info_dict.get("source")),
-                        ),
-                    ],
-                    className="blockquote-footer"
-                )
-        else:
             description_text_element = dcc.Markdown(description_text, dangerously_allow_html=True)
+        else:
+            description_text_element = []        
+
+        # check if it has a quote we want to use
+        if info_dict.get("quote"):
+            description_quote_element = dcc.Markdown('> ' + info_dict.get("quote") + '', dangerously_allow_html=True)
+            if info_dict.get("quote"):
+                description_source_element = html.Footer(
+                        [
+                            "from ",
+                            html.A(
+                                urlparse(info_dict.get("source")).netloc,
+                                href="".join(info_dict.get("source")),
+                            ),
+                        ],
+                        className="blockquote-footer"
+                    )
+            else:
+                description_source_element = []
+        else:
+            description_quote_element = []
             description_source_element = []
 
         if info_dict.get("note"):
-            description_note_element = html.P("N.B.:{}.".format(info_dict.get("note")))
+            description_note_element = html.P("N.B.: {}.".format(info_dict.get("note")))
         else:
             description_note_element = []
 
@@ -717,6 +740,7 @@ def get_card_facility_description_element(dff_selected):
 
     else:
         description_text_element = html.P("No information found")
+        description_quote_element = []
         description_source_element = []
         description_note_element = []
         link_button_home = create_www_link_button("", button_text="homepage")
@@ -733,6 +757,7 @@ def get_card_facility_description_element(dff_selected):
             dbc.Col(
                 [
                     description_text_element,
+                    description_quote_element,
                     description_source_element,
                     description_note_element,
                     html.Div(
@@ -997,7 +1022,7 @@ layout = dbc.Container(
                                 "Facility information",
                             ],
                             id="tabs-title",
-                        ),
+                        ),                        
                         dbc.Tabs(
                             [
                                 dbc.Tab(
@@ -1070,6 +1095,7 @@ def get_filtered_facilities(
         availabledata_selected,
     )
 
+    
     return dff.to_json(orient="records")
 
 
@@ -1122,9 +1148,16 @@ def update_map(jsonified_filtered_facilities, jsonified_selected_facility):
     Output("sortable-facility-table", "selected_cells"),
     Output("sortable-facility-table", "active_cell"),
     Input({"id": ALL, "type": "facility"}, "n_clicks"),
-    Input("sortable-facility-table", "active_cell"),
+    Input("sortable-facility-table", "active_cell"),  
+    Input("country_selector", "value"),    
+    Input("facilitytype_selector", "value"),
+    Input("infrastructure_selector", "value"),
+    Input("availabledata_selector", "value"),
 )
-def select_facility(n_clicks, active_cell):
+def select_facility(n_clicks, active_cell, countries_selected="",
+    facilitytypes_selected="",
+    infrastructure_selected="",
+    availabledata_selected=""):
 
     dff_selected = pd.DataFrame()
 
@@ -1171,7 +1204,12 @@ def select_facility(n_clicks, active_cell):
     selected_cells = []
     active_cell = None
 
-    return dff_selected.to_json(orient="records"), selected_cells, active_cell
+    if dff_selected.empty:
+        selected_facility_store = ""
+    else:
+        selected_facility_store = dff_selected.to_json(orient="records")
+
+    return selected_facility_store, selected_cells, active_cell
 
 
 @dash.callback(
@@ -1197,7 +1235,10 @@ def update_information_tabs(jsonified_selected_facility):
     tab_availabledata_element = []
     tab_availabledata_disabled = True
 
-    dff_selected = pd.read_json(jsonified_selected_facility, orient="records")
+    if jsonified_selected_facility == "":
+        dff_selected = pd.DataFrame()
+    else: 
+        dff_selected = pd.read_json(jsonified_selected_facility, orient="records")
 
     if len(dff_selected) >= 1:
         tabs_title_element = get_card_facility_title_element(dff_selected)

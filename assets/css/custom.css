@@ -75,7 +75,7 @@ body {
 
 @media (min-width: 992px) {
     .content #facility-map-leaflet {
-        min-height: 33vh;
+        min-height: 400px;
     }
 }
 

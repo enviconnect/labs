@@ -7,22 +7,12 @@
     type: Point
     icon: wind energy research center
   information:
-    copied: true
-    description: "ORE Catapult operates the world\u2019s most comprehensive open-access\
-      \ research, test, innovation and validation services to accelerate the deployment\
-      \ of new and innovative offshore renewable energy technology. With highly experienced\
-      \ teams of technical researchers, test engineers and technology specialists,\
-      \ we are equipped to deliver industry-leading services to drive down the cost\
-      \ of offshore renewable energy."
+    description: 
     homepage: https://ore.catapult.org.uk/what-we-do/testing-validation/
+    quote: "ORE Catapult operates the world's most comprehensive open-access research, test, innovation and validation services to accelerate the deployment of new and innovative offshore renewable energy technology. With highly experienced teams of technical researchers, test engineers and technology specialists, we are equipped to deliver industry-leading services to drive down the cost of offshore renewable energy."
     source: https://ore.catapult.org.uk/what-we-do/testing-validation/
   infrastructure:
-    description: "ORE Catapult operates the world\u2019s most comprehensive open-access\
-      \ research, test, innovation and validation services to accelerate the deployment\
-      \ of new and innovative offshore renewable energy technology. With highly experienced\
-      \ teams of technical researchers, test engineers and technology specialists,\
-      \ we are equipped to deliver industry-leading services to drive down the cost\
-      \ of offshore renewable energy."
+    description: "ORE Catapult operates the world's most comprehensive open-access research, test, innovation and validation services to accelerate the deployment of new and innovative offshore renewable energy technology. With highly experienced teams of technical researchers, test engineers and technology specialists, we are equipped to deliver industry-leading services to drive down the cost of offshore renewable energy."
     generic:
     - blade test facility
     - drivetrain test facility
@@ -46,11 +36,7 @@
     - National offshore Anemometry Hub (NOAH)
     - High voltage laboratory
     - Materials laboratory
-    - "Dynamic cable test rig; a bespoke, state-of-the-art cable bend fatigue test\
-      \ rig supporting the development \u2013 and improving the performance and reliability\
-      \ of \u2013 subsea cables. The rig is capable of testing floating wind and tidal\
-      \ cables, carrying out operational research, and acting as a representative\
-      \ test bed for all aspects of subsea cable development."
+    - "Dynamic cable test rig; a bespoke, state-of-the-art cable bend fatigue test rig supporting the development - and improving the performance and reliability of - subsea cables. The rig is capable of testing floating wind and tidal cables, carrying out operational research, and acting as a representative test bed for all aspects of subsea cable development."
     - eGrid grid connection emulator
   properties:
     country: United Kingdom

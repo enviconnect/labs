@@ -7,8 +7,9 @@
     type: Point
     icon: wind turbine
   information:
-    description: "This is one of two neighbouring test turbines. One is owned by ETH\
-      \ Z\xFCrich. The other is owned by OST (see separate entry)."
+    description: This is one of two neighbouring test turbines. One is owned by ETH Zürich. The other is owned by OST (see separate entry).
+    quote: 
+    source:
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ETH-aventa-research-wind-turbine.pdf
   infrastructure:
     description: null

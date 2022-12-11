@@ -7,8 +7,9 @@
     type: Point
     icon: power systems research center
   information:
-    description: A micro grid with integrated Vanadium-Redox-Flow battery, connected
-      to a 2-MW wind turbine.
+    description: A micro grid with integrated Vanadium-Redox-Flow battery, connected to a 2-MW wind turbine.
+    quote:
+    source:
     homepage: https://www.ict.fraunhofer.de/de/presse_mediathek/pressemitteilungen/2021/2021-12-13.html
   infrastructure:
     description: null
@@ -20,6 +21,6 @@
     - microgrid
   properties:
     country: Germany
-    name: "Fraunhofer-Institut f\xFCr Chemische Technologie (ICT)"
+    name: Fraunhofer-Institut für Chemische Technologie (ICT)
     type: Energy systems research center
   type: Feature

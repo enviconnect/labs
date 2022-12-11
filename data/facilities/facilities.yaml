@@ -14,6 +14,8 @@ features:
       AG in Switzerland and was commissioned in December 2002.
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ost-twt-facility.pdf
     homepage: https://www.ost.ch/en/research-and-consulting-services/technology/renewable-energies-and-environmental-engineering/iet-institute-for-energy-technology/wind-energy/infrastructure
+    quote:
+    source:
   infrastructure:
     description: null
     generic:
@@ -36,7 +38,8 @@ features:
     icon: wind energy research center
   information:
     copied: true
-    description: NREL's Flatirons Campus features state-of-the-art equipment and facilities
+    description:
+    quote: NREL's Flatirons Campus features state-of-the-art equipment and facilities
       that support fundamental wind energy research, technology development, experimentation,
       and validation of components and systems. More than a renewable energy research
       site, Flatirons Campus is also home to the National Wind Technology Center (NWTC).
@@ -95,8 +98,8 @@ features:
     type: Point
     icon: wind energy test site
   information:
-    description: "WINSENT - wind science and engineering test site in complex terrain,\
-      \ St\xF6ttener Berg, Germany."
+    description: 
+    quote: "WINSENT - wind science and engineering test site in complex terrain, St\xF6ttener Berg, Germany."
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-winsent.pdf
     homepage: https://www.windfors.de/projects/test-site/winsent/
   infrastructure:
@@ -122,22 +125,12 @@ features:
     type: Point
     icon: wind energy research center
   information:
-    copied: true
-    description: "ORE Catapult operates the world\u2019s most comprehensive open-access\
-      \ research, test, innovation and validation services to accelerate the deployment\
-      \ of new and innovative offshore renewable energy technology. With highly experienced\
-      \ teams of technical researchers, test engineers and technology specialists,\
-      \ we are equipped to deliver industry-leading services to drive down the cost\
-      \ of offshore renewable energy."
+    description: 
     homepage: https://ore.catapult.org.uk/what-we-do/testing-validation/
+    quote: "ORE Catapult operates the world's most comprehensive open-access research, test, innovation and validation services to accelerate the deployment of new and innovative offshore renewable energy technology. With highly experienced teams of technical researchers, test engineers and technology specialists, we are equipped to deliver industry-leading services to drive down the cost of offshore renewable energy."
     source: https://ore.catapult.org.uk/what-we-do/testing-validation/
   infrastructure:
-    description: "ORE Catapult operates the world\u2019s most comprehensive open-access\
-      \ research, test, innovation and validation services to accelerate the deployment\
-      \ of new and innovative offshore renewable energy technology. With highly experienced\
-      \ teams of technical researchers, test engineers and technology specialists,\
-      \ we are equipped to deliver industry-leading services to drive down the cost\
-      \ of offshore renewable energy."
+    description: "ORE Catapult operates the world's most comprehensive open-access research, test, innovation and validation services to accelerate the deployment of new and innovative offshore renewable energy technology. With highly experienced teams of technical researchers, test engineers and technology specialists, we are equipped to deliver industry-leading services to drive down the cost of offshore renewable energy."
     generic:
     - blade test facility
     - drivetrain test facility
@@ -161,11 +154,7 @@ features:
     - National offshore Anemometry Hub (NOAH)
     - High voltage laboratory
     - Materials laboratory
-    - "Dynamic cable test rig; a bespoke, state-of-the-art cable bend fatigue test\
-      \ rig supporting the development \u2013 and improving the performance and reliability\
-      \ of \u2013 subsea cables. The rig is capable of testing floating wind and tidal\
-      \ cables, carrying out operational research, and acting as a representative\
-      \ test bed for all aspects of subsea cable development."
+    - "Dynamic cable test rig; a bespoke, state-of-the-art cable bend fatigue test rig supporting the development - and improving the performance and reliability of - subsea cables. The rig is capable of testing floating wind and tidal cables, carrying out operational research, and acting as a representative test bed for all aspects of subsea cable development."
     - eGrid grid connection emulator
   properties:
     country: United Kingdom
@@ -189,7 +178,8 @@ features:
     icon: wind energy research center
   information:
     copied: true
-    description: The National Wind Institute (NWI) has evolved from its traditional
+    description:
+    quote: The National Wind Institute (NWI) has evolved from its traditional
       singular focus on wind hazards to three main research pillars of Energy Systems,
       Atmospheric Measurement & Simulation, and Wind Engineering. Though all three
       of these pillars focus on distinct issues, they also maintain common ground
@@ -243,9 +233,9 @@ features:
     - 0
     type: Point
   information:
-    copied: true
-    description: 'The Scaled Wind Farm Technology (SWiFT) facility, located at Texas
-      Tech University''s National Wind Institute Research Center in Lubbock, TX, is
+    description:
+    quote: "The Scaled Wind Farm Technology (SWiFT) facility, located at Texas
+      Tech University's National Wind Institute Research Center in Lubbock, TX, is
       the first public facility to use multiple wind turbines to measure turbine performance
       in a wind farm environment. Funded by the U.S. Department of Energy, SWiFT partners
       with industry and academia to:
@@ -254,7 +244,7 @@ features:
 
       - Develop advanced wind turbine rotors, and
 
-      - Improve the validity of advanced simulation models.'
+      - Improve the validity of advanced simulation models."
     homepage: https://energy.sandia.gov/programs/renewable-energy/wind-power/swift-facilities/
     source: https://energy.sandia.gov/programs/renewable-energy/wind-power/swift-facilities/
   infrastructure:
@@ -282,6 +272,8 @@ features:
     description: A test site for wind energy in cold climates at Uljabuouda, operated
       by RI.SE.
     homepage: https://www.ri.se/en/what-we-do/test-demo/cold-climate-test-centre
+    quote:
+    source:
   infrastructure:
     description: null
     generic:
@@ -297,6 +289,38 @@ features:
 
 - geometry:
     coordinates:
+    - -77.0296
+    - 38.888
+    - 0
+    note: Location is approximate
+    type: Point
+    icon: data portal
+  information:
+    copied: True
+    description: 
+    quote: Atmosphere to Electrons (A2e) is a new, multi-year, multi-stakeholder U.S. Department of Energy (DOE) research and development initiative tasked with improving wind plant performance and mitigating risk and uncertainty to achieve substantial reduction in the cost of wind energy production. <br><br>The A2e strategic vision will enable a new generation of wind plant technology, in which smart wind plants are designed to achieve optimized performance stemming from more complete knowledge of the inflow wind resource and complex flow through the wind plant.
+    source: https://a2e.energy.gov/home
+    homepage: https://a2e.energy.gov/home    
+  infrastructure:
+    description: null
+    generic:
+    specific:
+  availabledata:
+    description: The A2e data portal lists around 500 data sets collected by the US DoE and other programs.
+    generic:
+      - data portal
+    specific:
+      - Data Archive and Portal (DAP)
+    portal: https://a2e.energy.gov/data
+  properties:
+    country: United States of America
+    name: Atmosphere to electrons (A2e)
+    type: data portal
+  type: Feature
+
+
+- geometry:
+    coordinates:
     - 11.6822258
     - 57.7302907
     - 0
@@ -305,12 +329,9 @@ features:
     icon: wind turbine
   information:
     copied: true
-    description: Chalmers wind turbine has variable speed operation with a direct
-      driven generator and a frequency converter, it also has a digital control system
-      developed by Chalmers. The wind turbine has a rated power of 45 kW and rated
-      speed of 75 rpm. The wooden tower is 30 m high, the blades of carbon fibres
-      are 7.5 m long, and the turbine diameter is 15.9 m. The individually blade pitch
-      system is electrical. The wind turbine is simulated in FAST and Ashes.
+    description:
+    quote: Chalmers wind turbine has variable speed operation with a direct
+      driven generator and a frequency converter, it also has a digital control system developed by Chalmers. The wind turbine has a rated power of 45 kW and rated speed of 75 rpm. The wooden tower is 30 m high, the blades of carbon fibres are 7.5 m long, and the turbine diameter is 15.9 m. The individually blade pitch system is electrical. The wind turbine is simulated in FAST and Ashes.
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
     homepage: null
     source: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-chalmers-twt-facilities.pdf
@@ -337,7 +358,9 @@ features:
     type: Point
     icon: wind farm
   information:
-    description: null
+    description:
+    quote:
+    source:
     homepage: https://windparkwieringermeer.nl/
   infrastructure:
     description: null
@@ -361,8 +384,9 @@ features:
     type: Point
     icon: wind turbine
   information:
-    description: "This is one of two neighbouring test turbines. One is owned by ETH\
-      \ Z\xFCrich. The other is owned by OST (see separate entry)."
+    description: This is one of two neighbouring test turbines. One is owned by ETH Zürich. The other is owned by OST (see separate entry).
+    quote: 
+    source:
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-ETH-aventa-research-wind-turbine.pdf
   infrastructure:
     description: null
@@ -427,8 +451,9 @@ features:
     type: Point
     icon: met mast
   information:
-    description: A 101-m met tower and platform in the North Sea. Data are available
-      for use.
+    description: A 101-m met tower and platform in the North Sea. Data are available for use.
+    quote:
+    source:
     hompage: https://www.fino1.de/en/.
   infrastructure:
     description: null
@@ -457,9 +482,9 @@ features:
     type: Point
     icon: met mast
   information:
-    copied: true
-    description: "The KNMI-mast Cabauw is a 213-metre-high guyed mast for meteorological measurements at Cabauw, the Netherlands. In 1972 at Cabauw (06348) a 213 m high mast was specifically built for meteorological research to establish relations between the state of the atmospheric boundary layer (ABL), land surface conditions and the general weather situation for all seasons. The Cabauw mast is located in the western part of the Netherlands (51.971 \xB0 N, 4.927 \xB0E) in a polder 0.7 m below average sealevel. This site was chosen, because it is rather representative for this part of the Netherlands and because only minor landscape developments were planned in this region. However, significant changes are the removal of the trees along a road east of the mast in 1975, and the building of houses in the village of Lopik east of the mast in more recent years."
-    homepage: https://www.knmi.nl/research/observations-data-technology/projects/cabauw-in-situ-measurements
+    description:
+    homepage: https://www.knmi.nl/research/observations-data-technology/projects/cabauw-in-situ-measurements 
+    quote: "The KNMI-mast Cabauw is a 213-metre-high guyed mast for meteorological measurements at Cabauw, the Netherlands. In 1972 at Cabauw (06348) a 213 m high mast was specifically built for meteorological research to establish relations between the state of the atmospheric boundary layer (ABL), land surface conditions and the general weather situation for all seasons. The Cabauw mast is located in the western part of the Netherlands (51.971 \xB0 N, 4.927 \xB0E) in a polder 0.7 m below average sealevel. This site was chosen, because it is rather representative for this part of the Netherlands and because only minor landscape developments were planned in this region. However, significant changes are the removal of the trees along a road east of the mast in 1975, and the building of houses in the village of Lopik east of the mast in more recent years."    
     source: https://en.wikipedia.org/wiki/KNMI-mast_Cabauw
   infrastructure:
     description: null
@@ -487,6 +512,8 @@ features:
       a park of 6 identical turbines
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-saint-hilaire-de-chaleons.pdf
     homepage: https://www7.obs-mip.fr/awit/
+    quote:
+    source:
   infrastructure:
     description: null
     generic:
@@ -556,6 +583,9 @@ features:
   information:
     description: A 7MW turbine just offshore
     hompage: https://ore.catapult.org.uk/what-we-do/testing-validation/levenmouth/
+    quote:
+    source:
+    
   infrastructure:
     description: null
     generic:
@@ -579,7 +609,8 @@ features:
     icon: wind farm
   information:
     copied: true
-    description: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
+    description:
+    quote: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
     homepage: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
     source: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
   infrastructure:
@@ -604,10 +635,10 @@ features:
     icon: wind turbine
   information:
     description: A 100-kW turbine with some meteorological data
+    quote:
+    source:
     eawe-pdf: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf
-    note: Location shown on map is approximate. According to information from EAWE,
-      'The turbine is situated 20 km west of Zhangbei County and 200 km northwest
-      of Beijing.'
+    note: Location shown on map is approximate. According to information from EAWE, 'The turbine is situated 20 km west of Zhangbei County and 200 km northwest of Beijing.'
   infrastructure:
     description: null
     generic:
@@ -630,11 +661,13 @@ features:
     type: Point
     icon: wind farm
   information:
-    description: The German Aerospace Center (DLR) is developing the research wind
+    description:
+    quote: The German Aerospace Center (DLR) is developing the research wind
       farm (referred to as WiValdi) at its Krummendeich site together with partners
       from the Research Alliance Wind Energy in Lower Saxony, Germany. WiValdi is
       scheduled to be put into operation during the course of 2022 and will have a
       predicted service life of 20 years. WiValdi stands for wind validation.
+    source: https://windenergy-researchfarm.com/
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-WiValdi-research-wind-farm.pdf
     homepage: https://windenergy-researchfarm.com/
   infrastructure:
@@ -657,8 +690,9 @@ features:
     type: Point
     icon: power systems research center
   information:
-    description: A micro grid with integrated Vanadium-Redox-Flow battery, connected
-      to a 2-MW wind turbine.
+    description: A micro grid with integrated Vanadium-Redox-Flow battery, connected to a 2-MW wind turbine.
+    quote:
+    source:
     homepage: https://www.ict.fraunhofer.de/de/presse_mediathek/pressemitteilungen/2021/2021-12-13.html
   infrastructure:
     description: null
@@ -670,7 +704,7 @@ features:
     - microgrid
   properties:
     country: Germany
-    name: "Fraunhofer-Institut f\xFCr Chemische Technologie (ICT)"
+    name: Fraunhofer-Institut für Chemische Technologie (ICT)
     type: Energy systems research center
   type: Feature
 
@@ -683,8 +717,8 @@ features:
     type: points
     icon: wind energy research center
   information:
-    copied: true
-    description: The National Institute of Wind Energy is at the forefront supporting
+    description: 
+    quote: The National Institute of Wind Energy is at the forefront supporting
       the Ministry of New and Renewable Energy for the orderly development of wind
       power in the country, for 25 years now. We offer our services to the wind energy
       sector in R&D, Wind Resource Assessment (onshore and offshore), development
@@ -716,7 +750,8 @@ features:
     type: Point
   information:
     copied: true
-    description: "With the foundation of the Center for Wind Power Drives (CWD) another milestone in the research of wind turbines (WT) is set in Aachen. The Center is equipped with an innovative 4MW-WindTurbine-system test rig. RWTH Aachen University thus strengthening the research efforts in the field of onshore wind turbines.<br><br>
+    description:
+    quote: "With the foundation of the Center for Wind Power Drives (CWD) another milestone in the research of wind turbines (WT) is set in Aachen. The Center is equipped with an innovative 4MW-WindTurbine-system test rig. RWTH Aachen University thus strengthening the research efforts in the field of onshore wind turbines.<br><br>
 
       The CWD navigates and organises the interdisciplinary research activities at RWTH Aachen University in the area of WT drive train systems. These research activities contain both fundamental scientific analyses and pre-competitive research and development projects.<br><br>
 
@@ -754,8 +789,8 @@ features:
     type: Point
     icon: vertical profiling lidar
   information:
-    description: North Sea wind profiles with 10 minute averages measured by the ZephIR 300M wind lidar. Data are daily files reported by the instrument. Locations are the TenneT platforms BSA, BSB, HKZA, HKZB, HKN (operational starting 2019-2023), located within the wind farms BS (Borssele), HKZ (Hollandse Kust (zuid)) and HKN (Hollandse Kust (noord)).
-    copied: True
+    description: 
+    quote: North Sea wind profiles with 10 minute averages measured by the ZephIR 300M wind lidar. Data are daily files reported by the instrument. Locations are the TenneT platforms BSA, BSB, HKZA, HKZB, HKN (operational starting 2019-2023), located within the wind farms BS (Borssele), HKZ (Hollandse Kust (zuid)) and HKN (Hollandse Kust (noord)).
     source: https://dataplatform.knmi.nl/dataset/windlidar-nz-wp-platform-10min-1
     homepage: https://dataplatform.knmi.nl/dataset/windlidar-nz-wp-platform-10min-1  
   availabledata:
@@ -782,10 +817,8 @@ features:
     icon: wind energy research center
   information:
     copied: true
-    description: "DTU Wind operates several wind-energy related facilities, including\
-      \ a materials lab, the Poul La Cour Tunnel, the Large Scale Facility for blade\
-      \ testing, and the \xD8sterild National Test Center, capable of trialling the\
-      \ new generation of mega-turbines up to 330 metres tall."
+    description:
+    quote: "DTU Wind operates several wind-energy related facilities, including a materials lab, the Poul La Cour Tunnel, the Large Scale Facility for blade testing, and the \xD8sterild National Test Center, capable of trialling the new generation of mega-turbines up to 330 metres tall."
     homepage: https://wind.dtu.dk/Facilities
     source: https://wind.dtu.dk/Facilities
   infrastructure:
@@ -815,7 +848,8 @@ features:
     icon: wind farm
   information:
     copied: true
-    description: The research initiative RAVE carries out research and development work on the offshore test field alpha ventus. Research and development at Germany's first offshore wind farm generates experience and knowledge that advance the construction and further development of offshore wind energy. RAVE is funded by the Federal Ministry for Economic Affairs and Climate Action (BMWK) and coordinated by the Fraunhofer Institute for Wind Energy Systems (IWES).<br><br>
+    description:
+    quote: The research initiative RAVE carries out research and development work on the offshore test field alpha ventus. Research and development at Germany's first offshore wind farm generates experience and knowledge that advance the construction and further development of offshore wind energy. RAVE is funded by the Federal Ministry for Economic Affairs and Climate Action (BMWK) and coordinated by the Fraunhofer Institute for Wind Energy Systems (IWES).<br><br>
 
         In more than 35 research projects, more than 60 partners from science and industry have been working on a wide range of research questions since 2008. The topics range from ecological questions and the further development of plants and foundations to the optimization of operations. The financial support from the BMWK so far amounted to more than 120 million euros.
     homepage: https://rave-offshore.de/en/start.html
@@ -857,7 +891,8 @@ features:
     type: Point
   information:
     copied: true
-    description: 'The Oceanic Platform of the Canary Islands (PLOCAN) is a Research
+    description:
+    quote: 'The Oceanic Platform of the Canary Islands (PLOCAN) is a Research
       Infrastructure (RI) labeled by the ICTS (Unique Scientific and Technological
       Infrastructure) Spanish National Roadmap, co-funded by the Ministry of Science,
       Innovation and Universities of the Spanish government and the Canary Islands

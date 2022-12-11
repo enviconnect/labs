@@ -9,6 +9,8 @@
     description: A test site for wind energy in cold climates at Uljabuouda, operated
       by RI.SE.
     homepage: https://www.ri.se/en/what-we-do/test-demo/cold-climate-test-centre
+    quote:
+    source:
   infrastructure:
     description: null
     generic:

@@ -7,10 +7,10 @@
     icon: wind turbine
   information:
     description: A 100-kW turbine with some meteorological data
+    quote:
+    source:
     eawe-pdf: https://www.eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-IET-NCEPU-twt-facilities.pdf
-    note: Location shown on map is approximate. According to information from EAWE,
-      'The turbine is situated 20 km west of Zhangbei County and 200 km northwest
-      of Beijing.'
+    note: Location shown on map is approximate. According to information from EAWE, 'The turbine is situated 20 km west of Zhangbei County and 200 km northwest of Beijing.'
   infrastructure:
     description: null
     generic:

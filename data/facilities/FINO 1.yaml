@@ -7,8 +7,9 @@
     type: Point
     icon: met mast
   information:
-    description: A 101-m met tower and platform in the North Sea. Data are available
-      for use.
+    description: A 101-m met tower and platform in the North Sea. Data are available for use.
+    quote:
+    source:
     hompage: https://www.fino1.de/en/.
   infrastructure:
     description: null

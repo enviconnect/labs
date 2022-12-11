@@ -7,11 +7,13 @@
     type: Point
     icon: wind farm
   information:
-    description: The German Aerospace Center (DLR) is developing the research wind
+    description:
+    quote: The German Aerospace Center (DLR) is developing the research wind
       farm (referred to as WiValdi) at its Krummendeich site together with partners
       from the Research Alliance Wind Energy in Lower Saxony, Germany. WiValdi is
       scheduled to be put into operation during the course of 2022 and will have a
       predicted service life of 20 years. WiValdi stands for wind validation.
+    source: https://windenergy-researchfarm.com/
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-WiValdi-research-wind-farm.pdf
     homepage: https://windenergy-researchfarm.com/
   infrastructure:

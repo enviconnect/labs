@@ -8,7 +8,8 @@
     icon: wind farm
   information:
     copied: true
-    description: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
+    description:
+    quote: CENER has an experimental wind farm to install prototypes and it is suitable for certification tests in complex terrain conditions and with high wind levels. It has 6 calibrated positions to install prototypes of machines of up 5 MW each, and 4 additional meteorological towers, 120 metres high.
     homepage: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
     source: https://www.cener.com/en/wind-turbine-test-laboratory-lea/experimental-alaiz-wind-farm/
   infrastructure:

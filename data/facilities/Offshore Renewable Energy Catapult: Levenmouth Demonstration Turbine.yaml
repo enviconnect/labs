@@ -9,6 +9,9 @@
   information:
     description: A 7MW turbine just offshore
     hompage: https://ore.catapult.org.uk/what-we-do/testing-validation/levenmouth/
+    quote:
+    source:
+    
   infrastructure:
     description: null
     generic:
