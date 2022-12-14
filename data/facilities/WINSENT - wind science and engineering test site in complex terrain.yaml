@@ -15,8 +15,7 @@
     type: Point
     icon: wind energy test site
   information:
-    description: 
-    quote: "WINSENT - wind science and engineering test site in complex terrain, St\xF6ttener Berg, Germany."
+    description: WINSENT stands for "wind science and engineering test site". This facilitiy is being built in complex terrain between Stuttgart and Munich in southern Germany.
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-winsent.pdf
     homepage: https://www.windfors.de/projects/test-site/winsent/
   infrastructure:

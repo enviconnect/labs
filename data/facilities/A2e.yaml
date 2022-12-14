@@ -7,7 +7,6 @@
     type: Point
     icon: data portal
   information:
-    copied: True
     description: 
     quote: Atmosphere to Electrons (A2e) is a new, multi-year, multi-stakeholder U.S. Department of Energy (DOE) research and development initiative tasked with improving wind plant performance and mitigating risk and uncertainty to achieve substantial reduction in the cost of wind energy production. <br><br>The A2e strategic vision will enable a new generation of wind plant technology, in which smart wind plants are designed to achieve optimized performance stemming from more complete knowledge of the inflow wind resource and complex flow through the wind plant.
     source: https://a2e.energy.gov/home

@@ -1,9 +1,11 @@
 - availabledata:
     description:
     generic:
-      - multiyear wind and weather data
+      - multiyear wind data
+      - multiyear weather data
     specific:
-      - Multiyear wind and weather data
+      - regional weather station network
+      - met mast
   geometry:
     coordinates:
     - -102.0573596

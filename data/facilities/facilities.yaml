@@ -98,8 +98,7 @@ features:
     type: Point
     icon: wind energy test site
   information:
-    description: 
-    quote: "WINSENT - wind science and engineering test site in complex terrain, St\xF6ttener Berg, Germany."
+    description: WINSENT stands for "wind science and engineering test site". This facilitiy is being built in complex terrain between Stuttgart and Munich in southern Germany.
     eawe-pdf: https://eawe.eu/site/assets/files/downloads/committees/twtc/TWTC-winsent.pdf
     homepage: https://www.windfors.de/projects/test-site/winsent/
   infrastructure:
@@ -163,12 +162,42 @@ features:
   type: Feature
 
 
+- geometry:
+    coordinates:
+    - null
+    - null
+    - null
+    type: Point
+    icon: wind atlas
+  information:
+    description: 
+    quote: The Global Wind Atlas is a free, web-based application developed to help policymakers, planners, and investors identify high-wind areas for wind power generation virtually anywhere in the world, and then perform preliminary calculations. The Global Wind Atlas facilitates online queries and provides freely downloadable datasets based on the latest input data and modeling methodologies. Users can additionally download high-resolution maps of the wind resource potential, for use in GIS tools, at the global, country, and first-administrative unit (State/Province/Etc.) level in the Download section. Information on the datasets and methodology used to create the Global Wind Atlas can be found in the Methodology and Datasets sections.
+    source: https://globalwindatlas.info/en/about/introduction
+    hompage: https://globalwindatlas.info/
+  availabledata:
+    description: null
+    generic:
+    - wind atlas
+    specific:
+    - wind layers
+    - wind energy layers
+    - terrain layers
+    - validation layers 
+  properties:
+    country: Global
+    name: Global Wind Atlas
+    type: wind atlas
+  type: Feature
+
+
 - availabledata:
     description:
     generic:
-      - multiyear wind and weather data
+      - multiyear wind data
+      - multiyear weather data
     specific:
-      - Multiyear wind and weather data
+      - regional weather station network
+      - met mast
   geometry:
     coordinates:
     - -102.0573596
@@ -232,6 +261,7 @@ features:
     - 33.609772
     - 0
     type: Point
+    icon: wind energy research center
   information:
     description:
     quote: "The Scaled Wind Farm Technology (SWiFT) facility, located at Texas
@@ -296,7 +326,6 @@ features:
     type: Point
     icon: data portal
   information:
-    copied: True
     description: 
     quote: Atmosphere to Electrons (A2e) is a new, multi-year, multi-stakeholder U.S. Department of Energy (DOE) research and development initiative tasked with improving wind plant performance and mitigating risk and uncertainty to achieve substantial reduction in the cost of wind energy production. <br><br>The A2e strategic vision will enable a new generation of wind plant technology, in which smart wind plants are designed to achieve optimized performance stemming from more complete knowledge of the inflow wind resource and complex flow through the wind plant.
     source: https://a2e.energy.gov/home
@@ -374,6 +403,30 @@ features:
     type: wind farm
   type: Feature
 
+
+- geometry:
+    coordinates: 
+    - -15.0
+    - 52.0
+    - 0.0
+    note: this is a regional dataset
+    icon: data portal
+  information:
+    quote: EOOffshore is a Sustainable Energy Authority of Ireland (SEAI) funded project, which commenced in June 2020 in the School of Physics in University College Dublin (UCD). Sheila McBreen is the Principal Investigator. Derek O'Callaghan, previously Earth Observation Scientist for Parameter Space Ltd., is leading data processing and analysis.
+    source: https://eooffshore.github.io/intro.html
+    homepage: https://eooffshore.github.io/intro.html
+  availabledata:
+    description: 
+    generic: 
+    - wind data
+    specific:
+    - "**Irish Continental Shelf Data Sets.** The EOOffshore project has involved the creation of a new wind data catalog, consisting of a collection of analysis-ready, cloud-optimized (ARCO) data sets, which features up to 21 years of available in situ, reanalysis, model, and satellite observation wind data products for the Irish Continental Shelf region."
+    portal: https://eooffshore.github.io/datasets.html
+  properties:
+    country: Ireland
+    name: Earth Observation Offshore (EOOffshore)
+    type: data portal
+  type: Feature
 
 - geometry:
     coordinates:
@@ -627,6 +680,32 @@ features:
 
 
 - geometry:
+    coordinates: 
+    - null
+    - null
+    - null
+    note: this is a global dataset
+    icon: data portal
+  information:
+    quote: The Open Access Hub provides complete, free and open access to Sentinel-1, Sentinel-2, Sentinel-3 and Sentinel-5P user products.
+    source: https://scihub.copernicus.eu/userguide/
+    homepage: https://scihub.copernicus.eu/dhus/#/home
+  availabledata:
+    generic: 
+    - satellite observations
+    specific:
+    - Sentinel 1
+    - Sentinel 2
+    - Sentinel 3
+    - Sentinel 5P
+    portal: https://scihub.copernicus.eu/dhus/#/home
+  properties:
+    country: Global
+    name: Copernicus Open Access Hub
+    type: satellite observation data
+  type: Feature
+
+- geometry:
     coordinates:
     - 114.71987
     - 41.1586199
@@ -748,6 +827,7 @@ features:
     - 50.7845058
     - 0
     type: Point
+    icon: wind energy research center
   information:
     copied: true
     description:
@@ -889,32 +969,23 @@ features:
     - 27.992053
     - 0
     type: Point
+    icon: marine and maritime research center
   information:
     copied: true
     description:
     quote: 'The Oceanic Platform of the Canary Islands (PLOCAN) is a Research
-      Infrastructure (RI) labeled by the ICTS (Unique Scientific and Technological
-      Infrastructure) Spanish National Roadmap, co-funded by the Ministry of Science,
-      Innovation and Universities of the Spanish government and the Canary Islands
-      government and by the European Regional Development Fund (ERDF) under the Operational
-      Programme of the Canary Islands.<br><br>
+      Infrastructure (RI) labeled by the ICTS (Unique Scientific and Technological Infrastructure) Spanish National Roadmap, co-funded by the Ministry of Science, Innovation and Universities of the Spanish government and the Canary Islands government and by the European Regional Development Fund (ERDF) under the Operational Programme of the Canary Islands.<br><br>
 
-      PLOCAN is a multipurpose technical-scientific service infrastructure that provides
-      support for research, technological development and innovation in the marine
-      and maritime sectors, available to public and private users. PLOCAN offers both
-      onshore and offshore experimental facilities and laboratories, operational throughout
-      the whole year thanks to the Canary Islands excellent climatic conditions. PLOCAN
-      also brings a broad experience in large national and EU marine/maritime projects.'
+      PLOCAN is a multipurpose technical-scientific service infrastructure that provides support for research, technological development and innovation in the marine and maritime sectors, available to public and private users. PLOCAN offers both onshore and offshore experimental facilities and laboratories, operational throughout the whole year thanks to the Canary Islands excellent climatic conditions. PLOCAN also brings a broad experience in large national and EU marine/maritime projects.'
     homepage: https://www.plocan.eu/en/
     source: https://www.plocan.eu/en/description/
   infrastructure:
     description: null
     generic:
-    - oceanic offshore platform
+    - offshore platform
     - test site
     - oceanic observatory
     - autonomous ocean vehicles
-    - onshore facilities
     specific:
     - oceanic offshore platform
     - test site
@@ -924,7 +995,35 @@ features:
   properties:
     country: Spain
     name: Oceanic Platform of the Canary Islands (PLOCAN)
-    type: wind energy research center
+    type: marine and maritime research center
   type: Feature
 
+
+- geometry:
+    coordinates: 
+    - null
+    - null
+    - null
+    note: this is a global dataset
+    icon: data portal
+  information:
+    quote: A complete archive of Sentinel-1, Sentinel-2, Sentinel-3, Sentinel-5P, ESA's archive of Landsat 5, 7 and 8, global coverage of Landsat 8, Envisat Meris, MODIS, Proba-V and GIBS products in one place.
+    source: https://apps.sentinel-hub.com/eo-browser/
+    homepage: https://apps.sentinel-hub.com/eo-browser/
+  availabledata:
+    generic: 
+    - satellite observations
+    specific:
+    - Sentinel 1, 2, 3 and 5P
+    - Landsat 5, 7, and 8
+    - Envisat Meris
+    - MODIS 
+    - Proba-V
+    - GIBS products
+    portal: https://apps.sentinel-hub.com/eo-browser/
+  properties:
+    country: Global
+    name: Sentinel Hub EO Browser
+    type: satellite observation data
+  type: Feature
 

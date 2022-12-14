@@ -1,0 +1,26 @@
+- geometry:
+    coordinates:
+    - null
+    - null
+    - null
+    type: Point
+    icon: wind atlas
+  information:
+    description: 
+    quote: The Global Wind Atlas is a free, web-based application developed to help policymakers, planners, and investors identify high-wind areas for wind power generation virtually anywhere in the world, and then perform preliminary calculations. The Global Wind Atlas facilitates online queries and provides freely downloadable datasets based on the latest input data and modeling methodologies. Users can additionally download high-resolution maps of the wind resource potential, for use in GIS tools, at the global, country, and first-administrative unit (State/Province/Etc.) level in the Download section. Information on the datasets and methodology used to create the Global Wind Atlas can be found in the Methodology and Datasets sections.
+    source: https://globalwindatlas.info/en/about/introduction
+    hompage: https://globalwindatlas.info/
+  availabledata:
+    description: null
+    generic:
+    - wind atlas
+    specific:
+    - wind layers
+    - wind energy layers
+    - terrain layers
+    - validation layers 
+  properties:
+    country: Global
+    name: Global Wind Atlas
+    type: wind atlas
+  type: Feature

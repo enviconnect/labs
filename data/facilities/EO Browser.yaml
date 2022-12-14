@@ -1,0 +1,27 @@
+- geometry:
+    coordinates: 
+    - null
+    - null
+    - null
+    note: this is a global dataset
+    icon: data portal
+  information:
+    quote: A complete archive of Sentinel-1, Sentinel-2, Sentinel-3, Sentinel-5P, ESA's archive of Landsat 5, 7 and 8, global coverage of Landsat 8, Envisat Meris, MODIS, Proba-V and GIBS products in one place.
+    source: https://apps.sentinel-hub.com/eo-browser/
+    homepage: https://apps.sentinel-hub.com/eo-browser/
+  availabledata:
+    generic: 
+    - satellite observations
+    specific:
+    - Sentinel 1, 2, 3 and 5P
+    - Landsat 5, 7, and 8
+    - Envisat Meris
+    - MODIS 
+    - Proba-V
+    - GIBS products
+    portal: https://apps.sentinel-hub.com/eo-browser/
+  properties:
+    country: Global
+    name: Sentinel Hub EO Browser
+    type: satellite observation data
+  type: Feature

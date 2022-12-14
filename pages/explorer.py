@@ -391,12 +391,16 @@ def create_googlemaps_link_button(lat, lon):
 
 def get_map_zoom(df_in):
     # establish the bounds of the map
-    if len(df_in) >= 2:
-        dlat = 1 + df_in["lat"].max() - df_in["lat"].min() - 1
-        dlon = 1 + df_in["lon"].max() - df_in["lon"].min() - 1
+
+    # get all of the non-na coordinates
+    df_pos = df_in.dropna(subset=["lat","lon"])
+    
+    if len(df_pos) >= 2:
+        dlat = 1 + df_pos["lat"].max() - df_pos["lat"].min() - 1
+        dlon = 1 + df_pos["lon"].max() - df_pos["lon"].min() - 1
         max_bound = max(max(abs(dlat),1.0), max(abs(dlon),1.0)) * 111
         map_zoom = math.floor(11.5 - np.log(max_bound))
-    elif len(df_in) == 0:
+    elif len(df_pos) == 0:
         map_zoom = 1
     else:
         map_zoom = 6
@@ -405,16 +409,20 @@ def get_map_zoom(df_in):
 
 
 def get_map_center(df_in):
-    if len(df_in) >= 2:
-        dlat = 1.0 + df_in["lat"].max() - df_in["lat"].min() - 1.0
-        dlon = 1.0 + df_in["lon"].max() - df_in["lon"].min() - 1.0
+
+    # get all of the non-na coordinates
+    df_pos = df_in.dropna(subset=["lat","lon"])
+
+    if len(df_pos) >= 2:
+        dlat = 1.0 + df_pos["lat"].max() - df_pos["lat"].min() - 1.0
+        dlon = 1.0 + df_pos["lon"].max() - df_pos["lon"].min() - 1.0
 
         map_center = (
-            df_in["lat"].min() - 1.0 + dlat / 2.0,
-            df_in["lon"].min() - 1.0 + dlon / 2.0,
+            df_pos["lat"].min() - 1.0 + dlat / 2.0,
+            df_pos["lon"].min() - 1.0 + dlon / 2.0,
         )
-    elif len(df_in) == 1:
-        map_center = (df_in["lat"].min(), df_in["lon"].min())
+    elif len(df_pos) == 1:
+        map_center = (df_pos["lat"].min(), df_pos["lon"].min())
     else:
         map_center = (0.0, 0.0)
 
@@ -427,18 +435,22 @@ def get_icon(icon):
             return dash.get_asset_url("facility-icons/data-portal.png")        
         elif icon == "met mast":
             return dash.get_asset_url("facility-icons/met-mast.png")
+        elif icon == "marine and maritime research center":
+            return dash.get_asset_url("facility-icons/marine-maritime-research-center.png")
         elif icon == "power systems research center":
             return dash.get_asset_url("facility-icons/power-systems-research-center.png")
         elif icon == "vertical profiling lidar":
             return dash.get_asset_url("facility-icons/vertical-profiling-lidar.png")
-        elif icon == "wind turbine":
-            return dash.get_asset_url("facility-icons/wind-turbine.png")
-        elif icon == "wind farm":
-            return dash.get_asset_url("facility-icons/wind-farm.png")
+        elif icon == "wind atlas":
+            return dash.get_asset_url("facility-icons/wind-atlas.png")    
         elif icon == "wind energy research center":
             return dash.get_asset_url("facility-icons/wind-energy-research-center.png")
         elif icon == "wind energy test site":
             return dash.get_asset_url("facility-icons/wind-energy-test-site.png")        
+        elif icon == "wind turbine":
+            return dash.get_asset_url("facility-icons/wind-turbine.png")
+        elif icon == "wind farm":
+            return dash.get_asset_url("facility-icons/wind-farm.png")        
         else:
             return dash.get_asset_url("facility-icons/default.png")
 
@@ -472,39 +484,25 @@ def create_facility_map_leaflet(df_map, dff_selected):
     # "on click" should use https://github.com/thedirtyfew/dash-leaflet/issues/5
 
     for index, facility in df_map.iterrows():
-        markers.append(
-            # dl.CircleMarker(
-            #     center=(facility["lat"], facility["lon"]),
-            #     radius=6,
-            #     color="#17a9ae",
-            #     id={
-            #         "type": "facility",
-            #         # "row": facility["facility-id"],
-            #         "id": "marker.{}".format(facility["facility_id"]),
-            #     },
-            #     children=[
-            #         dl.Tooltip(
-            #             facility["name"],
-            #         ),
-            #         # dl.Popup(facility["name"],),
-            #     ],
-            # )
-            dl.Marker(
-                position=(facility["lat"], facility["lon"]),
-                icon = get_icon(facility["icon"]),
-                id={
-                    "type": "facility",
-                    # "row": facility["facility-id"],
-                    "id": "marker.{}".format(facility["facility_id"]),
-                },
-                children=[
-                    dl.Tooltip(
-                        facility["name"],
-                    ),
-                    # dl.Popup(facility["name"],),
-                ],
+        position=(facility["lat"], facility["lon"])
+        if not pd.isna([position]).any():
+            markers.append(            
+                dl.Marker(
+                    position=position,
+                    icon = get_icon(facility["icon"]),
+                    id={
+                        "type": "facility",
+                        # "row": facility["facility-id"],
+                        "id": "marker.{}".format(facility["facility_id"]),
+                    },
+                    children=[
+                        dl.Tooltip(
+                            facility["name"],
+                        ),
+                        # dl.Popup(facility["name"],),
+                    ],
+                )
             )
-        )
 
     marker_cluster = dl.MarkerClusterGroup(id="markers", children=markers)
 
@@ -512,7 +510,7 @@ def create_facility_map_leaflet(df_map, dff_selected):
     map_center = get_map_center(df_map)
 
     attribution = (
-        '&copy; <a href="https://www.openstreetmap.org/about/">OpenStreetMap</a> '
+        '&copy; <a href="https://www.openstreetmap.org/about/" target="_blank">OpenStreetMap</a> '
     )
 
     if dff_selected.empty:
@@ -551,6 +549,16 @@ def create_facility_map_leaflet(df_map, dff_selected):
         )
 
     return leaflet_map
+
+
+def points_not_shown_warning():
+
+    return html.I(
+        [
+            html.Small(
+        ["Facilities without a defined location - e.g., satellites or data portals - are only listed in the table."]),
+        ],
+        className="py-0 my-1")
 
 
 # -----------------------
@@ -712,6 +720,7 @@ def get_card_facility_description_element(dff_selected):
                             html.A(
                                 urlparse(info_dict.get("source")).netloc,
                                 href="".join(info_dict.get("source")),
+                                target="_blank"
                             ),
                         ],
                         className="blockquote-footer"
@@ -913,7 +922,8 @@ def create_about_element():
                             html.P(
                                 [
                                     "This app is built using ",
-                                    html.A("Dash", href="https://dash.plotly.com/"),
+                                    html.A("Dash", href="https://dash.plotly.com/",
+                                    target="_blank"),
                                     ", an open source library for python used to create data visualisations. ",
                                 ]
                             ),
@@ -926,8 +936,19 @@ def create_about_element():
                                     html.A(
                                         "eu.pythonanywhere.com",
                                         href="https://eu.pythonanywhere.com",
+                                        target="_blank",
                                     ),
+                                    "."
                                 ]
+                            ),
+                            html.H3("An Open Source project"),
+                            html.P([
+                                "The source code used for this website is available ",
+                                html.A("on GitHub",
+                                href="https://github.com/enviconnect/public-EnergyRnDFacilitiesExplorer",
+                                target="_blank"),
+                                "."
+                            ]
                             ),
                             html.H3("Disclaimer"),
                             html.P(
@@ -987,15 +1008,35 @@ layout = dbc.Container(
                 # map and table content row
                 dbc.Row(
                     [
+                        # map and warning column
                         dbc.Col(
                             [
+                                dbc.Row(
+                                [
+                                    dbc.Col(
+                                        [
                                 create_facility_map_leaflet(df, pd.DataFrame()),
                             ],
                             id="facility-map-leaflet",
+                            className="col-12"
+                                    )
+                                ]
+                            ),
+                            dbc.Row(
+                                [
+                                    points_not_shown_warning()
+                                ],
+                                id = "points-not-shown-warning",
+                                className = ""
+                            )
+                            ],
                             className="col-12 col-lg-6"
                         ),
+                        #table column
                         dbc.Col(
-                            [html.Div(create_sortable_facility_table(df))],
+                            [
+                            html.Div(create_sortable_facility_table(df))
+                            ],
                             className="col-12 col-lg-6 mt-2 mt-lg-0",
                         ),
                     ],
@@ -1006,7 +1047,16 @@ layout = dbc.Container(
                     [
                         dbc.Col(filterIcon(), className="col-12 col-lg-2"),
                         dbc.Col(
-                            [dbc.Row(create_selectors(df))],
+                            [
+                                dbc.Row(create_selectors(df)),
+                                dbc.Alert([
+                                    html.I(className="fa-regular fa-face-frown"), 
+                                    " ",
+                                    "No facilities found that match all filters."],
+                                    color="warning",
+                                    id = "no-results-warning",
+                                    className="my-1 py-1")
+                            ],
                             className="col-12 col-lg-10",
                         ),
                     ],
@@ -1075,6 +1125,7 @@ layout = dbc.Container(
 
 @dash.callback(
     Output("filtered-facilities-store", "data"),
+    Output("no-results-warning", "is_open"),
     Input("country_selector", "value"),
     Input("facilitytype_selector", "value"),
     Input("infrastructure_selector", "value"),
@@ -1095,8 +1146,13 @@ def get_filtered_facilities(
         availabledata_selected,
     )
 
-    
-    return dff.to_json(orient="records")
+    # check to see if there are any facilities
+    no_results_warning = False
+
+    if dff.empty:
+        no_results_warning = True    
+
+    return dff.to_json(orient="records"), no_results_warning
 
 
 @dash.callback(
@@ -1113,7 +1169,6 @@ def update_table(jsonified_filtered_facilities):
     df_table.rename(columns={"type_property": "type"}, inplace=True)
 
     return df_table.to_dict("records")
-
 
 @dash.callback(
     Output("facility-map-leaflet", "children"),
@@ -1159,7 +1214,8 @@ def select_facility(n_clicks, active_cell, countries_selected="",
     infrastructure_selected="",
     availabledata_selected=""):
 
-    dff_selected = pd.DataFrame()
+    # create default values; these may be overwritten
+    dff_selected = pd.DataFrame(columns = df.columns)
 
     # first establish where the trigger came from
 
@@ -1202,14 +1258,12 @@ def select_facility(n_clicks, active_cell, countries_selected="",
 
     # and finally, clear the selections
     selected_cells = []
-    active_cell = None
+    active_cell_out = None
 
-    if dff_selected.empty:
-        selected_facility_store = ""
-    else:
-        selected_facility_store = dff_selected.to_json(orient="records")
+    # update the data store (works when empty, too)
+    selected_facility_store = dff_selected.to_json(orient="records")
 
-    return selected_facility_store, selected_cells, active_cell
+    return selected_facility_store, selected_cells, active_cell_out
 
 
 @dash.callback(

@@ -1,0 +1,25 @@
+- geometry:
+    coordinates: 
+    - null
+    - null
+    - null
+    note: this is a global dataset
+    icon: data portal
+  information:
+    quote: The Open Access Hub provides complete, free and open access to Sentinel-1, Sentinel-2, Sentinel-3 and Sentinel-5P user products.
+    source: https://scihub.copernicus.eu/userguide/
+    homepage: https://scihub.copernicus.eu/dhus/#/home
+  availabledata:
+    generic: 
+    - satellite observations
+    specific:
+    - Sentinel 1
+    - Sentinel 2
+    - Sentinel 3
+    - Sentinel 5P
+    portal: https://scihub.copernicus.eu/dhus/#/home
+  properties:
+    country: Global
+    name: Copernicus Open Access Hub
+    type: satellite observation data
+  type: Feature

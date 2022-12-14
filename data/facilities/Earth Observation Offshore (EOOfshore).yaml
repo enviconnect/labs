@@ -1,0 +1,23 @@
+- geometry:
+    coordinates: 
+    - -15.0
+    - 52.0
+    - 0.0
+    note: this is a regional dataset
+    icon: data portal
+  information:
+    quote: EOOffshore is a Sustainable Energy Authority of Ireland (SEAI) funded project, which commenced in June 2020 in the School of Physics in University College Dublin (UCD). Sheila McBreen is the Principal Investigator. Derek O'Callaghan, previously Earth Observation Scientist for Parameter Space Ltd., is leading data processing and analysis.
+    source: https://eooffshore.github.io/intro.html
+    homepage: https://eooffshore.github.io/intro.html
+  availabledata:
+    description: 
+    generic: 
+    - wind data
+    specific:
+    - "**Irish Continental Shelf Data Sets.** The EOOffshore project has involved the creation of a new wind data catalog, consisting of a collection of analysis-ready, cloud-optimized (ARCO) data sets, which features up to 21 years of available in situ, reanalysis, model, and satellite observation wind data products for the Irish Continental Shelf region."
+    portal: https://eooffshore.github.io/datasets.html
+  properties:
+    country: Ireland
+    name: Earth Observation Offshore (EOOffshore)
+    type: data portal
+  type: Feature
