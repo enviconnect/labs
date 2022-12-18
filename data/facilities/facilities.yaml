@@ -3,6 +3,64 @@ type: FeatureCollection
 features:
 - geometry:
     coordinates:
+    - Null
+    - Null
+    - Null
+    type: Point
+    icon: met mast
+  information:
+    description: 
+    homepage: https://www.faa.gov/air_traffic/weather/asos/
+    quote: "The ASWON portfolio includes several surface sensors that measure weather parameters on the surface and report conditions to air traffic facilities and pilots. The data collected is not only important to pilots and dispatchers as they prepare and file flight plans but also is vital for weather forecasting. 
+    
+        AWOS, AWSS, and ASOS, which are the primary automated surface observing systems, provide around-the-clock weather observations at airports throughout the NAS. These primary systems construct weather observations using a suite of meteorological sensors typically located at an airfield. The weather observation is broadcast to pilots in the airport vicinity using a Very High Frequency (VHF) radio transmitter or an Automatic Terminal Information Service and provided by dial-up telephone service."
+    source: https://www.faa.gov/air_traffic/weather/aswon
+  availabledata:
+    description: Access to METAR (_METeorological Aerodrome Report_) data from the AWOS / AWSS / ASOS networks
+    generic:
+    - realtime weather observations
+    - multiyear weather data
+    - METAR data
+    specific:
+    - "**current weather summary**: real-time METAR data from regional weather networks across the United States and Canada"
+    - "**interactive weather maps**: data plotted on interactive surface maps"
+    portal: https://www.aviationweather.gov/metar?date=
+  properties:
+    country: United States of America
+    name: Aviation Surface Weather Observation Network (ASWON)
+    type: data portal
+  type: Feature
+
+
+- geometry:
+    coordinates:
+    - Null
+    - Null
+    - Null
+    type: Point
+    icon: data portal
+  information:
+    description:
+    quote: "The United States Wind Turbine Database (USWTDB) provides the locations of land-based and offshore wind turbines in the United States, corresponding wind project information, and turbine technical specifications.<br><br>The creation of this database was jointly funded by the U.S. Department of Energy (DOE) Wind Energy Technologies Office (WETO) via the Lawrence Berkeley National Laboratory (LBNL) Electricity Markets and Policy Group, the U.S. Geological Survey (USGS) Energy Resources Program, and the American Clean Power Association (ACP).<br><br>The database is being continuously updated through collaboration among LBNL, USGS, and ACP.<br><br>Wind turbine records are collected and compiled from various public and private sources, digitized or position-verified from aerial imagery, and quality checked. Technical specifications for turbines are obtained directly from project developers and turbine manufacturers, or they are based on data obtained from public sources."
+    source: https://eerscmap.usgs.gov/uswtdb/
+    homepage: https://eerscmap.usgs.gov/uswtdb/
+  availabledata:
+    description: null
+    generic:
+    - wind turbine locations
+    homepage: 
+    specific:
+    - Locations of land-based and offshore wind turbines in the United States
+    portal: https://eerscmap.usgs.gov/uswtdb/
+  properties:
+    country: United States of America
+    name: U.S. Wind Turbine Database
+    type: dataset
+  type: Feature
+
+
+- geometry:
+    coordinates:
     - 8.68214
     - 47.52006
     - 0
@@ -405,6 +463,48 @@ features:
 
 
 - geometry:
+    coordinates:
+    - Null
+    - Null
+    - Null
+    type: Point
+    icon: data portal
+  information:
+    description:
+    quote: "The European Marine Observation and Data Network (EMODnet) is a network of organisations supported by the EU's integrated maritime policy. These organisations work together to observe the sea, process the data according to international standards and make that information freely available as interoperable data layers and data products.<br><br>
+      
+      This 'collect once and use many times' philosophy benefits all marine data users, including policy makers, scientists, private industry and the public. It has been estimated that such an integrated marine data policy will save at least one billion Euros per year, as well as opening up new opportunities for innovation and growth."
+    source: https://emodnet.ec.europa.eu/en/about_emodnet
+    homepage: https://emodnet.ec.europa.eu/en
+  availabledata:
+    description: EMODnet provides access to European marine data across seven discipline-based themes.
+    generic:
+    - Bathymetry
+    - marine biology
+    - marine chemistry
+    - marine geology
+    - human activities at sea
+    - marine physics
+    - seabed habitats
+    - marine observations
+    homepage: 
+    specific:
+    - bathymetry
+    - biology
+    - chemistry
+    - geology
+    - human activities
+    - physics
+    - seabed habitats
+    portal: https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/search?any=
+  properties:
+    country: Global
+    name: European Marine Observation and Data Network (EMODnet)
+    type: data portal
+  type: Feature
+
+
+- geometry:
     coordinates: 
     - -15.0
     - 52.0
@@ -505,8 +605,8 @@ features:
     icon: met mast
   information:
     description: A 101-m met tower and platform in the North Sea. Data are available for use.
-    quote:
-    source:
+    quote: The research platform FINO1 is located in the immediate vicinity of areas where wind farms are being built or are already in operation. The research funding of the Federal Ministry for Economic Affairs and Energy (BMWi) aims at reducing wind energy costs, economies of scale as well as more reliable operation of wind turbines. With the measurement data collected at FINO1, essentail results are obtained for the optimization of offshore wind farms.
+    source: https://www.fino1.de/en/.
     hompage: https://www.fino1.de/en/.
   infrastructure:
     description: null
@@ -514,7 +614,17 @@ features:
     - met mast
     - offshore met mast
     specific:
-    - 101-m met tower
+    - 101-m offshore met tower
+  availabledata:
+    portal: https://www.bsh.de/EN/TOPICS/Monitoring_systems/MARNET_monitoring_network/FINO/fino_node.html
+    generic:
+    - meteorological data
+    - hydrological data
+    specific:
+    - "**live data** directly from the measurement systems"
+    - "**audited data** (registration required)"
+    - "**meteorological data** from instruments on the tower and platform"
+    - "**hydrological data** including wave characteristics and current profiles"
   properties:
     country: Germany
     name: FINO 1
@@ -728,6 +838,32 @@ features:
     country: China
     name: IET & NCEPU wind turbine at Zhangbei
     type: wind turbine
+  type: Feature
+
+
+- geometry:
+    coordinates:
+    - 5.262
+    - 51.21
+    - 0
+    type: Point
+    icon: drivetrain test facility
+  information:
+    description:
+    quote: "The wind market continuously evolves and ZF Wind Power answers the fast-growing demand by strengthening its position as a strategic partner. ZF's engineers continuously design gearboxes and powertrains with increasing torque levels. The team strives for high quality and invests largely in validation. To extend the portfolio the company started the installation of world's largest 30MW test rig. This Test and Prototype Center allows ZF Wind Power to extend its offering from modular wind gearbox platforms to complete powertrain systems."
+    source: https://www.zf.com/products/en/wind/test_and_prototype_center/Test_and_Prototype_Center.html
+    homepage: https://www.zf.com/products/en/wind/test_and_prototype_center/Test_and_Prototype_Center.html
+  infrastructure:
+    description: null
+    generic:
+    - drivetrain test facility
+    homepage: 
+    specific:
+    - Wind turbine test rig (30 MW)    
+  properties:
+    country: Belgium
+    name: ZF Wind Power 30 MW test rig
+    type: drivetrain test facility
   type: Feature
 
 
@@ -1026,4 +1162,33 @@ features:
     name: Sentinel Hub EO Browser
     type: satellite observation data
   type: Feature
+
+- geometry:
+    coordinates:
+    - Null
+    - Null
+    - Null
+    type: Point
+    icon: met mast
+  information:
+    description: The MesoWest portal provides access to over 250 weather station and data networks across the USA (including Alaska and Hawai'i) and Canada.
+    homepage: https://mesowest.utah.edu/
+    quote: MesoWest is a cooperative project started at the University of Utah in 1996, with a goal of providing access to current and archived weather observations across the United States through web-based resources, such as this website. Support for this initiative has been funded primarily by the National Weather Service through a variety of research and operations-specific projects.
+    source: https://mesowest.utah.edu/html/help/main_index.html
+  availabledata:
+    description: Data can be accessed in tables or maps or via API. Note that the license terms for the data may restrict commercial use.
+    generic:
+    - realtime weather observations
+    - multiyear weather data
+    specific:
+    - "**current weather summary**: real-time tabular data from regional weather networks across the United States and Canada"
+    - "**interactive weather maps**: MesoWest data plotted on interactive surface maps"
+    - "**data download**: to download up to a year of data, see the [API documentation](https://mesowest.utah.edu/cgi-bin/droman/download_api2.cgi)"
+    portal: https://mesowest.utah.edu/cgi-bin/droman/mesomap.cgi?state=CO&rawsflag=3
+  properties:
+    country: United States of America
+    name: MesoWest Surface Weather Station Network Portal
+    type: data portal
+  type: Feature
+
 

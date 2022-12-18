@@ -1,0 +1,27 @@
+- geometry:
+    coordinates:
+    - Null
+    - Null
+    - Null
+    type: Point
+    icon: met mast
+  information:
+    description: The MesoWest portal provides access to over 250 weather station and data networks across the USA (including Alaska and Hawai'i) and Canada.
+    homepage: https://mesowest.utah.edu/
+    quote: MesoWest is a cooperative project started at the University of Utah in 1996, with a goal of providing access to current and archived weather observations across the United States through web-based resources, such as this website. Support for this initiative has been funded primarily by the National Weather Service through a variety of research and operations-specific projects.
+    source: https://mesowest.utah.edu/html/help/main_index.html
+  availabledata:
+    description: Data can be accessed in tables or maps or via API. Note that the license terms for the data may restrict commercial use.
+    generic:
+    - realtime weather observations
+    - multiyear weather data
+    specific:
+    - "**current weather summary**: real-time tabular data from regional weather networks across the United States and Canada"
+    - "**interactive weather maps**: MesoWest data plotted on interactive surface maps"
+    - "**data download**: to download up to a year of data, see the [API documentation](https://mesowest.utah.edu/cgi-bin/droman/download_api2.cgi)"
+    portal: https://mesowest.utah.edu/cgi-bin/droman/mesomap.cgi?state=CO&rawsflag=3
+  properties:
+    country: United States of America
+    name: MesoWest Surface Weather Station Network Portal
+    type: data portal
+  type: Feature

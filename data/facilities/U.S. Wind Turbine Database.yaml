@@ -1,0 +1,25 @@
+- geometry:
+    coordinates:
+    - Null
+    - Null
+    - Null
+    type: Point
+    icon: data portal
+  information:
+    description:
+    quote: "The United States Wind Turbine Database (USWTDB) provides the locations of land-based and offshore wind turbines in the United States, corresponding wind project information, and turbine technical specifications.<br><br>The creation of this database was jointly funded by the U.S. Department of Energy (DOE) Wind Energy Technologies Office (WETO) via the Lawrence Berkeley National Laboratory (LBNL) Electricity Markets and Policy Group, the U.S. Geological Survey (USGS) Energy Resources Program, and the American Clean Power Association (ACP).<br><br>The database is being continuously updated through collaboration among LBNL, USGS, and ACP.<br><br>Wind turbine records are collected and compiled from various public and private sources, digitized or position-verified from aerial imagery, and quality checked. Technical specifications for turbines are obtained directly from project developers and turbine manufacturers, or they are based on data obtained from public sources."
+    source: https://eerscmap.usgs.gov/uswtdb/
+    homepage: https://eerscmap.usgs.gov/uswtdb/
+  availabledata:
+    description: null
+    generic:
+    - wind turbine locations
+    homepage: 
+    specific:
+    - Locations of land-based and offshore wind turbines in the United States
+    portal: https://eerscmap.usgs.gov/uswtdb/
+  properties:
+    country: United States of America
+    name: U.S. Wind Turbine Database
+    type: dataset
+  type: Feature

@@ -28,6 +28,8 @@ layout = dbc.Container(
         ),
         # content row
         dbc.Row(
+            [
+            # Facilities explorer
             dbc.Col(
                 [
                     dbc.Card(
@@ -57,9 +59,45 @@ layout = dbc.Container(
                             ),
                         ],
                         style={"width": "18rem"},
+                    ),
+                ],
+                className= "col-12 col-md-4 col-lg-3 col-xl-2"
+            ),
+            # talk.inductionzone.org
+            dbc.Col(
+                [
+                    dbc.Card(
+                        [
+                            dbc.CardImg(
+                                src="/assets/images/inductionzone.png", top=True
+                            ),
+                            dbc.CardBody(
+                                [
+                                    html.H4(
+                                        "Induction Zone",
+                                        className="card-title",
+                                    ),
+                                    html.P(
+                                        "A community for startups and early adopters in wind energy",
+                                        className="card-text",
+                                    ),
+                                    html.Div(
+                                        [
+                                            dbc.Button(
+                                                "Go", color="primary", href="https://talk.inductionzone.org", className="stretched-link"
+                                            ),
+                                        ],
+                                        className="d-grid gap-2 col-6 mx-auto",
+                                    ),
+                                ]
+                            ),
+                        ],
+                        style={"width": "18rem"},
                     )
-                ]
+                ],
+                className= "col-12 col-md-4 col-lg-3",
             )
+            ]
         ),
     ],
     fluid=True,

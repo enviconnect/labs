@@ -190,6 +190,7 @@ def create_selectors(df):
                 options=get_countries_label_value_pairs(df),
                 multi=True,
                 value="",
+                optionHeight=45
             ),
         ],
         className="col-12 col-md-6 col-lg-3",
@@ -203,6 +204,7 @@ def create_selectors(df):
                 options=get_facility_types_label_value_pairs(df),
                 multi=True,
                 value="",
+                optionHeight=45
             ),
         ],
         className="col-12 col-md-6 col-lg-3",
@@ -216,6 +218,7 @@ def create_selectors(df):
                 options=get_infrastructure_label_value_pairs(df),
                 multi=True,
                 value="",
+                optionHeight=45
             ),
         ],
         className="col-12 col-md-6 col-lg-3",
@@ -229,6 +232,7 @@ def create_selectors(df):
                 options=get_availabledata_label_value_pairs(df),
                 multi=True,
                 value="",
+                optionHeight=45
             ),
         ],
         className="col-12 col-md-6 col-lg-3",
@@ -857,11 +861,22 @@ def get_card_availabledata_element(dff_selected):
 
     if dff_selected["availabledata_portal"].any():
         dataportal_button = create_www_link_button(dff_selected["availabledata_portal"].squeeze(), button_text="data portal", button_color="primary", icon_classes="fa-solid fa-database")
-
     else:
         dataportal_button = []
+            
 
-    availabledata_element = [html.P("Available data:"), availabledata_list, dataportal_button]
+    if dff_selected["availabledata_desc"].any():
+        description_text = dff_selected["availabledata_desc"]
+        description_text_element = dcc.Markdown(description_text, dangerously_allow_html=True)
+    else:
+        description_text_element = []
+
+    availabledata_element = [
+        description_text_element,
+                            html.P("Available data:"), 
+                            availabledata_list, 
+                            dataportal_button
+                            ]
     
         
     return availabledata_element
@@ -990,7 +1005,7 @@ layout = dbc.Container(
                 dbc.Row(
                     [
                         dbc.Col(
-                            [html.H1("Wind Energy R&D Facilities")],
+                            [html.H1("Wind Energy R&D Facilities and Data")],
                             width=12,
                         ),
                     ],
@@ -1273,6 +1288,7 @@ def select_facility(n_clicks, active_cell, countries_selected="",
     Output("tab-infrastructure", "disabled"),
     Output("tab-availabledata", "children"),
     Output("tab-availabledata", "disabled"),
+    Output("card-tabs","active_tab"),
     Input("selected-facility-store", "data"),
 )
 def update_information_tabs(jsonified_selected_facility):
@@ -1288,6 +1304,9 @@ def update_information_tabs(jsonified_selected_facility):
     tab_infrastructure_disabled = True
     tab_availabledata_element = []
     tab_availabledata_disabled = True
+
+    # reset the focus
+    active_tab = "tab-1"
 
     if jsonified_selected_facility == "":
         dff_selected = pd.DataFrame()
@@ -1322,4 +1341,5 @@ def update_information_tabs(jsonified_selected_facility):
         tab_infrastructure_disabled,
         tab_availabledata_element,
         tab_availabledata_disabled,
+        active_tab
     )

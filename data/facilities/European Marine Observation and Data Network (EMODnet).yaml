@@ -1,0 +1,40 @@
+- geometry:
+    coordinates:
+    - Null
+    - Null
+    - Null
+    type: Point
+    icon: data portal
+  information:
+    description:
+    quote: "The European Marine Observation and Data Network (EMODnet) is a network of organisations supported by the EU's integrated maritime policy. These organisations work together to observe the sea, process the data according to international standards and make that information freely available as interoperable data layers and data products.<br><br>
+      
+      This 'collect once and use many times' philosophy benefits all marine data users, including policy makers, scientists, private industry and the public. It has been estimated that such an integrated marine data policy will save at least one billion Euros per year, as well as opening up new opportunities for innovation and growth."
+    source: https://emodnet.ec.europa.eu/en/about_emodnet
+    homepage: https://emodnet.ec.europa.eu/en
+  availabledata:
+    description: EMODnet provides access to European marine data across seven discipline-based themes.
+    generic:
+    - Bathymetry
+    - marine biology
+    - marine chemistry
+    - marine geology
+    - human activities at sea
+    - marine physics
+    - seabed habitats
+    - marine observations
+    homepage: 
+    specific:
+    - bathymetry
+    - biology
+    - chemistry
+    - geology
+    - human activities
+    - physics
+    - seabed habitats
+    portal: https://emodnet.ec.europa.eu/geonetwork/srv/eng/catalog.search#/search?any=
+  properties:
+    country: Global
+    name: European Marine Observation and Data Network (EMODnet)
+    type: data portal
+  type: Feature

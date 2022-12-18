@@ -1,0 +1,29 @@
+- geometry:
+    coordinates:
+    - Null
+    - Null
+    - Null
+    type: Point
+    icon: met mast
+  information:
+    description: 
+    homepage: https://www.faa.gov/air_traffic/weather/asos/
+    quote: "The ASWON portfolio includes several surface sensors that measure weather parameters on the surface and report conditions to air traffic facilities and pilots. The data collected is not only important to pilots and dispatchers as they prepare and file flight plans but also is vital for weather forecasting. 
+    
+        AWOS, AWSS, and ASOS, which are the primary automated surface observing systems, provide around-the-clock weather observations at airports throughout the NAS. These primary systems construct weather observations using a suite of meteorological sensors typically located at an airfield. The weather observation is broadcast to pilots in the airport vicinity using a Very High Frequency (VHF) radio transmitter or an Automatic Terminal Information Service and provided by dial-up telephone service."
+    source: https://www.faa.gov/air_traffic/weather/aswon
+  availabledata:
+    description: Access to METAR (_METeorological Aerodrome Report_) data from the AWOS / AWSS / ASOS networks
+    generic:
+    - realtime weather observations
+    - multiyear weather data
+    - METAR data
+    specific:
+    - "**current weather summary**: real-time METAR data from regional weather networks across the United States and Canada"
+    - "**interactive weather maps**: data plotted on interactive surface maps"
+    portal: https://www.aviationweather.gov/metar?date=
+  properties:
+    country: United States of America
+    name: Aviation Surface Weather Observation Network (ASWON)
+    type: data portal
+  type: Feature
