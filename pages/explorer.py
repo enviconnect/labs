@@ -114,7 +114,7 @@ df = prepare_data("data/facilities/facilities.yaml")
 
 
 def get_countries(df_in):
-    countries = sorted(df_in.country.dropna().unique())
+    countries = sorted(df_in.country.dropna().unique(), key=str.lower)
     return countries
 
 
@@ -127,7 +127,7 @@ def get_countries_label_value_pairs(df_in):
 
 
 def get_facility_types(df_in):
-    return sorted(df_in.type_property.dropna().unique())
+    return sorted(df_in.type_property.dropna().unique(), key=str.lower)
 
 
 def get_facility_types_label_value_pairs(df_in):
@@ -443,6 +443,8 @@ def get_icon(icon):
             return dash.get_asset_url("facility-icons/marine-maritime-research-center.png")
         elif icon == "power systems research center":
             return dash.get_asset_url("facility-icons/power-systems-research-center.png")
+        elif icon == "surface energy balance":
+            return dash.get_asset_url("facility-icons/surface-energy-balance.png")
         elif icon == "vertical profiling lidar":
             return dash.get_asset_url("facility-icons/vertical-profiling-lidar.png")
         elif icon == "wind atlas":
@@ -919,17 +921,17 @@ def create_about_element():
                 [
                     dbc.Col(
                         [
-                            html.P("This app is for demonstration purposes only"),
+                            html.P("This app is for demonstration purposes only."),
                             html.H3("Data sources"),
                             html.P(
                                 "The data sources used in this app are all in the public domain, and include:"
                             ),
-                            html.Ul(
-                                [
-                                    html.Li("A facility's own web page"),
-                                    html.Li("European Academy of Wind Energy (EAWE)"),
-                                ]
-                            ),
+                            dcc.Markdown(['''
+                                * Each facility's own web page
+                                * European Academy of Wind Energy (EAWE)
+                                * The Wind Resource Assessment Group's wiki on [groups.io](https://groups.io/g/wrag/wiki/13236)
+                                '''
+                            ]),                            
                             html.P(
                                 "These information sources have been acknowledged and listed where applicable."
                             ),
@@ -1268,7 +1270,8 @@ def select_facility(n_clicks, active_cell, countries_selected="",
         # then the trigger was the table
         log = "triggered by the table"
         # get the selected cell
-        dff_selected = df[df.facility_id == active_cell["row_id"]]
+        if active_cell:
+            dff_selected = df[df.facility_id == active_cell["row_id"]]
         log = active_cell["row_id"]
 
     # and finally, clear the selections

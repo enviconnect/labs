@@ -464,6 +464,35 @@ features:
 
 - geometry:
     coordinates:
+    - -90.282
+    - 45.945
+    - 0
+    note: Location is approximate
+    type: Point
+    icon: surface energy balance
+  information:
+    copied: true
+    description:
+    quote: The Chequamegon Heterogeneous Ecosystem Energy-balance Study Enabled by a High-density Extensive Array of Detectors (CHEESEHEAD) is an intensive field campaign designed specifically to address long-standing puzzles regarding the role of atmospheric boundary-layer responses to scales of spatial heterogeneity in surface-atmosphere heat and water exchanges. A high-density observing network will be coupled to large-eddy simulation experiments to advance spatiotemporal scaling methods for heterogeneous land surface properties and fluxes, evaluate realistic large eddy simulations in complex landscapes, and test theories on the scales at which the lower atmosphere responds to surface heterogeneity. The proposed experiment generates knowledge relevant to many scientific applications in the national interest such as numerical weather prediction, energy resources, and computational fluid dynamics. Field support outreach and teacher training is included via middle, high school, and undergraduate student involvement at nearby schools and colleges.
+    homepage: https://www.eol.ucar.edu/field_projects/cheesehead
+    source: https://www.eol.ucar.edu/field_projects/cheesehead
+  availabledata:
+    description: null
+    generic:
+    - atmospheric boundary layer measurements
+    specific:
+    - surface layer energy balance
+    portal: https://data.eol.ucar.edu/master_lists/generated/cheesehead/
+  properties:
+    country: United States of America
+    name: The Chequamegon Heterogeneous Ecosystem Energy-balance Study
+    type: dataset
+    url: https://www.eol.ucar.edu/field_projects/cheesehead
+  type: Feature
+
+
+- geometry:
+    coordinates:
     - Null
     - Null
     - Null
