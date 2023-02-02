@@ -516,9 +516,9 @@ def fig_lidars_per_MW(df_plot):
 
 def fig_styling(fig):
     fig.update_layout(
-        font_family="Raleway",
+        font_family="../assets/fonts/raleway-v28-latin-regular.ttf",
         font_color="#38325B",
-        title_font_family="Montserrat",
+        title_font_family="../assets/fonts/montserrat-v25-latin-regular.ttf",
         title_font_color="#38325B",
         legend_title_font_color="#38325B",
     )
