@@ -5,6 +5,7 @@
 /.venv/*
 /.mapbox_token
 /.ipynb_checkpoints
+/.secrets
 .DS_Store
 
 # -------------

@@ -99,7 +99,7 @@ def prepare_data(data_source):
     df.insert(0, column="facility_id", value=df.index.values)
 
     # and finally, sort all by name
-    df.sort_values(by=['name'],inplace=True)
+    df.sort_values(by=["name"], inplace=True)
 
     return df
 
@@ -190,7 +190,7 @@ def create_selectors(df):
                 options=get_countries_label_value_pairs(df),
                 multi=True,
                 value="",
-                optionHeight=45
+                optionHeight=45,
             ),
         ],
         className="col-12 col-md-6 col-lg-3",
@@ -204,7 +204,7 @@ def create_selectors(df):
                 options=get_facility_types_label_value_pairs(df),
                 multi=True,
                 value="",
-                optionHeight=45
+                optionHeight=45,
             ),
         ],
         className="col-12 col-md-6 col-lg-3",
@@ -218,7 +218,7 @@ def create_selectors(df):
                 options=get_infrastructure_label_value_pairs(df),
                 multi=True,
                 value="",
-                optionHeight=45
+                optionHeight=45,
             ),
         ],
         className="col-12 col-md-6 col-lg-3",
@@ -232,7 +232,7 @@ def create_selectors(df):
                 options=get_availabledata_label_value_pairs(df),
                 multi=True,
                 value="",
-                optionHeight=45
+                optionHeight=45,
             ),
         ],
         className="col-12 col-md-6 col-lg-3",
@@ -253,11 +253,13 @@ def filterIcon():
     Define an icon for the filter row
 
     """
-    filter_icon_element = html.H4([
-        html.I(className="fa-solid fa-filter"),
-        " ",
-        "Filter facilities",
-    ])
+    filter_icon_element = html.H4(
+        [
+            html.I(className="fa-solid fa-filter"),
+            " ",
+            "Filter facilities",
+        ]
+    )
     return filter_icon_element
 
 
@@ -343,7 +345,12 @@ def create_www_link(url):
     return www_link
 
 
-def create_www_link_button(url, button_text="link", icon_classes="fa-solid fa-globe", button_color="", button_classes=""
+def create_www_link_button(
+    url,
+    button_text="link",
+    icon_classes="fa-solid fa-globe",
+    button_color="",
+    button_classes="",
 ):
 
     if not url.strip():
@@ -352,7 +359,9 @@ def create_www_link_button(url, button_text="link", icon_classes="fa-solid fa-gl
             href="#",
             target="_blank",
             disabled=True,
-            className="me-1 btn btn-outline-secondary px-sm-2 px-lg-2 py-sm-2  py-lg-1 mb-sm-2 mb-lg-1 btn-sm"+" "+button_classes
+            className="me-1 btn btn-outline-secondary px-sm-2 px-lg-2 py-sm-2  py-lg-1 mb-sm-2 mb-lg-1 btn-sm"
+            + " "
+            + button_classes,
         )
     else:
         return dbc.Button(
@@ -361,7 +370,9 @@ def create_www_link_button(url, button_text="link", icon_classes="fa-solid fa-gl
             target="_blank",
             color=button_color,
             disabled=False,
-            className="me-1 btn px-sm-2 px-lg-2 py-sm-2 py-lg-1 mb-sm-2 mb-lg-1 btn-sm"+" "+button_classes
+            className="me-1 btn px-sm-2 px-lg-2 py-sm-2 py-lg-1 mb-sm-2 mb-lg-1 btn-sm"
+            + " "
+            + button_classes,
         )
 
 
@@ -378,14 +389,13 @@ def create_googlemaps_link_button(lat, lon):
             + ""
         )
 
-        return create_www_link_button("".join(url_str), 
+        return create_www_link_button(
+            "".join(url_str),
             button_text="Google maps",
             icon_classes="fa-solid fa-map-location-dot",
             button_color="primary",
-            button_classes="btn-sm"
-            )
-
-        
+            button_classes="btn-sm",
+        )
 
 
 # --------------
@@ -397,12 +407,12 @@ def get_map_zoom(df_in):
     # establish the bounds of the map
 
     # get all of the non-na coordinates
-    df_pos = df_in.dropna(subset=["lat","lon"])
-    
+    df_pos = df_in.dropna(subset=["lat", "lon"])
+
     if len(df_pos) >= 2:
         dlat = 1 + df_pos["lat"].max() - df_pos["lat"].min() - 1
         dlon = 1 + df_pos["lon"].max() - df_pos["lon"].min() - 1
-        max_bound = max(max(abs(dlat),1.0), max(abs(dlon),1.0)) * 111
+        max_bound = max(max(abs(dlat), 1.0), max(abs(dlon), 1.0)) * 111
         map_zoom = math.floor(11.5 - np.log(max_bound))
     elif len(df_pos) == 0:
         map_zoom = 1
@@ -415,7 +425,7 @@ def get_map_zoom(df_in):
 def get_map_center(df_in):
 
     # get all of the non-na coordinates
-    df_pos = df_in.dropna(subset=["lat","lon"])
+    df_pos = df_in.dropna(subset=["lat", "lon"])
 
     if len(df_pos) >= 2:
         dlat = 1.0 + df_pos["lat"].max() - df_pos["lat"].min() - 1.0
@@ -432,31 +442,35 @@ def get_map_center(df_in):
 
     return map_center
 
-def get_icon(icon):
 
+def get_icon(icon):
     def get_icon_url(icon):
         if icon == "data portal":
-            return dash.get_asset_url("facility-icons/data-portal.png")        
+            return dash.get_asset_url("facility-icons/data-portal.png")
         elif icon == "met mast":
             return dash.get_asset_url("facility-icons/met-mast.png")
         elif icon == "marine and maritime research center":
-            return dash.get_asset_url("facility-icons/marine-maritime-research-center.png")
+            return dash.get_asset_url(
+                "facility-icons/marine-maritime-research-center.png"
+            )
         elif icon == "power systems research center":
-            return dash.get_asset_url("facility-icons/power-systems-research-center.png")
+            return dash.get_asset_url(
+                "facility-icons/power-systems-research-center.png"
+            )
         elif icon == "surface energy balance":
             return dash.get_asset_url("facility-icons/surface-energy-balance.png")
         elif icon == "vertical profiling lidar":
             return dash.get_asset_url("facility-icons/vertical-profiling-lidar.png")
         elif icon == "wind atlas":
-            return dash.get_asset_url("facility-icons/wind-atlas.png")    
+            return dash.get_asset_url("facility-icons/wind-atlas.png")
         elif icon == "wind energy research center":
             return dash.get_asset_url("facility-icons/wind-energy-research-center.png")
         elif icon == "wind energy test site":
-            return dash.get_asset_url("facility-icons/wind-energy-test-site.png")        
+            return dash.get_asset_url("facility-icons/wind-energy-test-site.png")
         elif icon == "wind turbine":
             return dash.get_asset_url("facility-icons/wind-turbine.png")
         elif icon == "wind farm":
-            return dash.get_asset_url("facility-icons/wind-farm.png")        
+            return dash.get_asset_url("facility-icons/wind-farm.png")
         else:
             return dash.get_asset_url("facility-icons/default.png")
 
@@ -478,7 +492,6 @@ def get_icon(icon):
     }
 
     return icon
-        
 
 
 def create_facility_map_leaflet(df_map, dff_selected):
@@ -490,12 +503,12 @@ def create_facility_map_leaflet(df_map, dff_selected):
     # "on click" should use https://github.com/thedirtyfew/dash-leaflet/issues/5
 
     for index, facility in df_map.iterrows():
-        position=(facility["lat"], facility["lon"])
+        position = (facility["lat"], facility["lon"])
         if not pd.isna([position]).any():
-            markers.append(            
+            markers.append(
                 dl.Marker(
                     position=position,
-                    icon = get_icon(facility["icon"]),
+                    icon=get_icon(facility["icon"]),
                     id={
                         "type": "facility",
                         # "row": facility["facility-id"],
@@ -515,9 +528,7 @@ def create_facility_map_leaflet(df_map, dff_selected):
     map_zoom = get_map_zoom(df_map)
     map_center = get_map_center(df_map)
 
-    attribution = (
-        '&copy; <a href="https://www.openstreetmap.org/about/" target="_blank">OpenStreetMap</a> '
-    )
+    attribution = '&copy; <a href="https://www.openstreetmap.org/about/" target="_blank">OpenStreetMap</a> '
 
     if dff_selected.empty:
         leaflet_map = dl.Map(
@@ -562,9 +573,13 @@ def points_not_shown_warning():
     return html.I(
         [
             html.Small(
-        ["Facilities without a defined location - e.g., satellites or data portals - are only listed in the table."]),
+                [
+                    "Facilities without a defined location - e.g., satellites or data portals - are only listed in the table."
+                ]
+            ),
         ],
-        className="py-0 my-1")
+        className="py-0 my-1",
+    )
 
 
 # -----------------------
@@ -668,23 +683,30 @@ def get_card_facility_title_element(dff_selected):
 
     title_element = html.Div(
         [
-            html.H4(dff_selected["name"],
-                style ={"display":"inline-block",
-                "float": "left",
-                "margin-right": "1em"}),
+            html.H4(
+                dff_selected["name"],
+                style={
+                    "display": "inline-block",
+                    "float": "left",
+                    "margin-right": "1em",
+                },
+            ),
             html.Span(
                 dff_selected["type_property"],
-                id = "tabs-tags",
-                className = "badge rounded-pill text-bg-primary align-top",
-                style={"vertical-align": "top", 
-                    "font-size":"x-small",
-                    "display":"inline-block"}
-                )
+                id="tabs-tags",
+                className="badge rounded-pill text-bg-primary align-top",
+                style={
+                    "vertical-align": "top",
+                    "font-size": "x-small",
+                    "display": "inline-block",
+                },
+            ),
         ],
-        style={"display":"inline-block"}
+        style={"display": "inline-block"},
     )
 
     return title_element
+
 
 def get_card_facility_description_element(dff_selected):
     """
@@ -712,25 +734,29 @@ def get_card_facility_description_element(dff_selected):
         # get the description text
         if info_dict.get("description"):
             description_text = info_dict.get("description")
-            description_text_element = dcc.Markdown(description_text, dangerously_allow_html=True)
+            description_text_element = dcc.Markdown(
+                description_text, dangerously_allow_html=True
+            )
         else:
-            description_text_element = []        
+            description_text_element = []
 
         # check if it has a quote we want to use
         if info_dict.get("quote"):
-            description_quote_element = dcc.Markdown('> ' + info_dict.get("quote") + '', dangerously_allow_html=True)
+            description_quote_element = dcc.Markdown(
+                "> " + info_dict.get("quote") + "", dangerously_allow_html=True
+            )
             if info_dict.get("quote"):
                 description_source_element = html.Footer(
-                        [
-                            "from ",
-                            html.A(
-                                urlparse(info_dict.get("source")).netloc,
-                                href="".join(info_dict.get("source")),
-                                target="_blank"
-                            ),
-                        ],
-                        className="blockquote-footer"
-                    )
+                    [
+                        "from ",
+                        html.A(
+                            urlparse(info_dict.get("source")).netloc,
+                            href="".join(info_dict.get("source")),
+                            target="_blank",
+                        ),
+                    ],
+                    className="blockquote-footer",
+                )
             else:
                 description_source_element = []
         else:
@@ -744,12 +770,21 @@ def get_card_facility_description_element(dff_selected):
 
         # create links to go with it
         if info_dict.get("homepage"):
-            link_button_home = create_www_link_button(info_dict["homepage"], button_text="Homepage",button_color="primary")
+            link_button_home = create_www_link_button(
+                info_dict["homepage"], button_text="Homepage", button_color="primary"
+            )
         else:
-            link_button_home = create_www_link_button("", button_text="Homepage",button_color="primary")
+            link_button_home = create_www_link_button(
+                "", button_text="Homepage", button_color="primary"
+            )
 
         if info_dict.get("eawe-pdf"):
-            link_button_eawe_pdf = create_www_link_button(info_dict["eawe-pdf"], button_text="EAWE information", icon_classes="fa-solid fa-file-pdf", button_color="primary")
+            link_button_eawe_pdf = create_www_link_button(
+                info_dict["eawe-pdf"],
+                button_text="EAWE information",
+                icon_classes="fa-solid fa-file-pdf",
+                button_color="primary",
+            )
         else:
             link_button_eawe_pdf = []
 
@@ -776,12 +811,18 @@ def get_card_facility_description_element(dff_selected):
                     description_source_element,
                     description_note_element,
                     html.Div(
-                    [
-                        html.Div([link_button_home, link_button_eawe_pdf, link_button_GoogleMaps]),
-                        html.Div([link_button_feedback])
-                    ],
-                    className= "d-flex justify-content-between"
-                    )
+                        [
+                            html.Div(
+                                [
+                                    link_button_home,
+                                    link_button_eawe_pdf,
+                                    link_button_GoogleMaps,
+                                ]
+                            ),
+                            html.Div([link_button_feedback]),
+                        ],
+                        className="d-flex justify-content-between",
+                    ),
                 ]
             )
         ]
@@ -862,52 +903,59 @@ def get_card_availabledata_element(dff_selected):
     availabledata_list = create_Ul(dff_selected["availabledata_specific"].squeeze())
 
     if dff_selected["availabledata_portal"].any():
-        dataportal_button = create_www_link_button(dff_selected["availabledata_portal"].squeeze(), button_text="data portal", button_color="primary", icon_classes="fa-solid fa-database")
+        dataportal_button = create_www_link_button(
+            dff_selected["availabledata_portal"].squeeze(),
+            button_text="data portal",
+            button_color="primary",
+            icon_classes="fa-solid fa-database",
+        )
     else:
         dataportal_button = []
-            
 
     if dff_selected["availabledata_desc"].any():
         description_text = dff_selected["availabledata_desc"]
-        description_text_element = dcc.Markdown(description_text, dangerously_allow_html=True)
+        description_text_element = dcc.Markdown(
+            description_text, dangerously_allow_html=True
+        )
     else:
         description_text_element = []
 
     availabledata_element = [
         description_text_element,
-                            html.P("Available data:"), 
-                            availabledata_list, 
-                            dataportal_button
-                            ]
-    
-        
+        html.P("Available data:"),
+        availabledata_list,
+        dataportal_button,
+    ]
+
     return availabledata_element
 
 
 def create_action_buttons():
-    action_element = dbc.Row([
-            dbc.Col(
-                [create_feedback_button(), create_about_button()]
-            )
-    ],className="mb-2")
+    action_element = dbc.Row(
+        [dbc.Col([create_feedback_button(), create_about_button()])], className="mb-2"
+    )
 
     return action_element
 
+
 def create_feedback_button():
 
-    feedback_button = create_www_link_button(url = "https://forms.office.com/e/DfjQ6yPuyQ",
-        button_text ="Send feedback",
+    feedback_button = create_www_link_button(
+        url="https://forms.office.com/e/DfjQ6yPuyQ",
+        button_text="Send feedback",
         icon_classes="fa-regular fa-comment",
-        button_color = "secondary")
+        button_color="primary",
+    )
 
     return feedback_button
 
+
 def create_about_button():
     about_button = dbc.Button(
-        "About this app",
+        [html.I(className="fa-solid fa-circle-info"), " ", "About this app"],
         id="about-button",
         className="me-1 btn btn-sm px-sm-3 px-lg-2 py-sm-2 py-lg-1 mb-sm-2 mb-lg-1",
-        color="secondary",
+        color="primary",
         n_clicks=0,
     )
 
@@ -926,12 +974,15 @@ def create_about_element():
                             html.P(
                                 "The data sources used in this app are all in the public domain, and include:"
                             ),
-                            dcc.Markdown(['''
+                            dcc.Markdown(
+                                [
+                                    """
                                 * Each facility's own web page
                                 * European Academy of Wind Energy (EAWE)
                                 * The Wind Resource Assessment Group's wiki on [groups.io](https://groups.io/g/wrag/wiki/13236)
-                                '''
-                            ]),                            
+                                """
+                                ]
+                            ),
                             html.P(
                                 "These information sources have been acknowledged and listed where applicable."
                             ),
@@ -939,8 +990,11 @@ def create_about_element():
                             html.P(
                                 [
                                     "This app is built using ",
-                                    html.A("Dash", href="https://dash.plotly.com/",
-                                    target="_blank"),
+                                    html.A(
+                                        "Dash",
+                                        href="https://dash.plotly.com/",
+                                        target="_blank",
+                                    ),
                                     ", an open source library for python used to create data visualisations. ",
                                 ]
                             ),
@@ -955,17 +1009,20 @@ def create_about_element():
                                         href="https://eu.pythonanywhere.com",
                                         target="_blank",
                                     ),
-                                    "."
+                                    ".",
                                 ]
                             ),
                             html.H3("An Open Source project"),
-                            html.P([
-                                "The source code used for this website is available ",
-                                html.A("on GitHub",
-                                href="https://github.com/enviconnect/public-EnergyRnDFacilitiesExplorer",
-                                target="_blank"),
-                                "."
-                            ]
+                            html.P(
+                                [
+                                    "The source code used for this website is available ",
+                                    html.A(
+                                        "on GitHub",
+                                        href="https://github.com/enviconnect/public-EnergyRnDFacilitiesExplorer",
+                                        target="_blank",
+                                    ),
+                                    ".",
+                                ]
                             ),
                             html.H3("Disclaimer"),
                             html.P(
@@ -1011,7 +1068,7 @@ layout = dbc.Container(
                             width=12,
                         ),
                     ],
-                    className="title h-10 pt-2 mx-0 mb-2",
+                    className="title h-10 pt-2 mb-2",
                 ),
             ]
         ),
@@ -1029,31 +1086,29 @@ layout = dbc.Container(
                         dbc.Col(
                             [
                                 dbc.Row(
-                                [
-                                    dbc.Col(
-                                        [
-                                create_facility_map_leaflet(df, pd.DataFrame()),
+                                    [
+                                        dbc.Col(
+                                            [
+                                                create_facility_map_leaflet(
+                                                    df, pd.DataFrame()
+                                                ),
+                                            ],
+                                            id="facility-map-leaflet",
+                                            className="col-12",
+                                        )
+                                    ]
+                                ),
+                                dbc.Row(
+                                    [points_not_shown_warning()],
+                                    id="points-not-shown-warning",
+                                    className="",
+                                ),
                             ],
-                            id="facility-map-leaflet",
-                            className="col-12"
-                                    )
-                                ]
-                            ),
-                            dbc.Row(
-                                [
-                                    points_not_shown_warning()
-                                ],
-                                id = "points-not-shown-warning",
-                                className = ""
-                            )
-                            ],
-                            className="col-12 col-lg-6"
+                            className="col-12 col-lg-6",
                         ),
-                        #table column
+                        # table column
                         dbc.Col(
-                            [
-                            html.Div(create_sortable_facility_table(df))
-                            ],
+                            [html.Div(create_sortable_facility_table(df))],
                             className="col-12 col-lg-6 mt-2 mt-lg-0",
                         ),
                     ],
@@ -1066,13 +1121,16 @@ layout = dbc.Container(
                         dbc.Col(
                             [
                                 dbc.Row(create_selectors(df)),
-                                dbc.Alert([
-                                    html.I(className="fa-regular fa-face-frown"), 
-                                    " ",
-                                    "No facilities found that match all filters."],
+                                dbc.Alert(
+                                    [
+                                        html.I(className="fa-regular fa-face-frown"),
+                                        " ",
+                                        "No facilities found that match all filters.",
+                                    ],
                                     color="warning",
-                                    id = "no-results-warning",
-                                    className="my-1 py-1")
+                                    id="no-results-warning",
+                                    className="my-1 py-1",
+                                ),
                             ],
                             className="col-12 col-lg-10",
                         ),
@@ -1089,7 +1147,7 @@ layout = dbc.Container(
                                 "Facility information",
                             ],
                             id="tabs-title",
-                        ),                        
+                        ),
                         dbc.Tabs(
                             [
                                 dbc.Tab(
@@ -1167,7 +1225,7 @@ def get_filtered_facilities(
     no_results_warning = False
 
     if dff.empty:
-        no_results_warning = True    
+        no_results_warning = True
 
     return dff.to_json(orient="records"), no_results_warning
 
@@ -1186,6 +1244,7 @@ def update_table(jsonified_filtered_facilities):
     df_table.rename(columns={"type_property": "type"}, inplace=True)
 
     return df_table.to_dict("records")
+
 
 @dash.callback(
     Output("facility-map-leaflet", "children"),
@@ -1220,19 +1279,23 @@ def update_map(jsonified_filtered_facilities, jsonified_selected_facility):
     Output("sortable-facility-table", "selected_cells"),
     Output("sortable-facility-table", "active_cell"),
     Input({"id": ALL, "type": "facility"}, "n_clicks"),
-    Input("sortable-facility-table", "active_cell"),  
-    Input("country_selector", "value"),    
+    Input("sortable-facility-table", "active_cell"),
+    Input("country_selector", "value"),
     Input("facilitytype_selector", "value"),
     Input("infrastructure_selector", "value"),
     Input("availabledata_selector", "value"),
 )
-def select_facility(n_clicks, active_cell, countries_selected="",
+def select_facility(
+    n_clicks,
+    active_cell,
+    countries_selected="",
     facilitytypes_selected="",
     infrastructure_selected="",
-    availabledata_selected=""):
+    availabledata_selected="",
+):
 
     # create default values; these may be overwritten
-    dff_selected = pd.DataFrame(columns = df.columns)
+    dff_selected = pd.DataFrame(columns=df.columns)
 
     # first establish where the trigger came from
 
@@ -1291,7 +1354,7 @@ def select_facility(n_clicks, active_cell, countries_selected="",
     Output("tab-infrastructure", "disabled"),
     Output("tab-availabledata", "children"),
     Output("tab-availabledata", "disabled"),
-    Output("card-tabs","active_tab"),
+    Output("card-tabs", "active_tab"),
     Input("selected-facility-store", "data"),
 )
 def update_information_tabs(jsonified_selected_facility):
@@ -1313,7 +1376,7 @@ def update_information_tabs(jsonified_selected_facility):
 
     if jsonified_selected_facility == "":
         dff_selected = pd.DataFrame()
-    else: 
+    else:
         dff_selected = pd.read_json(jsonified_selected_facility, orient="records")
 
     if len(dff_selected) >= 1:
@@ -1344,5 +1407,5 @@ def update_information_tabs(jsonified_selected_facility):
         tab_infrastructure_disabled,
         tab_availabledata_element,
         tab_availabledata_disabled,
-        active_tab
+        active_tab,
     )
