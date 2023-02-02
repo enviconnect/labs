@@ -153,7 +153,7 @@ def fetch_form_responses():
     return df_in
 
 
-df_in = fetch_form_responses()
+# df_in = fetch_form_responses()
 
 
 def prepare_form_responses(df_in):
@@ -235,7 +235,7 @@ def prepare_form_responses(df_in):
     return df_in
 
 
-df_in_clean = prepare_form_responses(df_in)
+# df_in_clean = prepare_form_responses(df_in)
 
 # ------------------
 # Convert wide data to long data
@@ -299,7 +299,7 @@ def convert_form_responses_to_long(df_in):
     return df_long
 
 
-df_long = convert_form_responses_to_long(df_in_clean)
+# df_long = convert_form_responses_to_long(df_in_clean)
 
 # --------------------
 # Get categories that are present in the responses
@@ -529,218 +529,237 @@ def fig_styling(fig):
 # Create the layout for this page
 # -----------------------------
 
-layout = dbc.Container(
-    [
-        # title row
-        html.Div(
-            [
-                dbc.Row(
-                    [
-                        dbc.Col([html.H1("Wind Lidar Usage Survey Results")], width=12),
-                    ],
-                    className="title h-10 pt-2 mb-2",
-                ),
-            ]
-        ),
-        # Alerts
-        html.Div(
-            [
-                dbc.Alert(
-                    [
-                        html.H4("Demonstration only!", className="alert-heading"),
-                        html.P(
-                            "This is a work in progress and data are for demonstration purposes. The actual survey will open for responses in 2023. Results will be made available as they are collected."
-                        ),
-                    ],
-                    color="warning",
-                ),
-            ]
-        ),
-        # content
-        html.Div(
-            [
-                # logging row
-                dbc.Row(
-                    dbc.Col([html.Div(id="log")]),
-                ),
-                # survey information row
-                dbc.Row(
-                    [
-                        # Number of responses
-                        dbc.Col(
-                            [
-                                dbc.Card(
-                                    [
-                                        dbc.CardBody(
-                                            [
-                                                html.H4(
-                                                    [
-                                                        str(
-                                                            len(
-                                                                df_in_clean.Timestamp.unique()
-                                                            )
-                                                        )
-                                                        + " responses"
-                                                    ],
-                                                    className="card-title",
-                                                ),
-                                                html.Ul(
-                                                    children=[
-                                                        html.Li(
+
+def layout():
+
+    # read the google data each time the page is refreshed
+    df_in = fetch_form_responses()
+    df_in_clean = prepare_form_responses(df_in)
+    df_long = convert_form_responses_to_long(df_in_clean)
+
+    # now generate the layout
+    layout = dbc.Container(
+        [
+            # reload the data
+            # title row
+            html.Div(
+                [
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                [html.H1("Wind Lidar Usage Survey Results")], width=12
+                            ),
+                        ],
+                        className="title h-10 pt-2 mb-2",
+                    ),
+                ]
+            ),
+            # Alerts
+            html.Div(
+                [
+                    dbc.Alert(
+                        [
+                            html.H4("Demonstration only!", className="alert-heading"),
+                            html.P(
+                                "This is a work in progress and data are for demonstration purposes. The actual survey will open for responses in 2023. Results will be made available as they are collected."
+                            ),
+                        ],
+                        color="warning",
+                    ),
+                ]
+            ),
+            # content
+            html.Div(
+                [
+                    # logging row
+                    dbc.Row(
+                        dbc.Col([html.Div(id="log")]),
+                    ),
+                    # survey information row
+                    dbc.Row(
+                        [
+                            # Number of responses
+                            dbc.Col(
+                                [
+                                    dbc.Card(
+                                        [
+                                            dbc.CardBody(
+                                                [
+                                                    html.H4(
+                                                        [
                                                             str(
                                                                 len(
-                                                                    df_in_clean.continent.unique()
+                                                                    df_in_clean.Timestamp.unique()
                                                                 )
                                                             )
-                                                            + " continents"
-                                                        ),
-                                                        html.Li(
-                                                            str(
-                                                                len(
-                                                                    df_in_clean.country_name.unique()
+                                                            + " responses"
+                                                        ],
+                                                        className="card-title",
+                                                    ),
+                                                    html.Ul(
+                                                        children=[
+                                                            html.Li(
+                                                                str(
+                                                                    len(
+                                                                        df_in_clean.continent.unique()
+                                                                    )
                                                                 )
-                                                            )
-                                                            + " countries"
-                                                        ),
-                                                    ]
-                                                ),
-                                                dbc.Button(
-                                                    [
-                                                        html.I(
-                                                            className="fa-solid fa-map-location-dot"
-                                                        ),
-                                                        " Add yours",
-                                                    ],
-                                                    href="",  # .join("https://forms.gle/ALAAa6KpztHH8Uh6A"),
-                                                    target="_blank",
-                                                    color="primary",
-                                                    disabled=False,
-                                                    className="me-1 btn btn-primary btn-sm",
-                                                ),
-                                            ]
-                                        )
-                                    ]
-                                )
-                            ],
-                            class_name="col-12 col-md-4 col-lg-2 pb-md-4 pb-4",
-                        ),
-                        # Map of responses
-                        dbc.Col(
-                            [
-                                dbc.Card(
-                                    [
-                                        dbc.CardBody(
-                                            [
-                                                html.H4(
-                                                    "Responses per country",
-                                                    className="card-title",
-                                                ),
-                                                dcc.Graph(
-                                                    id="respondent_map",
-                                                    figure=fig_map_responses(
-                                                        df_in_clean
-                                                    ),
-                                                    style={"height": "300px"},
-                                                    responsive=True,
-                                                ),
-                                            ]
-                                        )
-                                    ]
-                                )
-                            ],
-                            class_name="col-12 col-md-8 col-lg-4 pb-md-4 pb-4",
-                        ),
-                        # Respondent types
-                        dbc.Col(
-                            [
-                                dbc.Card(
-                                    [
-                                        dbc.CardBody(
-                                            [
-                                                html.H4(
-                                                    "Applications",
-                                                    className="card-title",
-                                                ),
-                                                dcc.Graph(
-                                                    id="fig_pa",
-                                                    figure=fig_pc_responses(
-                                                        df_in_clean
-                                                    ),
-                                                    style={"height": "300px"},
-                                                    responsive=True,
-                                                ),
-                                            ]
-                                        )
-                                    ]
-                                ),
-                            ],
-                            class_name="col-12 col-lg-6 pb-4",
-                        ),
-                        # time series of power
-                        dbc.Col(
-                            [
-                                dbc.Card(
-                                    [
-                                        dbc.CardBody(
-                                            [
-                                                html.H4(
-                                                    "Measurement campaigns",
-                                                    className="card-title",
-                                                ),
-                                                # the figure itself
-                                                dcc.Graph(
-                                                    figure=fig_ts_p(
-                                                        df_in_clean[
-                                                            df_in_clean["land_offshore"]
-                                                            == "On land"
+                                                                + " continents"
+                                                            ),
+                                                            html.Li(
+                                                                str(
+                                                                    len(
+                                                                        df_in_clean.country_name.unique()
+                                                                    )
+                                                                )
+                                                                + " countries"
+                                                            ),
                                                         ]
                                                     ),
-                                                    id="timeseries_power",
-                                                    responsive=True,
-                                                    style={"height": "300px"},
-                                                ),
-                                            ],
-                                        )
-                                    ]
-                                )
-                            ],
-                            class_name="col-12 pb-4",
-                        ),
-                        # Lidars per MW
-                        dbc.Col(
-                            [
-                                dbc.Card(
-                                    [
-                                        dbc.CardBody(
-                                            [
-                                                html.H4(
-                                                    "Lidar usage rates",
-                                                    className="card-title",
-                                                ),
-                                                dcc.Graph(
-                                                    figure=fig_lidars_per_MW(df_long),
-                                                    id="lidars_per_MW",
-                                                    responsive=True,
-                                                    style={"height": "400px"},
-                                                ),
-                                            ],
-                                        )
-                                    ]
-                                ),
-                            ],
-                            class_name="col-12 pb-2",
-                        ),
-                    ],
-                ),
-            ],
-            className="content",
-            style={"min-height": "80vh"},
-        ),
-    ],
-    fluid=False,
-    className="dbc h-80",
-    style={"min-height": "80vh"},
-)
+                                                    dbc.Button(
+                                                        [
+                                                            html.I(
+                                                                className="fa-solid fa-map-location-dot"
+                                                            ),
+                                                            " Add yours",
+                                                        ],
+                                                        href="",  # .join("https://forms.gle/ALAAa6KpztHH8Uh6A"),
+                                                        target="_blank",
+                                                        color="primary",
+                                                        disabled=False,
+                                                        className="me-1 btn btn-primary btn-sm",
+                                                    ),
+                                                ]
+                                            )
+                                        ]
+                                    )
+                                ],
+                                class_name="col-12 col-md-4 col-lg-2 pb-md-4 pb-4",
+                            ),
+                            # Map of responses
+                            dbc.Col(
+                                [
+                                    dbc.Card(
+                                        [
+                                            dbc.CardBody(
+                                                [
+                                                    html.H4(
+                                                        "Responses per country",
+                                                        className="card-title",
+                                                    ),
+                                                    dcc.Graph(
+                                                        id="respondent_map",
+                                                        figure=fig_map_responses(
+                                                            df_in_clean
+                                                        ),
+                                                        style={"height": "300px"},
+                                                        responsive=True,
+                                                    ),
+                                                ]
+                                            )
+                                        ]
+                                    )
+                                ],
+                                class_name="col-12 col-md-8 col-lg-4 pb-md-4 pb-4",
+                            ),
+                            # Respondent types
+                            dbc.Col(
+                                [
+                                    dbc.Card(
+                                        [
+                                            dbc.CardBody(
+                                                [
+                                                    html.H4(
+                                                        "Applications",
+                                                        className="card-title",
+                                                    ),
+                                                    dcc.Graph(
+                                                        id="fig_pa",
+                                                        figure=fig_pc_responses(
+                                                            df_in_clean
+                                                        ),
+                                                        style={"height": "300px"},
+                                                        responsive=True,
+                                                    ),
+                                                ]
+                                            )
+                                        ]
+                                    ),
+                                ],
+                                class_name="col-12 col-lg-6 pb-4",
+                            ),
+                            # time series of power
+                            dbc.Col(
+                                [
+                                    dbc.Card(
+                                        [
+                                            dbc.CardBody(
+                                                [
+                                                    html.H4(
+                                                        "Measurement campaigns",
+                                                        className="card-title",
+                                                    ),
+                                                    # the figure itself
+                                                    dcc.Graph(
+                                                        figure=fig_ts_p(
+                                                            df_in_clean[
+                                                                df_in_clean[
+                                                                    "land_offshore"
+                                                                ]
+                                                                == "On land"
+                                                            ]
+                                                        ),
+                                                        id="timeseries_power",
+                                                        responsive=True,
+                                                        style={"height": "300px"},
+                                                    ),
+                                                ],
+                                            )
+                                        ]
+                                    )
+                                ],
+                                class_name="col-12 pb-4",
+                            ),
+                            # Lidars per MW
+                            dbc.Col(
+                                [
+                                    dbc.Card(
+                                        [
+                                            dbc.CardBody(
+                                                [
+                                                    html.H4(
+                                                        "Lidar usage rates",
+                                                        className="card-title",
+                                                    ),
+                                                    dcc.Graph(
+                                                        figure=fig_lidars_per_MW(
+                                                            df_long
+                                                        ),
+                                                        id="lidars_per_MW",
+                                                        responsive=True,
+                                                        style={"height": "400px"},
+                                                    ),
+                                                ],
+                                            )
+                                        ]
+                                    ),
+                                ],
+                                class_name="col-12 pb-2",
+                            ),
+                        ],
+                    ),
+                ],
+                className="content",
+                style={"min-height": "80vh"},
+            ),
+        ],
+        fluid=False,
+        className="dbc h-80",
+        style={"min-height": "80vh"},
+    )
+
+    return layout
+
 
 # -----------------------------
 # Callbacks
