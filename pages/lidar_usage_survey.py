@@ -32,6 +32,7 @@ from urllib.parse import urlparse
 # specific to this app
 import country_converter as coco
 import gspread
+from datetime import date
 
 
 # ------------------------------------
@@ -446,21 +447,20 @@ def fig_ts_p(df_plot):
         },
     )
 
-    fig.update_xaxes(title="Year started")
-    fig.update_yaxes(title="Project power (MW)")
+    fig.update_xaxes(
+        title="Year started", range=[2004, round_up_to_base(date.today().year, 2)]
+    )
+    fig.update_yaxes(
+        title="Project power (MW)",
+        range=[0, round_up_to_base(df_plot.project_power.max(), 200)],
+    )
+
     fig.update_layout(
         legend=dict(
             title="Measurement goal", yanchor="top", y=0.95, xanchor="left", x=0.05
-        )
-    )
-
-    fig.update_layout(
+        ),
         margin=dict(t=0, b=0, l=0, r=0),
     )
-
-    fig.update_yaxes(range=[0, round_up_to_base(df_plot.project_power.max(), 200)])
-
-    fig.update_xaxes(range=[2004, round_up_to_base(df_plot.year_started.max(), 4)])
 
     fig = fig_styling(fig)
 
@@ -476,8 +476,8 @@ def fig_lidars_per_MW(df_plot):
         df_plot[df_plot["n_lidar_type"] > 0],
         x="lidar_type_short_name",
         y="lidars_per_MW",
+        range_y=[0, round_up_to_base(df_plot["lidars_per_MW"].max(), 0.05)],
         size="project_power",
-        facet_col="land_offshore",
         color="measurement_goal",
         category_orders={
             "measurement_goal": actual_category_order(df_plot, "measurement_goal"),
@@ -486,21 +486,17 @@ def fig_lidars_per_MW(df_plot):
             ),
         },
         labels={
-            "lidars_per_MW": "Lidars used per MW of project size",
+            "lidars_per_MW": "Lidars used per project MW",
             "lidar_type_short_name": "Lidar type",
         },
     )
-
-    fig.for_each_annotation(lambda a: a.update(text=a.text.split("=")[-1]))
 
     # fig.update_xaxes(title = "Lidar type")
     # fig.update_yaxes(title = "Lidars used per MW of project size")
     fig.update_layout(
         legend=dict(
             title="Measurement goal", yanchor="top", y=0.95, xanchor="right", x=0.95
-        )
-    )
-    fig.update_layout(
+        ),
         margin=dict(t=20, b=0, l=0, r=0),
     )
 
@@ -699,6 +695,7 @@ def layout():
                                                         "Measurement campaigns",
                                                         className="card-title",
                                                     ),
+                                                    html.H5("On Land"),
                                                     # the figure itself
                                                     dcc.Graph(
                                                         figure=fig_ts_p(
@@ -707,6 +704,36 @@ def layout():
                                                                     "land_offshore"
                                                                 ]
                                                                 == "On land"
+                                                            ]
+                                                        ),
+                                                        id="timeseries_power",
+                                                        responsive=True,
+                                                        style={"height": "300px"},
+                                                    ),
+                                                    html.H5("Offshore"),
+                                                    # the figure itself
+                                                    dcc.Graph(
+                                                        figure=fig_ts_p(
+                                                            df_in_clean[
+                                                                df_in_clean[
+                                                                    "land_offshore"
+                                                                ]
+                                                                == "Offshore"
+                                                            ]
+                                                        ),
+                                                        id="timeseries_power",
+                                                        responsive=True,
+                                                        style={"height": "300px"},
+                                                    ),
+                                                    html.H5("Unknown"),
+                                                    # the figure itself
+                                                    dcc.Graph(
+                                                        figure=fig_ts_p(
+                                                            df_in_clean[
+                                                                df_in_clean[
+                                                                    "land_offshore"
+                                                                ]
+                                                                == "N/A"
                                                             ]
                                                         ),
                                                         id="timeseries_power",
@@ -731,13 +758,81 @@ def layout():
                                                         "Lidar usage rates",
                                                         className="card-title",
                                                     ),
-                                                    dcc.Graph(
-                                                        figure=fig_lidars_per_MW(
-                                                            df_long
-                                                        ),
-                                                        id="lidars_per_MW",
-                                                        responsive=True,
-                                                        style={"height": "400px"},
+                                                    dbc.Row(
+                                                        [
+                                                            dbc.Col(
+                                                                [
+                                                                    html.H5(
+                                                                        "On land",
+                                                                        className="card-title",
+                                                                    ),
+                                                                    dcc.Graph(
+                                                                        figure=fig_lidars_per_MW(
+                                                                            df_long[
+                                                                                df_long[
+                                                                                    "land_offshore"
+                                                                                ]
+                                                                                == "On land"
+                                                                            ]
+                                                                        ),
+                                                                        id="lidars_per_MW_land",
+                                                                        responsive=True,
+                                                                        style={
+                                                                            "height": "400px"
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                                className="col-12 col-md-4",
+                                                            ),
+                                                            dbc.Col(
+                                                                [
+                                                                    html.H5(
+                                                                        "Offshore",
+                                                                        className="card-title",
+                                                                    ),
+                                                                    dcc.Graph(
+                                                                        figure=fig_lidars_per_MW(
+                                                                            df_long[
+                                                                                df_long[
+                                                                                    "land_offshore"
+                                                                                ]
+                                                                                == "Offshore"
+                                                                            ]
+                                                                        ),
+                                                                        id="lidars_per_MW_offshore",
+                                                                        responsive=True,
+                                                                        style={
+                                                                            "height": "400px"
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                                className="col-12 col-md-4",
+                                                            ),
+                                                            dbc.Col(
+                                                                [
+                                                                    html.H5(
+                                                                        "Unknown",
+                                                                        className="card-title",
+                                                                    ),
+                                                                    dcc.Graph(
+                                                                        figure=fig_lidars_per_MW(
+                                                                            df_long[
+                                                                                df_long[
+                                                                                    "land_offshore"
+                                                                                ]
+                                                                                == "N/A"
+                                                                            ]
+                                                                        ),
+                                                                        id="lidars_per_MW_unknown",
+                                                                        responsive=True,
+                                                                        style={
+                                                                            "height": "400px"
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                                className="col-12 col-md-4",
+                                                            ),
+                                                        ]
                                                     ),
                                                 ],
                                             )
