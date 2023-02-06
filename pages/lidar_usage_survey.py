@@ -784,7 +784,7 @@ def layout():
                                         [
                                             dbc.CardBody(
                                                 [
-                                                    html.H4(
+                                                    html.H2(
                                                         "Lidar usage rates",
                                                         className="card-title",
                                                     ),
@@ -812,7 +812,7 @@ def layout():
                                                                         },
                                                                     ),
                                                                 ],
-                                                                className="col-12 col-md-4",
+                                                                className="col-12 col-lg-4",
                                                             ),
                                                             dbc.Col(
                                                                 [
@@ -836,7 +836,7 @@ def layout():
                                                                         },
                                                                     ),
                                                                 ],
-                                                                className="col-12 col-md-4",
+                                                                className="col-12 col-lg-4",
                                                             ),
                                                             dbc.Col(
                                                                 [
@@ -860,7 +860,7 @@ def layout():
                                                                         },
                                                                     ),
                                                                 ],
-                                                                className="col-12 col-md-4",
+                                                                className="col-12 col-lg-4",
                                                             ),
                                                         ]
                                                     ),

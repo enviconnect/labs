@@ -70,8 +70,13 @@ body {
   padding-bottom: 4px;
 }
 
+.content .card-title {
+    color: #212121;
+}
+
+
 .content .card-text {
-    color: #000;
+    color: #212121;
 }
 
 .content blockquote p {
