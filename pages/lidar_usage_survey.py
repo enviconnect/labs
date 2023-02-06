@@ -44,7 +44,7 @@ dash.register_page(
     title="Wind lidar usage",
     name="Wind lidar usage",
     description="Interactive results of a survey about how wind lidar are used in the wind energy industry",
-    path="/lidar_usage_survey2022",
+    path="/lidar_usage_survey2023",
     image="images/explorer.png",
 )
 
@@ -620,7 +620,9 @@ def layout():
                                                             ),
                                                             " Add yours",
                                                         ],
-                                                        href="",  # .join("https://forms.gle/ALAAa6KpztHH8Uh6A"),
+                                                        href="".join(
+                                                            "https://forms.gle/ALAAa6KpztHH8Uh6A"
+                                                        ),
                                                         target="_blank",
                                                         color="primary",
                                                         disabled=False,
