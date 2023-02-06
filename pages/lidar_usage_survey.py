@@ -498,6 +498,7 @@ def fig_lidars_per_MW(df_plot):
             title="Measurement goal", yanchor="top", y=0.95, xanchor="right", x=0.95
         ),
         margin=dict(t=20, b=0, l=0, r=0),
+        xaxis=dict(tickangle=90),
     )
 
     fig = fig_styling(fig)
@@ -691,54 +692,83 @@ def layout():
                                         [
                                             dbc.CardBody(
                                                 [
-                                                    html.H4(
-                                                        "Measurement campaigns",
-                                                        className="card-title",
+                                                    dbc.Row(
+                                                        [
+                                                            html.H2(
+                                                                "Measurement campaigns",
+                                                                className="card-title",
+                                                            ),
+                                                        ]
                                                     ),
-                                                    html.H5("On Land"),
-                                                    # the figure itself
-                                                    dcc.Graph(
-                                                        figure=fig_ts_p(
-                                                            df_in_clean[
-                                                                df_in_clean[
-                                                                    "land_offshore"
-                                                                ]
-                                                                == "On land"
-                                                            ]
-                                                        ),
-                                                        id="timeseries_power",
-                                                        responsive=True,
-                                                        style={"height": "300px"},
-                                                    ),
-                                                    html.H5("Offshore"),
-                                                    # the figure itself
-                                                    dcc.Graph(
-                                                        figure=fig_ts_p(
-                                                            df_in_clean[
-                                                                df_in_clean[
-                                                                    "land_offshore"
-                                                                ]
-                                                                == "Offshore"
-                                                            ]
-                                                        ),
-                                                        id="timeseries_power",
-                                                        responsive=True,
-                                                        style={"height": "300px"},
-                                                    ),
-                                                    html.H5("Unknown"),
-                                                    # the figure itself
-                                                    dcc.Graph(
-                                                        figure=fig_ts_p(
-                                                            df_in_clean[
-                                                                df_in_clean[
-                                                                    "land_offshore"
-                                                                ]
-                                                                == "N/A"
-                                                            ]
-                                                        ),
-                                                        id="timeseries_power",
-                                                        responsive=True,
-                                                        style={"height": "300px"},
+                                                    dbc.Row(
+                                                        [
+                                                            dbc.Col(
+                                                                [
+                                                                    html.H5("On Land"),
+                                                                    # the figure itself
+                                                                    dcc.Graph(
+                                                                        figure=fig_ts_p(
+                                                                            df_in_clean[
+                                                                                df_in_clean[
+                                                                                    "land_offshore"
+                                                                                ]
+                                                                                == "On land"
+                                                                            ]
+                                                                        ),
+                                                                        id="timeseries_power",
+                                                                        responsive=True,
+                                                                        style={
+                                                                            "height": "300px"
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                                class_name="col-12 col-lg-4",
+                                                            ),
+                                                            dbc.Col(
+                                                                [
+                                                                    html.H5("Offshore"),
+                                                                    # the figure itself
+                                                                    dcc.Graph(
+                                                                        figure=fig_ts_p(
+                                                                            df_in_clean[
+                                                                                df_in_clean[
+                                                                                    "land_offshore"
+                                                                                ]
+                                                                                == "Offshore"
+                                                                            ]
+                                                                        ),
+                                                                        id="timeseries_power",
+                                                                        responsive=True,
+                                                                        style={
+                                                                            "height": "300px"
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                                class_name="col-12 col-lg-4",
+                                                            ),
+                                                            dbc.Col(
+                                                                [
+                                                                    html.H5("Unknown"),
+                                                                    # the figure itself
+                                                                    dcc.Graph(
+                                                                        figure=fig_ts_p(
+                                                                            df_in_clean[
+                                                                                df_in_clean[
+                                                                                    "land_offshore"
+                                                                                ]
+                                                                                == "N/A"
+                                                                            ]
+                                                                        ),
+                                                                        id="timeseries_power",
+                                                                        responsive=True,
+                                                                        style={
+                                                                            "height": "300px"
+                                                                        },
+                                                                    ),
+                                                                ],
+                                                                class_name="col-12 col-lg-4",
+                                                            ),
+                                                        ],
                                                     ),
                                                 ],
                                             )
