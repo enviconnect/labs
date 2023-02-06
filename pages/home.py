@@ -99,7 +99,7 @@ layout = dbc.Container(
                                                 dbc.Button(
                                                     "Go",
                                                     color="primary",
-                                                    href="lidar_usage_survey2023",
+                                                    href="lidar_usage_survey2022",
                                                     className="stretched-link",
                                                 ),
                                             ],
