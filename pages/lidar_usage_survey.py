@@ -41,10 +41,10 @@ from datetime import date
 
 dash.register_page(
     __name__,
-    title="Wind lidar usage",
-    name="Wind lidar usage",
+    title="Wind lidar applications",
+    name="Wind lidar applications",
     description="Interactive results of a survey about how wind lidar are used in the wind energy industry",
-    path="/lidar_usage_survey2022",
+    path="/lidar_applications_survey",
     image="images/explorer.png",
 )
 
@@ -147,7 +147,7 @@ def default_category_order(category):
 
 def fetch_form_responses():
     sa = gspread.service_account(filename=".secrets/lidars-per-mw-fae432341abd.json")
-    sheet = sa.open("lidar-per-mw-survey responses")
+    sheet = sa.open("lidar applications survey responses")
     work_sheet = sheet.worksheet("Form responses 1")
     df_in = pd.DataFrame(work_sheet.get_all_records())
 
@@ -162,13 +162,13 @@ def prepare_form_responses(df_in):
     # map them using a dictionary (column names may change)
     df_in.rename(
         columns={
-            "Your role in the project": "role",
-            "Was the project on land or offshore?": "land_offshore",
-            "What was the project stage?": "project_stage",
-            "What was the rated power of the whole project?": "project_power",
-            "What continent was the project on?": "continent",
-            "What country was the project in?": "country_name",
-            "When did wind lidar measurements start?": "year_started",
+            "Your role in the deployment": "role",
+            "Was the wind farm on land or offshore?": "land_offshore",
+            "What stage in its lifecycle was the wind farm development at?": "project_stage",
+            "What was the rated power of the wind farm?": "project_power",
+            "What continent was the wind lidar deployment on?": "continent",
+            "What country was the wind lidar deployment in?": "country_name",
+            "What year did the wind lidar measurements start?": "year_started",
             "What was the goal of the measurements?": "measurement_goal",
             "How many, and what type of lidar were used? [Ground-based vertically-profiling lidar]": "n_gb_vp",
             "How many, and what type of lidar were used? [Ground-based scanning lidar]": "n_gb_s",
@@ -178,6 +178,7 @@ def prepare_form_responses(df_in):
             "How many, and what type of lidar were used? [Vessel-mounted vertically-profiling lidar]": "n_vm_vp",
             "How many, and what type of lidar were used? [Vessel-mounted scanning lidar]": "n_vm_s",
             "Did you also use meteorological (met) towers?": "used_mettowers",
+            "Is this real data?": "real_data",
         },
         inplace=True,
     )
@@ -336,7 +337,7 @@ def fig_map_responses(df_plot):
         range_color=(1, df_response_pivot["count"].max() + 1),
         locationmode="ISO-3",
         locations="country_iso3",
-        labels={"count": "Responses per country"},
+        labels={"count": "Lidar deployments per country"},
         color_continuous_scale=[(0.00, "white"), (0.50, "#17A9AE"), (1.0, "black")],
     )
 
@@ -390,7 +391,7 @@ def fig_pc_responses(df_plot):
                     #    "categoryarray": role_category_order,
                 },
                 {
-                    "label": "Project Stage",
+                    "label": "Wind Farm Status",
                     "values": df_plot["project_stage"].tolist(),
                     "categoryorder": "array",
                     #    "categoryarray": project_stage_category_order,
@@ -425,7 +426,7 @@ def fig_pc_responses(df_plot):
     # fig_pa.update_traces(line_colorbar_y=-0.3)
     # fig_pa.update_traces(line_colorbar_title={"text": "Project size (MW)"})
 
-    fig.update_layout(margin=dict(t=0, b=0, l=50, r=15))
+    fig.update_layout(margin=dict(t=20, b=0, l=50, r=15))
 
     fig = fig_styling(fig)
 
@@ -451,11 +452,12 @@ def fig_ts_p(df_plot):
         title="Year started", range=[2004, round_up_to_base(date.today().year, 2)]
     )
     fig.update_yaxes(
-        title="Project power (MW)",
+        title="Wind farm power (MW)",
         range=[0, round_up_to_base(df_plot.project_power.max(), 200)],
     )
 
     fig.update_layout(
+        hovermode=False,
         legend=dict(
             title="Measurement goal", yanchor="top", y=0.95, xanchor="left", x=0.05
         ),
@@ -486,7 +488,7 @@ def fig_lidars_per_MW(df_plot):
             ),
         },
         labels={
-            "lidars_per_MW": "Lidars used per project MW",
+            "lidars_per_MW": "Lidars used per wind farm MW",
             "lidar_type_short_name": "Lidar type",
         },
     )
@@ -494,6 +496,9 @@ def fig_lidars_per_MW(df_plot):
     # fig.update_xaxes(title = "Lidar type")
     # fig.update_yaxes(title = "Lidars used per MW of project size")
     fig.update_layout(
+        # scattermode="group",
+        # scattergap=0.75,
+        hovermode=False,
         legend=dict(
             title="Measurement goal", yanchor="top", y=0.95, xanchor="right", x=0.95
         ),
@@ -589,9 +594,24 @@ def layout():
                                                                     df_in_clean.Timestamp.unique()
                                                                 )
                                                             )
-                                                            + " responses"
+                                                            + " "
+                                                            + "Survey responses"
                                                         ],
                                                         className="card-title",
+                                                    ),
+                                                    html.P(
+                                                        [
+                                                            "So far we've got data about "
+                                                            + str(
+                                                                int(
+                                                                    df_in_clean[
+                                                                        "n_lidar_project"
+                                                                    ].sum()
+                                                                )
+                                                            )
+                                                            + " "
+                                                            + "wind lidar, deployed in"
+                                                        ]
                                                     ),
                                                     html.Ul(
                                                         children=[
@@ -618,7 +638,7 @@ def layout():
                                                             html.I(
                                                                 className="fa-solid fa-map-location-dot"
                                                             ),
-                                                            " Add yours",
+                                                            " Take part in the survey",
                                                         ],
                                                         href="".join(
                                                             "https://forms.gle/ALAAa6KpztHH8Uh6A"
@@ -643,7 +663,7 @@ def layout():
                                             dbc.CardBody(
                                                 [
                                                     html.H4(
-                                                        "Responses per country",
+                                                        "Where are lidar in use?",
                                                         className="card-title",
                                                     ),
                                                     dcc.Graph(
@@ -669,7 +689,7 @@ def layout():
                                             dbc.CardBody(
                                                 [
                                                     html.H4(
-                                                        "Applications",
+                                                        "How have wind lidar been used?",
                                                         className="card-title",
                                                     ),
                                                     dcc.Graph(
@@ -697,7 +717,7 @@ def layout():
                                                     dbc.Row(
                                                         [
                                                             html.H2(
-                                                                "Measurement campaigns",
+                                                                "When have they been used?",
                                                                 className="card-title",
                                                             ),
                                                         ]
@@ -750,7 +770,9 @@ def layout():
                                                             ),
                                                             dbc.Col(
                                                                 [
-                                                                    html.H5("Unknown"),
+                                                                    html.H5(
+                                                                        "No answer"
+                                                                    ),
                                                                     # the figure itself
                                                                     dcc.Graph(
                                                                         figure=fig_ts_p(
@@ -772,6 +794,13 @@ def layout():
                                                             ),
                                                         ],
                                                     ),
+                                                    dbc.Row(
+                                                        [
+                                                            html.P(
+                                                                "Double click on a data series in the legend - e.g. 'power performance testing' - just to see data for that application"
+                                                            ),
+                                                        ]
+                                                    ),
                                                 ],
                                             )
                                         ]
@@ -787,7 +816,7 @@ def layout():
                                             dbc.CardBody(
                                                 [
                                                     html.H2(
-                                                        "Lidar usage rates",
+                                                        "How many lidar were used?",
                                                         className="card-title",
                                                     ),
                                                     dbc.Row(
@@ -843,7 +872,7 @@ def layout():
                                                             dbc.Col(
                                                                 [
                                                                     html.H5(
-                                                                        "Unknown",
+                                                                        "No answer",
                                                                         className="card-title",
                                                                     ),
                                                                     dcc.Graph(
