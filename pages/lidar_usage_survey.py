@@ -689,7 +689,7 @@ def layout():
                                             dbc.CardBody(
                                                 [
                                                     html.H4(
-                                                        "How have wind lidar been used?",
+                                                        "How have people  wind lidar been used?",
                                                         className="card-title",
                                                     ),
                                                     dcc.Graph(
