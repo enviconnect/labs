@@ -397,7 +397,7 @@ def fig_pc_responses(df_plot):
                     #    "categoryarray": project_stage_category_order,
                 },
                 {
-                    "label": "Measurement Goal",
+                    "label": "Application",
                     "values": df_plot["measurement_goal"],
                     "categoryorder": "array",
                     #    "categoryarray": measurement_goal_category_order,
@@ -436,13 +436,17 @@ def fig_pc_responses(df_plot):
 # -----------------------------
 # Plot the time series of projects
 # -----------------------------
-def fig_ts_p(df_plot):
+def fig_ts_p(df_plot, ymax=[]):
+
+    if not ymax:
+        ymax = round_up_to_base(df_plot.project_power.max(), 200) + 100
+
     fig = px.scatter(
         df_plot,
         x="year_started",
         y="project_power",
         color="measurement_goal",
-        size="n_lidar_project",
+        # size="n_lidar_project",
         category_orders={
             "measurement_goal": actual_category_order(df_plot, "measurement_goal")
         },
@@ -453,14 +457,12 @@ def fig_ts_p(df_plot):
     )
     fig.update_yaxes(
         title="Wind farm power (MW)",
-        range=[0, round_up_to_base(df_plot.project_power.max(), 200)],
+        range=[0, ymax],
     )
 
     fig.update_layout(
         hovermode=False,
-        legend=dict(
-            title="Measurement goal", yanchor="top", y=0.95, xanchor="left", x=0.05
-        ),
+        legend=dict(title="Application", yanchor="top", y=0.95, xanchor="left", x=0.05),
         margin=dict(t=0, b=0, l=0, r=0),
     )
 
@@ -479,16 +481,18 @@ def fig_lidars_per_MW(df_plot):
         x="lidar_type_short_name",
         y="lidars_per_MW",
         range_y=[0, round_up_to_base(df_plot["lidars_per_MW"].max(), 0.05)],
-        size="project_power",
+        # size="project_power",
         color="measurement_goal",
         category_orders={
             "measurement_goal": actual_category_order(df_plot, "measurement_goal"),
-            "lidar_type_short_name": actual_category_order(
-                df_plot, "lidar_type_short_name"
-            ),
+            # "measurement_goal": default_category_order("lidar_type_short_name"),
+            # "lidar_type_short_name": actual_category_order(
+            #    df_plot, "lidar_type_short_name"
+            # ),
+            "lidar_type_short_name": default_category_order("lidar_type_short_name"),
         },
         labels={
-            "lidars_per_MW": "Lidars used per wind farm MW",
+            "lidars_per_MW": "Lidars per MW of wind farm power",
             "lidar_type_short_name": "Lidar type",
         },
     )
@@ -498,9 +502,9 @@ def fig_lidars_per_MW(df_plot):
     fig.update_layout(
         # scattermode="group",
         # scattergap=0.75,
-        hovermode=False,
+        hovermode="closest",
         legend=dict(
-            title="Measurement goal", yanchor="top", y=0.95, xanchor="right", x=0.95
+            title="Application", yanchor="top", y=0.95, xanchor="right", x=0.95
         ),
         margin=dict(t=20, b=0, l=0, r=0),
         xaxis=dict(tickangle=90),
@@ -663,7 +667,7 @@ def layout():
                                             dbc.CardBody(
                                                 [
                                                     html.H4(
-                                                        "Where are lidar in use?",
+                                                        "Where are lidar used?",
                                                         className="card-title",
                                                     ),
                                                     dcc.Graph(
@@ -689,7 +693,7 @@ def layout():
                                             dbc.CardBody(
                                                 [
                                                     html.H4(
-                                                        "How have people  wind lidar been used?",
+                                                        "How do people use wind lidar?",
                                                         className="card-title",
                                                     ),
                                                     dcc.Graph(
@@ -717,7 +721,7 @@ def layout():
                                                     dbc.Row(
                                                         [
                                                             html.H2(
-                                                                "When have they been used?",
+                                                                "When have wind lidar been used?",
                                                                 className="card-title",
                                                             ),
                                                         ]
@@ -735,7 +739,12 @@ def layout():
                                                                                     "land_offshore"
                                                                                 ]
                                                                                 == "On land"
-                                                                            ]
+                                                                            ],
+                                                                            ymax=round_up_to_base(
+                                                                                df_in_clean.project_power.max(),
+                                                                                200,
+                                                                            )
+                                                                            + 100,
                                                                         ),
                                                                         id="timeseries_power",
                                                                         responsive=True,
@@ -757,7 +766,12 @@ def layout():
                                                                                     "land_offshore"
                                                                                 ]
                                                                                 == "Offshore"
-                                                                            ]
+                                                                            ],
+                                                                            ymax=round_up_to_base(
+                                                                                df_in_clean.project_power.max(),
+                                                                                200,
+                                                                            )
+                                                                            + 100,
                                                                         ),
                                                                         id="timeseries_power",
                                                                         responsive=True,
@@ -781,7 +795,12 @@ def layout():
                                                                                     "land_offshore"
                                                                                 ]
                                                                                 == "N/A"
-                                                                            ]
+                                                                            ],
+                                                                            ymax=round_up_to_base(
+                                                                                df_in_clean.project_power.max(),
+                                                                                200,
+                                                                            )
+                                                                            + 100,
                                                                         ),
                                                                         id="timeseries_power",
                                                                         responsive=True,
@@ -796,10 +815,21 @@ def layout():
                                                     ),
                                                     dbc.Row(
                                                         [
-                                                            html.P(
-                                                                "Double click on a data series in the legend - e.g. 'power performance testing' - just to see data for that application"
-                                                            ),
-                                                        ]
+                                                            html.I(
+                                                                [
+                                                                    html.Small(
+                                                                        [
+                                                                            html.I(
+                                                                                className="fa-solid fa-circle-info"
+                                                                            ),
+                                                                            " ",
+                                                                            "Double click on a data series in the legend - e.g. 'power performance testing' - to only show data for that application",
+                                                                        ]
+                                                                    ),
+                                                                ]
+                                                            )
+                                                        ],
+                                                        className="py-0 my-1",
                                                     ),
                                                 ],
                                             )
@@ -816,7 +846,7 @@ def layout():
                                             dbc.CardBody(
                                                 [
                                                     html.H2(
-                                                        "How many lidar were used?",
+                                                        "How many wind lidar are used?",
                                                         className="card-title",
                                                     ),
                                                     dbc.Row(
@@ -865,6 +895,19 @@ def layout():
                                                                         style={
                                                                             "height": "400px"
                                                                         },
+                                                                    ),
+                                                                    html.I(
+                                                                        [
+                                                                            html.Small(
+                                                                                [
+                                                                                    html.I(
+                                                                                        className="fa-solid fa-circle-info"
+                                                                                    ),
+                                                                                    " ",
+                                                                                    "Wind lidar on a fixed-bottom platform are shown as 'ground-based'",
+                                                                                ]
+                                                                            ),
+                                                                        ]
                                                                     ),
                                                                 ],
                                                                 className="col-12 col-lg-4",
