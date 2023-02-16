@@ -87,7 +87,7 @@ layout = dbc.Container(
                                 dbc.CardBody(
                                     [
                                         html.H4(
-                                            "Lidar usage survey",
+                                            "Lidar applications survey",
                                             className="card-title",
                                         ),
                                         html.P(

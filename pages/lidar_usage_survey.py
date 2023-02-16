@@ -338,14 +338,19 @@ def fig_map_responses(df_plot):
         locationmode="ISO-3",
         locations="country_iso3",
         labels={"count": "Lidar deployments per country"},
-        color_continuous_scale=[(0.00, "white"), (0.50, "#17A9AE"), (1.0, "black")],
+        color_continuous_scale=[(0.0, "#cbf1f2"), (0.50, "#17A9AE"), (1.0, "black")],
     )
 
     # modify the presentation of the map
     fig.update_layout(
         geo=dict(
-            showcoastlines=False,
+            bgcolor="#FFFFFF",
+            countrycolor="#cccecf",
+            showcoastlines=True,
             projection_type="equirectangular",
+            showland=True,
+            countrywidth=0.0,
+            showframe=False,
         ),
         coloraxis_showscale=True,
     )
