@@ -78,7 +78,7 @@ def default_category_order(category):
         return [
             "Site prospecting",
             "Pre construction",
-            "Installation",
+            "Construction",
             "Commissioning",
             "Operational",
             "Repowering",
