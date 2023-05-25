@@ -525,7 +525,11 @@ def fig_lidars_per_MW(df_plot):
 # -----------------------------
 # Create word clouds
 # -----------------------------
+def fig_word_cloud():
+    
+    fig={}
 
+    return fig
 
 # -----------------------------
 # Apply theming to the figures
