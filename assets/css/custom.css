@@ -1,4 +1,6 @@
 @font-face {
+    font-family: "Merriweather";
+    src: url("../fonts/Merriweather-Regular.ttf") format("truetype");
     font-family: "Montserrat";
     src: url("../fonts/montserrat-v25-latin-regular.ttf") format("truetype");
     font-family: "Raleway";
@@ -27,6 +29,7 @@
 --logo-gray: #48484a;
 
 --bs-primary: #17a9ae;
+--bs-body-bg: #117f82;
 }
 
 .btn-primary {
@@ -47,19 +50,17 @@ body {
 }
 
 .content{
-    background-color: #727C8B;
+    background-color: #117f82;
 }
 
-.content h1, h2, h3 {
-  font-family: "Montserrat", sans-serif;
+.content h1, h2, h3, h4 {
+  font-family: "Merriweather", sans-serif;
 }
 
 .content h2 {
   font-size: 32px;
-  padding-left: 20px;
   padding-top: 5px;
   padding-bottom: 5px;
-  border-left: 3px solid #17a9ae;
 }
 
 .content blockquote{
@@ -73,7 +74,6 @@ body {
 .content .card-title {
     color: #212121;
 }
-
 
 .content .card-text {
     color: #212121;
@@ -108,8 +108,8 @@ body {
 }
 
 .footer {
-    background-color: #38325B;
-    color: #bcbcbc;
+    background-color: #454c5a;
+    color: #FFFFFF;
     font-size: smaller;
 }
 
@@ -277,4 +277,8 @@ div.previous-next-container > :is(button):not([disabled]) {
 .title h1.subtitle {
     font-size: 50%;
     font-weight: lighter;
+}
+
+.header {
+    box-shadow: 0 1px 15px rgba(0, 0, 0, 0.4);
 }

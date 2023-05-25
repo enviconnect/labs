@@ -179,6 +179,8 @@ def prepare_form_responses(df_in):
             "How many, and what type of lidar were used? [Vessel-mounted scanning lidar]": "n_vm_s",
             "Did you also use meteorological (met) towers?": "used_mettowers",
             "Is this real data?": "real_data",
+            "Top 3 needs": "top_needs",
+            "Top 3 new features": "top_new_features"
         },
         inplace=True,
     )
@@ -518,6 +520,11 @@ def fig_lidars_per_MW(df_plot):
     fig = fig_styling(fig)
 
     return fig
+
+
+# -----------------------------
+# Create word clouds
+# -----------------------------
 
 
 # -----------------------------

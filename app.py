@@ -19,12 +19,6 @@ app = Dash(
 )
 
 
-def create_header_row():
-    header = []
-
-    return header
-
-
 def create_nav_bar():
     navbar = dbc.Nav(
         [
@@ -35,25 +29,21 @@ def create_nav_bar():
                     html.A(
                         [
                             html.Img(
-                                src=app.get_asset_url("Logo_100H.png"),
+                                src=app.get_asset_url("Logo_white_colourfulC_100H.png"),
                                 style={"max-width": "100%", "max-height": "35px"},
-                            ),
-                            html.P(
-                                "Innovations for wind energy",
-                                className="tagline",
-                                style={"text-decoration": "none"},
-                            ),
+                            ),                            
                         ],
                         href="/",
                         target="_blank",
                         className="navbar-brand",
                     ),
                     html.A(
-                        [html.P("Labs", className="display-4 school")],
+                        [html.P("Labs", className="school")],
                         href="/",
                         style={
                             "text-decoration": "none",
-                            "color": "black",
+                            "color": "white",
+                            "font-size": "24pt",
                             "margin-left": "20px",
                         },
                     ),
@@ -70,14 +60,16 @@ def create_nav_bar():
                         ],
                         href="".join("https://www.enviconnect.de"),
                         target="_blank",
-                        color="primary",
+                        color="white",
                         disabled=False,
-                        className="me-1 btn btn-primary",
+                        outline=True,
+                        className="me-1 border rounded",
+                        style={"color":"#ffffff"}
                     ),
                 ]
             ),
         ],
-        className="navbar-light bg-white p-2 pt-4",
+        className="navbar-light p-2 pt-4",
     )
     return navbar
 
@@ -220,9 +212,13 @@ def create_subfooter():
 app.layout = dbc.Container(
     [
         # nav bar
-        html.Div(
-            [dbc.Container(create_nav_bar(), fluid=False, className="px-0")],
-        ),
+                    html.Div(
+                        [
+                            dbc.Container(create_nav_bar(), fluid=False, className=" px-0")],
+                            className="header sticky-top",
+                            style={"background-color":"#117f82"}
+                            )
+        ,
         # content from other pages
         html.Div(
             [dbc.Container(dash.page_container, fluid=False, className="px-0")],
