@@ -28,9 +28,7 @@ import plotly.graph_objects as go
 import yaml
 from dash import Dash, Input, Output, State, dash_table, dcc, html
 from dash.dependencies import ALL, Input, Output
-from plotly.subplots import make_subplots
 from wordcloud import WordCloud
-from yaml.loader import SafeLoader
 
 # set up Dash
 # from jupyter_dash import JupyterDash
@@ -371,6 +369,7 @@ def fig_map_responses(df_plot):
             countrywidth=0.0,
             showframe=False,
         ),
+        coloraxis={"colorbar":{"dtick":1}},
         coloraxis_showscale=True,
     )
 
@@ -451,7 +450,7 @@ def fig_pc_responses(df_plot):
     # fig_pa.update_traces(line_colorbar_y=-0.3)
     # fig_pa.update_traces(line_colorbar_title={"text": "Project size (MW)"})
 
-    fig.update_layout(margin=dict(t=20, b=0, l=50, r=15))
+    fig.update_layout(margin=dict(t=20, b=0, l=60, r=20))
 
     fig = fig_styling(fig)
 
@@ -516,16 +515,20 @@ def fig_n_lidars(df_plot):
         barmode="group",
         labels={
             "n_lidar_project": "Number of lidar used",
-            "count": "Frequency",
+            "count": "Number of responses",
         },
     )
 
     fig.update_layout(
-        bargap=0.1,
+        bargap=0.30,
+        bargroupgap=0.0,
         hovermode=False,
         legend=dict(title="Application"),
         margin=dict(t=30, b=0, l=0, r=0),
     )
+
+    fig.update_xaxes(tickmode='linear')
+    fig.update_yaxes(dtick=1)
 
     fig = fig_styling(fig)
 
@@ -636,6 +639,63 @@ def fig_styling(fig):
 # Create layout components, e.g. cards.
 # -----------------------------
 
+def title_text():
+    title_text = html.H1("Have you ever wondered how everyone else uses wind lidar?", className="title display-4")
+
+    return title_text
+
+def opening_text():
+    opening_text = [
+        html.P("Welcome to the results of our live wind lidar user survey!",className="lead"),
+        html.P("These results are updated live as people take part in the survey. So, please tell us how you use it, too. It'll take you less than 5 minutes.", className="text-white"),
+        dbc.Button(
+                        [   " Take part in the survey",
+                        ],
+                        href="".join(
+                            "https://forms.gle/ALAAa6KpztHH8Uh6A"
+                        ),
+                        target="_blank",
+                        color="light",
+                        disabled=False,
+                        className="btn",
+                    ),
+    ]
+
+    return opening_text
+
+def closing_text():
+    closing_text = [
+        html.P("If you found these results useful, please share how you are using wind lidar too. It'll take you less than 5 minutes.", className="text-white"),
+        dbc.Button(
+                        [   " Take part in the survey",
+                        ],
+                        href="".join(
+                            "https://forms.gle/ALAAa6KpztHH8Uh6A"
+                        ),
+                        target="_blank",
+                        color="light",
+                        disabled=False,
+                        className="btn",
+                    ),
+    ]
+
+    return closing_text
+
+def alert_card():
+    alert_card = dbc.Alert(
+                        [
+                            html.H4(
+                                "Includes dummy data",
+                                className="alert-heading"),
+                            html.P(
+                                "This survey includes dummy data to help anonymize early answers. The dummy data will be removed once we have more than 10 survey responses."
+                            ),
+                        ],
+                        color="warning",
+                        className="g-4 mt-4 mb-0"
+                    )
+
+    return alert_card
 
 def response_count_card(df_in_clean):
     card = dbc.Card(
@@ -690,9 +750,6 @@ def response_count_card(df_in_clean):
                     ),
                     dbc.Button(
                         [
-                            html.I(
-                                className="fa-solid fa-map-location-dot"
-                            ),
                             " Take part in the survey",
                         ],
                         href="".join(
@@ -701,7 +758,7 @@ def response_count_card(df_in_clean):
                         target="_blank",
                         color="primary",
                         disabled=False,
-                        className="me-1 btn btn-primary btn-sm",
+                        className="btn btn-primary col-12 col-lg-6 mx-auto",
                     ),
                 ]
             )
@@ -717,7 +774,7 @@ def response_map_card(df_in_clean):
             dbc.CardBody(
                 [
                     html.H4(
-                        "Where wind lidar are used",
+                        "Where are lidar used?",
                         className="card-title",
                     ),
                     dcc.Graph(
@@ -742,7 +799,7 @@ def respondent_type_card(df_in_clean):
             dbc.CardBody(
                 [
                     html.H4(
-                        "How wind lidar are used",
+                        "Who uses lidars for which application?",
                         className="card-title",
                     ),
                     dcc.Graph(
@@ -768,7 +825,7 @@ def timeline_card(df_in_clean):
             dbc.CardBody(
                 [
                     html.H2(
-                        "When wind lidar have been used",
+                        "Has wind lidar use changed over the years?",
                         className="card-title",
                     ),
                     # the
@@ -813,7 +870,7 @@ def lidars_per_campaign_card(df_in_clean):
             dbc.CardBody(
                 [
                     html.H2(
-                        "How many wind lidar are used per campaign",
+                        "How many wind lidar are used per campaign?",
                         className="card-title",
                     ),
                     dbc.Row(
@@ -848,7 +905,7 @@ def lidar_rental_card(df_in_clean):
             dbc.CardBody(
                 [
                     html.H2(
-                        "How many wind lidar are rented per campaign",
+                        "How many wind lidars are rented per campaign?",
                         className="card-title",
                     ),
                     dbc.Row(
@@ -883,7 +940,7 @@ def lidars_per_MW_card(df_long):
             dbc.CardBody(
                 [
                     html.H2(
-                        "How many wind lidar are used per MW of wind farm",
+                        "Do bigger wind farms need more lidar?",
                         className="card-title",
                     ),
                     dbc.Row(
@@ -992,58 +1049,47 @@ def layout():
         [
             # reload the data
             # title row
-            html.Div(
-                [
-                    dbc.Row(
-                        [
-                            dbc.Col(
-                                [html.H1("Wind Lidar Usage Survey")], width=12
-                            ),
-                        ],
-                        className="title h-10 pt-2 mb-2",
-                    ),
-                ]
-            ),
-            # Alerts
-            html.Div(
-                [
-                    dbc.Alert(
-                        [
-                            html.H4(
-                                "Includes dummy data!",
-                                className="alert-heading"),
-                            html.P(
-                                "This survey includes dummy data to help anonymize early answers. The dummy data will be removed once we have more than 10 survey responses."
-                            ),
-                        ],
-                        color="warning",
-                    ),
-                ]
+            dbc.Row(
+        dbc.Col(
+            title_text(),
+        )
             ),
             # content
             html.Div(
                 [
                     # logging row
                     dbc.Row(
-                        dbc.Col([html.Div(id="log")]),
+                        dbc.Col([html.Div(id="log")])
                     ),
-                    # survey information row
+                    # opening text
+                    dbc.Row(
+                        [
+                            dbc.Col(        
+                                opening_text(),
+                                className="col-12"
+                            )
+                        ]
+                    ),
+                    # survey results
                     dbc.Row(
                         [
                             # Number of responses
                             dbc.Col(
-                                response_count_card(df_in_clean),
-                                class_name="col-12 col-md-4 col-lg-2 g-4",
+                                [
+                                    response_count_card(df_in_clean),
+                                    alert_card(),
+                                    ],
+                                class_name="col-12 col-lg-6 g-4",
                             ),
                             # Map of responses
                             dbc.Col(
                                 response_map_card(df_in_clean),
-                                class_name="col-12 col-md-8 col-lg-4 g-4",
+                                class_name="col-12 col-lg-6 g-4",
                             ),
                             # Respondent types
                             dbc.Col(
                                 respondent_type_card(df_in_clean),
-                                class_name="col-12 col-lg-6 g-4",
+                                class_name="col-12 col-lg-12 g-4",
                             ),
                             # time series of power
                             dbc.Col(
@@ -1068,12 +1114,12 @@ def layout():
                             # Top 3 needs from lidar
                             dbc.Col(
                                 lidar_needs_card(df_in_clean),
-                                className="col-6 g-4",
+                                className="col-12 col-md-6 g-4",
                             ),
                             # Top 3 challenges from lidar
                             dbc.Col(
                                 lidar_challenges_card(df_in_clean),
-                                className="col-6 g-4",
+                                className="col-12 col-md-6 g-4",
                             ),
                             # Feedback
                             dbc.Col(
@@ -1081,6 +1127,16 @@ def layout():
                                 className="col-12 g-4",
                             ),
                         ],
+                    ),
+                    # closing text
+                    dbc.Row(
+                        [
+                            dbc.Col(        
+                                closing_text(),
+                                className="col-12 g-4 pt-4"
+                            )
+                        ],
+                        className="g-4"
                     ),
                 ],
                 className="content g-4",
