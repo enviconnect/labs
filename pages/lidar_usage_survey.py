@@ -108,6 +108,16 @@ def default_category_order(category):
             "n_vm_vp",
             "n_vm_s",
         ]
+    if category == "lidar_type_rented_count":
+        return [
+            "n_gb_vp_rented",
+            "n_gb_s_rented",
+            "n_nm_fl_rented",
+            "n_nm_s_rented",
+            "n_bm_vp_rented",
+            "n_vm_vp_rented",
+            "n_vm_s_rented",
+        ]
     if category == "lidar_type_code":
         return [
             "gb / vp",
@@ -202,6 +212,14 @@ def prepare_form_responses(df_in):
     for index, row in df_in.iterrows():
         df_in.loc[index, "n_lidar_project"] = row[lcols].sum()
 
+    # add an extra column with the total number of _rented_ lidar
+    lrentedcols = default_category_order("lidar_type_rented_count")
+    for col in lrentedcols:
+        df_in[col] = df_in[col].replace("", 0.0).astype(float)
+    df_in["n_lidar_project_rented"] = float("nan")
+    for index, row in df_in.iterrows():
+        df_in.loc[index, "n_lidar_project_rented"] = row[lrentedcols].sum()
+    
     # replace missing data in number columns with na
     float_cols = ["year_started", "project_power"]
 
@@ -276,7 +294,7 @@ def convert_form_responses_to_long(df_in):
             "lidar_type_long",
             "n_lidar_type",
             "n_lidar_project",
-            # "n_lidar_rented",
+            "n_lidar_project_rented",
             "count",
         ]
     )
@@ -308,6 +326,7 @@ def convert_form_responses_to_long(df_in):
                 ltype_long_name[index],
                 row[n_ltype],
                 row.n_lidar_project,
+                row.n_lidar_project_rented,
                 row.count,
             ]
 
@@ -541,7 +560,30 @@ def fig_n_lidars(df_plot):
 
 def fig_lidar_rental(df_plot):
 
-    fig = {}
+    xmax = max(df_plot["n_lidar_project"].max(),df_plot["n_lidar_project_rented"].max())
+    print(xmax)
+
+    fig = px.scatter(
+        df_plot,
+        x="n_lidar_project",
+        y="n_lidar_project_rented",
+        color="measurement_goal",
+        labels={
+            "n_lidar_project": "Total number of lidar used",
+            "n_lidar_project_rented": "Number of rented lidar",
+        },
+    )
+
+    fig.update_layout(
+        hovermode=False,
+        legend=dict(title="Application"),
+        margin=dict(t=30, b=0, l=0, r=0),
+    )
+
+    fig.update_xaxes(dtick=1, range=[0,xmax+1])
+    fig.update_yaxes(dtick=1, range=[0,xmax+1])
+
+    fig = fig_styling(fig)
 
     return fig
 
@@ -646,8 +688,10 @@ def title_text():
 
 def opening_text():
     opening_text = [
-        html.P("We were curious as well, so we put together this survey",className="lead"),
-        html.P("These results are updated live as people take part in the survey. So, please tell us how you use lidar, too. It'll take you less than 5 minutes.", className="lead"),        
+        html.P("We were curious as well, so we put together this survey.",className="lead"),
+        html.P(["These results are updated live as people take part in the survey. So, please ",
+                html.A("tell us how you use lidar",href="https://forms.gle/ALAAa6KpztHH8Uh6A", className="text-white"),
+                ", too. It'll take you less than 5 minutes."], className="lead"),        
     ]
 
     return opening_text
@@ -895,16 +939,7 @@ def lidar_rental_card(df_in_clean):
                 [
                     html.H2(
                         "How many wind lidars are rented per campaign?",
-                        className="card-title",
-                    ),
-                    html.Small(
-                        [
-                            html.I(
-                                className="fa-solid fa-circle-info"
-                            ),
-                            " ",
-                            "Not enough data!",
-                        ]
+                        className="card-title"
                     ),                    
                     dbc.Row(
                         [
