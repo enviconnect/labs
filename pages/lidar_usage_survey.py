@@ -1,38 +1,39 @@
-import plotly.express as px
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
-
-# set up Dash
-# from jupyter_dash import JupyterDash
-
-import dash
-from dash import Dash, html, Input, Output, State
-from dash import dcc
-from dash import dash_table
-from dash.dependencies import Input, Output, ALL
-import dash_bootstrap_components as dbc
-import dash_leaflet as dl
+import base64
 
 # math routines
 import math
-
-# import pyyaml module
-import yaml
-from yaml.loader import SafeLoader
-
-# import pandas (needed for the data table)
-import pandas as pd
-
-# import numpy
-import numpy as np
+from collections import Counter
+from datetime import date
+from io import BytesIO
 
 # get domain from URLs
 from urllib.parse import urlparse
 
 # specific to this app
 import country_converter as coco
+import dash
+import dash_bootstrap_components as dbc
+import dash_leaflet as dl
 import gspread
-from datetime import date
+
+# import numpy
+import numpy as np
+
+# import pandas (needed for the data table)
+import pandas as pd
+import plotly.express as px
+import plotly.graph_objects as go
+
+# import pyyaml module
+import yaml
+from dash import Dash, Input, Output, State, dash_table, dcc, html
+from dash.dependencies import ALL, Input, Output
+from plotly.subplots import make_subplots
+from wordcloud import WordCloud
+from yaml.loader import SafeLoader
+
+# set up Dash
+# from jupyter_dash import JupyterDash
 
 
 # ------------------------------------
@@ -54,6 +55,8 @@ dash.register_page(
 
 # Round up / down to nearest _x_
 # https://stackoverflow.com/a/65725123/2514568
+
+
 def round_up_to_base(x, base=10):
     return x + (base - x) % base
 
@@ -69,9 +72,9 @@ def default_category_order(category):
     if category == "role":
         return [
             "Consultant",
-            "Project developer",
-            "Project owner",
-            "Project operator",
+            "Wind farm developer",
+            "Wind farm owner",
+            "Wind farm operator",
             "N/A",
         ]
     if category == "project_stage":
@@ -91,7 +94,6 @@ def default_category_order(category):
         return [
             "Site prospecting",
             "Wind resource assessment",
-            "Power performance test",
             "Wind characterisation",
             "Power performance testing",
             "Wind turbine control",
@@ -146,7 +148,8 @@ def default_category_order(category):
 
 
 def fetch_form_responses():
-    sa = gspread.service_account(filename=".secrets/lidars-per-mw-fae432341abd.json")
+    sa = gspread.service_account(
+        filename=".secrets/lidars-per-mw-fae432341abd.json")
     sheet = sa.open("lidar applications survey responses")
     work_sheet = sheet.worksheet("Form responses 1")
     df_in = pd.DataFrame(work_sheet.get_all_records())
@@ -177,11 +180,17 @@ def prepare_form_responses(df_in):
             "How many, and what type of lidar were used? [Buoy-mounted vertically-profiling lidar]": "n_bm_vp",
             "How many, and what type of lidar were used? [Vessel-mounted vertically-profiling lidar]": "n_vm_vp",
             "How many, and what type of lidar were used? [Vessel-mounted scanning lidar]": "n_vm_s",
-            "Did you also use meteorological (met) towers?": "used_mettowers",
+            "How many met towers did you use?": "n_mettowers",
+            "How many, and what type of lidar were rented? [Ground-based vertically-profiling lidar]": "n_gb_vp_rented",
+            "How many, and what type of lidar were rented? [Ground-based scanning lidar]": "n_gb_s_rented",
+            "How many, and what type of lidar were rented? [Nacelle-mounted forward-looking lidar]": "n_nm_fl_rented",
+            "How many, and what type of lidar were rented? [Nacelle-mounted scanning lidar]": "n_nm_s_rented",
+            "How many, and what type of lidar were rented? [Buoy-mounted vertically-profiling lidar]": "n_bm_vp_rented",
+            "How many, and what type of lidar were rented? [Vessel-mounted vertically-profiling lidar]": "n_vm_vp_rented",
+            "How many, and what type of lidar were rented? [Vessel-mounted scanning lidar]": "n_vm_s_rented",
             "Is this real data?": "real_data",
             "Top 3 needs": "top_needs",
-            "Top 3 new features": "top_new_features"
-        },
+            "Top 3 challenges": "top_challenges"},
         inplace=True,
     )
 
@@ -215,11 +224,13 @@ def prepare_form_responses(df_in):
         df_in[col] = df_in[col].replace("", "N/A").astype(str)
 
     # map english-language country names to codes
-    # apply solution at https://stackoverflow.com/questions/16253060/how-to-convert-country-names-to-iso-3166-1-alpha-2-values-using-python
+    # apply solution at
+    # https://stackoverflow.com/questions/16253060/how-to-convert-country-names-to-iso-3166-1-alpha-2-values-using-python
 
     df_in["country_iso3"] = df_in.country_name
 
-    df_in["country_iso3"] = coco.convert(names=df_in.country_name.tolist(), to="ISO3")
+    df_in["country_iso3"] = coco.convert(
+        names=df_in.country_name.tolist(), to="ISO3")
 
     # update the category values to show any "non default" values
     for index, row in df_in.iterrows():
@@ -228,10 +239,13 @@ def prepare_form_responses(df_in):
             df_in.loc[index, "role"] = "Other: " + row["role"]
         if row["project_stage"] not in default_category_order("project_stage"):
             # update df_in
-            df_in.loc[index, "project_stage"] = "Other: " + row["project_stage"]
-        if row["measurement_goal"] not in default_category_order("measurement_goal"):
+            df_in.loc[index, "project_stage"] = "Other: " + \
+                row["project_stage"]
+        if row["measurement_goal"] not in default_category_order(
+                "measurement_goal"):
             # update df_in
-            df_in.loc[index, "measurement_goal"] = "Other: " + row["measurement_goal"]
+            df_in.loc[index, "measurement_goal"] = "Other: " + \
+                row["measurement_goal"]
 
     # add a dummy count column to simplify some plotting
     df_in["count"] = 1.0
@@ -264,6 +278,7 @@ def convert_form_responses_to_long(df_in):
             "lidar_type_long",
             "n_lidar_type",
             "n_lidar_project",
+            # "n_lidar_rented",
             "count",
         ]
     )
@@ -277,7 +292,8 @@ def convert_form_responses_to_long(df_in):
 
         for index, n_ltype in enumerate(lcols):
             # get the data
-            # note that we add a dummy "count" variable to simplify some plotting
+            # note that we add a dummy "count" variable to simplify some
+            # plotting
             df_long.loc[len(df_long)] = [
                 row.Timestamp,
                 row.land_offshore,
@@ -288,7 +304,7 @@ def convert_form_responses_to_long(df_in):
                 row.country_iso3,
                 row.year_started,
                 row.measurement_goal,
-                row.used_mettowers,
+                row.n_mettowers,
                 ltype_code[index],
                 ltype_short_name[index],
                 ltype_long_name[index],
@@ -340,7 +356,8 @@ def fig_map_responses(df_plot):
         locationmode="ISO-3",
         locations="country_iso3",
         labels={"count": "Lidar deployments per country"},
-        color_continuous_scale=[(0.0, "#cbf1f2"), (0.50, "#17A9AE"), (1.0, "black")],
+        color_continuous_scale=[
+            (0.0, "#cbf1f2"), (0.50, "#17A9AE"), (1.0, "black")],
     )
 
     # modify the presentation of the map
@@ -385,7 +402,8 @@ def fig_map_responses(df_plot):
 
 def fig_pc_responses(df_plot):
 
-    # using solution from https://stackoverflow.com/questions/72749285/changing-the-base-color-of-ploty-express-parallel-categories-diagram
+    # using solution from
+    # https://stackoverflow.com/questions/72749285/changing-the-base-color-of-ploty-express-parallel-categories-diagram
 
     # implement using parcats to specify orders
     fig = go.Figure(
@@ -452,44 +470,96 @@ def fig_ts_p(df_plot, ymax=[]):
         df_plot,
         x="year_started",
         y="project_power",
+        facet_col_wrap=1,
+        facet_col="land_offshore",
+        facet_row_spacing=0.125,
         color="measurement_goal",
         # size="n_lidar_project",
         category_orders={
             "measurement_goal": actual_category_order(df_plot, "measurement_goal")
         },
+        labels={
+            "project_power": "Project power [MW]",
+            "year_started": "Year measurement campaign started",
+        },
     )
 
-    fig.update_xaxes(
-        title="Year started", range=[2004, round_up_to_base(date.today().year, 2)]
-    )
     fig.update_yaxes(
-        title="Wind farm power (MW)",
         range=[0, ymax],
     )
 
     fig.update_layout(
         hovermode=False,
-        legend=dict(title="Application", yanchor="top", y=0.95, xanchor="left", x=0.05),
-        margin=dict(t=0, b=0, l=0, r=0),
+        legend=dict(title="Application"),
+        margin=dict(t=30, b=0, l=0, r=0),
+    )
+
+    # Format facet labels
+    fig.for_each_annotation(lambda a: a.update(text="<span style='font-weight: 500;'>" + a.text.split(
+        "=")[-1] + "</span>", font=dict(family="Raleway", size=20, color="#000000"), ))
+
+    fig = fig_styling(fig)
+
+    return fig
+
+# -----------------------------
+# Get the number of lidars per campaign
+# -----------------------------
+
+
+def fig_n_lidars(df_plot):
+    fig = px.bar(
+        df_plot,
+        x="n_lidar_project",
+        y="count",
+        color="measurement_goal",
+        barmode="group",
+        labels={
+            "n_lidar_project": "Number of lidar used",
+            "count": "Frequency",
+        },
+    )
+
+    fig.update_layout(
+        bargap=0.1,
+        hovermode=False,
+        legend=dict(title="Application"),
+        margin=dict(t=30, b=0, l=0, r=0),
     )
 
     fig = fig_styling(fig)
 
     return fig
 
+# -----------------------------
+# Get the number of lidars per MW
+# -----------------------------
+
+
+def fig_lidar_rental(df_plot):
+
+    fig = {}
+
+    return fig
 
 # -----------------------------
 # Get the number of lidars per MW
 # -----------------------------
+
+
 def fig_lidars_per_MW(df_plot):
+
+    # print(df_plot[["land_offshore", "lidar_type_short_name", "lidars_per_MW"]])
 
     fig = px.scatter(
         df_plot[df_plot["n_lidar_type"] > 0],
-        x="lidar_type_short_name",
-        y="lidars_per_MW",
-        range_y=[0, round_up_to_base(df_plot["lidars_per_MW"].max(), 0.05)],
+        y="lidar_type_short_name",
+        x="lidars_per_MW",
+        # range_x=[0, round_up_to_base(df_plot["lidars_per_MW"].max(), 0.5)],
+        # range_x=[0,0.5],
         # size="project_power",
         color="measurement_goal",
+        facet_col="land_offshore",
         category_orders={
             "measurement_goal": actual_category_order(df_plot, "measurement_goal"),
             # "measurement_goal": default_category_order("lidar_type_short_name"),
@@ -504,17 +574,18 @@ def fig_lidars_per_MW(df_plot):
         },
     )
 
-    # fig.update_xaxes(title = "Lidar type")
-    # fig.update_yaxes(title = "Lidars used per MW of project size")
+    # Format facet labels
+    fig.for_each_annotation(lambda a: a.update(text="<span style='font-weight: 500;'>" + a.text.split(
+        "=")[-1] + "</span>", font=dict(family="Raleway", size=20, color="#000000"), ))
+
     fig.update_layout(
         # scattermode="group",
         # scattergap=0.75,
         hovermode="closest",
         legend=dict(
-            title="Application", yanchor="top", y=0.95, xanchor="right", x=0.95
+            title="Application",
         ),
-        margin=dict(t=20, b=0, l=0, r=0),
-        xaxis=dict(tickangle=90),
+        margin=dict(t=30, b=0, l=0, r=0),
     )
 
     fig = fig_styling(fig)
@@ -525,9 +596,24 @@ def fig_lidars_per_MW(df_plot):
 # -----------------------------
 # Create word clouds
 # -----------------------------
-def fig_word_cloud():
-    
-    fig={}
+# https://community.plotly.com/t/wordcloud-in-dash/11407/25
+# https://stackoverflow.com/questions/58286251/how-can-i-group-multi-word-terms-when-creating-a-python-wordcloud
+#
+def fig_word_cloud(word_list):
+    flat_word_list = []
+    for sublist in word_list:
+        for item in sublist.split(", "):
+            flat_word_list.append(item)
+
+    wc = WordCloud(
+        collocations=False,
+        mode="RGBA",
+        background_color=None).generate_from_frequencies(
+        Counter(flat_word_list))
+    wc_img = wc.to_image()
+    with BytesIO() as buffer:
+        wc_img.save(buffer, 'png')
+        fig = base64.b64encode(buffer.getvalue()).decode()
 
     return fig
 
@@ -540,13 +626,355 @@ def fig_styling(fig):
     fig.update_layout(
         font_family="../assets/fonts/raleway-v28-latin-regular.ttf",
         font_color="#38325B",
-        title_font_family="../assets/fonts/montserrat-v25-latin-regular.ttf",
+        title_font_family="../assets/fonts/raleway-v28-latin-regular.ttf",
         title_font_color="#38325B",
         legend_title_font_color="#38325B",
     )
     return fig
 
+# -----------------------------
+# Create layout components, e.g. cards.
+# -----------------------------
 
+
+def response_count_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H4(
+                        [
+                            str(
+                                len(
+                                    df_in_clean.Timestamp.unique()
+                                )
+                            )
+                            + " "
+                            + "Survey responses"
+                        ],
+                        className="card-title",
+                    ),
+                    html.P(
+                        [
+                            "So far we've got data about "
+                            + str(
+                                int(
+                                    df_in_clean[
+                                        "n_lidar_project"
+                                    ].sum()
+                                )
+                            )
+                            + " "
+                            + "wind lidar, deployed in"
+                        ]
+                    ),
+                    html.Ul(
+                        children=[
+                            html.Li(
+                                str(
+                                    len(
+                                        df_in_clean.continent.unique()
+                                    )
+                                )
+                                + " continents"
+                            ),
+                            html.Li(
+                                str(
+                                    len(
+                                        df_in_clean.country_name.unique()
+                                    )
+                                )
+                                + " countries"
+                            ),
+                        ]
+                    ),
+                    dbc.Button(
+                        [
+                            html.I(
+                                className="fa-solid fa-map-location-dot"
+                            ),
+                            " Take part in the survey",
+                        ],
+                        href="".join(
+                            "https://forms.gle/ALAAa6KpztHH8Uh6A"
+                        ),
+                        target="_blank",
+                        color="primary",
+                        disabled=False,
+                        className="me-1 btn btn-primary btn-sm",
+                    ),
+                ]
+            )
+        ]
+    )
+
+    return card
+
+
+def response_map_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H4(
+                        "Where wind lidar are used",
+                        className="card-title",
+                    ),
+                    dcc.Graph(
+                        id="respondent_map",
+                        figure=fig_map_responses(
+                            df_in_clean
+                        ),
+                        style={
+                            "height": "300px"},
+                        responsive=True,
+                    ),
+                ]
+            )
+        ]
+    )
+    return card
+
+
+def respondent_type_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H4(
+                        "How wind lidar are used",
+                        className="card-title",
+                    ),
+                    dcc.Graph(
+                        id="fig_pa",
+                        figure=fig_pc_responses(
+                            df_in_clean
+                        ),
+                        style={
+                            "height": "300px"},
+                        responsive=True,
+                    ),
+                ]
+            )
+        ]
+    ),
+
+    return card
+
+
+def timeline_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H2(
+                        "When wind lidar have been used",
+                        className="card-title",
+                    ),
+                    # the
+                    # figure
+                    # itself
+                    dcc.Graph(
+                        figure=fig_ts_p(
+                            df_in_clean,
+                            ymax=round_up_to_base(
+                                df_in_clean.project_power.max(),
+                                200,
+                            )
+                            + 100,
+                        ),
+                        id="timeseries_power",
+                        responsive=True,
+                        style={
+                            "height": "500px"
+                        },
+                    ),
+
+                    html.Small(
+                        [
+                            html.I(
+                                className="fa-solid fa-circle-info"
+                            ),
+                            " ",
+                            "Double click on a data series in the legend - e.g. 'power performance testing' - to only show data for that application",
+                        ]
+                    ),
+                ]
+            )
+        ]
+    )
+
+    return card
+
+
+def lidars_per_campaign_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H2(
+                        "How many wind lidar are used per campaign",
+                        className="card-title",
+                    ),
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                [
+                                    dcc.Graph(
+                                        figure=fig_n_lidars(
+                                            df_in_clean
+                                        ),
+                                        id="lidars_per_campaign",
+                                        responsive=True,
+                                        style={
+                                            "height": "300px"
+                                        },
+                                    ),
+                                ],
+                                className="col-12 col-lg-12",
+                            ),
+                        ]
+                    ),
+                ],
+            )
+        ]
+    ),
+    return card
+
+
+def lidar_rental_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H2(
+                        "How many wind lidar are rented per campaign",
+                        className="card-title",
+                    ),
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                [
+                                    dcc.Graph(
+                                        figure=fig_lidar_rental(
+                                            df_in_clean
+                                        ),
+                                        id="lidars_rented",
+                                        responsive=True,
+                                        style={
+                                            "height": "300px"
+                                        },
+                                    ),
+                                ],
+                                className="col-12 col-lg-12",
+                            ),
+                        ]
+                    ),
+                ],
+            )
+        ]
+    )
+    return card
+
+
+def lidars_per_MW_card(df_long):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H2(
+                        "How many wind lidar are used per MW of wind farm",
+                        className="card-title",
+                    ),
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                [
+                                    dcc.Graph(
+                                        figure=fig_lidars_per_MW(
+                                            df_long
+                                        ),
+                                        id="lidars_per_MW_land",
+                                        responsive=True,
+                                        style={
+                                            "height": "300px"
+                                        },
+                                    ),
+                                ],
+                                className="col-12 col-lg-12",
+                            ),
+                        ]
+                    ),
+                ],
+            )
+        ]
+    )
+
+    return card
+
+
+def lidar_needs_card(df_in_clean):
+    card = dbc.Card(
+        [dbc.CardBody(
+            [
+                dbc.Row(
+                    [
+                        html.H2(
+                            "Top 3 needs from wind lidar",
+                            className="card-title",
+                        ),
+                        html.Img(
+                            src="data:image/png;base64," +
+                            fig_word_cloud(
+                                df_in_clean["top_needs"]))
+                    ]
+                ),
+            ]
+        )
+        ],)
+    return card
+
+
+def lidar_challenges_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    dbc.Row(
+                        [
+                            html.H2(
+                                "Top 3 challenges from wind lidar",
+                                className="card-title",
+                            ),
+                            html.Img(
+                                src="data:image/png;base64," +
+                                fig_word_cloud(
+                                    df_in_clean["top_challenges"]))
+                        ]
+                    ),
+                ]
+            )],)
+    return card
+
+
+def feedback_card():
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H4("Feedback and comments"),
+                    html.P(
+                        "This is a work in progress, and we welcome all feedback about the information we are collecting and how we are presenting it."),
+                    html.P(["Please send any feedback to Andy Clifton at ",
+                            html.A("andy.clifton@enviconnect.de",
+                                   href="mailto:andy.clifton@enviconnect.de"),
+                            "."])
+                ]
+            )
+        ]
+    )
+
+    return card
 # -----------------------------
 # Create the layout for this page
 # -----------------------------
@@ -569,7 +997,7 @@ def layout():
                     dbc.Row(
                         [
                             dbc.Col(
-                                [html.H1("Wind Lidar Usage Survey Results")], width=12
+                                [html.H1("Wind Lidar Usage Survey")], width=12
                             ),
                         ],
                         className="title h-10 pt-2 mb-2",
@@ -581,9 +1009,11 @@ def layout():
                 [
                     dbc.Alert(
                         [
-                            html.H4("Demonstration only!", className="alert-heading"),
+                            html.H4(
+                                "Includes dummy data!",
+                                className="alert-heading"),
                             html.P(
-                                "This is a work in progress and data are for demonstration purposes. The actual survey will open for responses in 2023. Results will be made available as they are collected."
+                                "This survey includes dummy data to help anonymize early answers. The dummy data will be removed once we have more than 10 survey responses."
                             ),
                         ],
                         color="warning",
@@ -602,369 +1032,58 @@ def layout():
                         [
                             # Number of responses
                             dbc.Col(
-                                [
-                                    dbc.Card(
-                                        [
-                                            dbc.CardBody(
-                                                [
-                                                    html.H4(
-                                                        [
-                                                            str(
-                                                                len(
-                                                                    df_in_clean.Timestamp.unique()
-                                                                )
-                                                            )
-                                                            + " "
-                                                            + "Survey responses"
-                                                        ],
-                                                        className="card-title",
-                                                    ),
-                                                    html.P(
-                                                        [
-                                                            "So far we've got data about "
-                                                            + str(
-                                                                int(
-                                                                    df_in_clean[
-                                                                        "n_lidar_project"
-                                                                    ].sum()
-                                                                )
-                                                            )
-                                                            + " "
-                                                            + "wind lidar, deployed in"
-                                                        ]
-                                                    ),
-                                                    html.Ul(
-                                                        children=[
-                                                            html.Li(
-                                                                str(
-                                                                    len(
-                                                                        df_in_clean.continent.unique()
-                                                                    )
-                                                                )
-                                                                + " continents"
-                                                            ),
-                                                            html.Li(
-                                                                str(
-                                                                    len(
-                                                                        df_in_clean.country_name.unique()
-                                                                    )
-                                                                )
-                                                                + " countries"
-                                                            ),
-                                                        ]
-                                                    ),
-                                                    dbc.Button(
-                                                        [
-                                                            html.I(
-                                                                className="fa-solid fa-map-location-dot"
-                                                            ),
-                                                            " Take part in the survey",
-                                                        ],
-                                                        href="".join(
-                                                            "https://forms.gle/ALAAa6KpztHH8Uh6A"
-                                                        ),
-                                                        target="_blank",
-                                                        color="primary",
-                                                        disabled=False,
-                                                        className="me-1 btn btn-primary btn-sm",
-                                                    ),
-                                                ]
-                                            )
-                                        ]
-                                    )
-                                ],
-                                class_name="col-12 col-md-4 col-lg-2 pb-md-4 pb-4",
+                                response_count_card(df_in_clean),
+                                class_name="col-12 col-md-4 col-lg-2 g-4",
                             ),
                             # Map of responses
                             dbc.Col(
-                                [
-                                    dbc.Card(
-                                        [
-                                            dbc.CardBody(
-                                                [
-                                                    html.H4(
-                                                        "Where are lidar used?",
-                                                        className="card-title",
-                                                    ),
-                                                    dcc.Graph(
-                                                        id="respondent_map",
-                                                        figure=fig_map_responses(
-                                                            df_in_clean
-                                                        ),
-                                                        style={"height": "300px"},
-                                                        responsive=True,
-                                                    ),
-                                                ]
-                                            )
-                                        ]
-                                    )
-                                ],
-                                class_name="col-12 col-md-8 col-lg-4 pb-md-4 pb-4",
+                                response_map_card(df_in_clean),
+                                class_name="col-12 col-md-8 col-lg-4 g-4",
                             ),
                             # Respondent types
                             dbc.Col(
-                                [
-                                    dbc.Card(
-                                        [
-                                            dbc.CardBody(
-                                                [
-                                                    html.H4(
-                                                        "How do people use wind lidar?",
-                                                        className="card-title",
-                                                    ),
-                                                    dcc.Graph(
-                                                        id="fig_pa",
-                                                        figure=fig_pc_responses(
-                                                            df_in_clean
-                                                        ),
-                                                        style={"height": "300px"},
-                                                        responsive=True,
-                                                    ),
-                                                ]
-                                            )
-                                        ]
-                                    ),
-                                ],
-                                class_name="col-12 col-lg-6 pb-4",
+                                respondent_type_card(df_in_clean),
+                                class_name="col-12 col-lg-6 g-4",
                             ),
                             # time series of power
                             dbc.Col(
-                                [
-                                    dbc.Card(
-                                        [
-                                            dbc.CardBody(
-                                                [
-                                                    dbc.Row(
-                                                        [
-                                                            html.H2(
-                                                                "When have wind lidar been used?",
-                                                                className="card-title",
-                                                            ),
-                                                        ]
-                                                    ),
-                                                    dbc.Row(
-                                                        [
-                                                            dbc.Col(
-                                                                [
-                                                                    html.H5("On Land"),
-                                                                    # the figure itself
-                                                                    dcc.Graph(
-                                                                        figure=fig_ts_p(
-                                                                            df_in_clean[
-                                                                                df_in_clean[
-                                                                                    "land_offshore"
-                                                                                ]
-                                                                                == "On land"
-                                                                            ],
-                                                                            ymax=round_up_to_base(
-                                                                                df_in_clean.project_power.max(),
-                                                                                200,
-                                                                            )
-                                                                            + 100,
-                                                                        ),
-                                                                        id="timeseries_power",
-                                                                        responsive=True,
-                                                                        style={
-                                                                            "height": "300px"
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                class_name="col-12 col-lg-4",
-                                                            ),
-                                                            dbc.Col(
-                                                                [
-                                                                    html.H5("Offshore"),
-                                                                    # the figure itself
-                                                                    dcc.Graph(
-                                                                        figure=fig_ts_p(
-                                                                            df_in_clean[
-                                                                                df_in_clean[
-                                                                                    "land_offshore"
-                                                                                ]
-                                                                                == "Offshore"
-                                                                            ],
-                                                                            ymax=round_up_to_base(
-                                                                                df_in_clean.project_power.max(),
-                                                                                200,
-                                                                            )
-                                                                            + 100,
-                                                                        ),
-                                                                        id="timeseries_power",
-                                                                        responsive=True,
-                                                                        style={
-                                                                            "height": "300px"
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                class_name="col-12 col-lg-4",
-                                                            ),
-                                                            dbc.Col(
-                                                                [
-                                                                    html.H5(
-                                                                        "No answer"
-                                                                    ),
-                                                                    # the figure itself
-                                                                    dcc.Graph(
-                                                                        figure=fig_ts_p(
-                                                                            df_in_clean[
-                                                                                df_in_clean[
-                                                                                    "land_offshore"
-                                                                                ]
-                                                                                == "N/A"
-                                                                            ],
-                                                                            ymax=round_up_to_base(
-                                                                                df_in_clean.project_power.max(),
-                                                                                200,
-                                                                            )
-                                                                            + 100,
-                                                                        ),
-                                                                        id="timeseries_power",
-                                                                        responsive=True,
-                                                                        style={
-                                                                            "height": "300px"
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                class_name="col-12 col-lg-4",
-                                                            ),
-                                                        ],
-                                                    ),
-                                                    dbc.Row(
-                                                        [
-                                                            html.I(
-                                                                [
-                                                                    html.Small(
-                                                                        [
-                                                                            html.I(
-                                                                                className="fa-solid fa-circle-info"
-                                                                            ),
-                                                                            " ",
-                                                                            "Double click on a data series in the legend - e.g. 'power performance testing' - to only show data for that application",
-                                                                        ]
-                                                                    ),
-                                                                ]
-                                                            )
-                                                        ],
-                                                        className="py-0 my-1",
-                                                    ),
-                                                ],
-                                            )
-                                        ]
-                                    )
-                                ],
-                                class_name="col-12 pb-4",
+                                timeline_card(df_in_clean),
+                                class_name="col-12 g-4",
+                            ),
+                            # Lidars per campaign
+                            dbc.Col(
+                                lidars_per_campaign_card(df_in_clean),
+                                class_name="col-12 col-lg-6 g-4",
+                            ),
+                            # rental versus purchase
+                            dbc.Col(
+                                lidar_rental_card(df_in_clean),
+                                class_name="col-12 col-lg-6 g-4",
                             ),
                             # Lidars per MW
                             dbc.Col(
-                                [
-                                    dbc.Card(
-                                        [
-                                            dbc.CardBody(
-                                                [
-                                                    html.H2(
-                                                        "How many wind lidar are used?",
-                                                        className="card-title",
-                                                    ),
-                                                    dbc.Row(
-                                                        [
-                                                            dbc.Col(
-                                                                [
-                                                                    html.H5(
-                                                                        "On land",
-                                                                        className="card-title",
-                                                                    ),
-                                                                    dcc.Graph(
-                                                                        figure=fig_lidars_per_MW(
-                                                                            df_long[
-                                                                                df_long[
-                                                                                    "land_offshore"
-                                                                                ]
-                                                                                == "On land"
-                                                                            ]
-                                                                        ),
-                                                                        id="lidars_per_MW_land",
-                                                                        responsive=True,
-                                                                        style={
-                                                                            "height": "400px"
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                className="col-12 col-lg-4",
-                                                            ),
-                                                            dbc.Col(
-                                                                [
-                                                                    html.H5(
-                                                                        "Offshore",
-                                                                        className="card-title",
-                                                                    ),
-                                                                    dcc.Graph(
-                                                                        figure=fig_lidars_per_MW(
-                                                                            df_long[
-                                                                                df_long[
-                                                                                    "land_offshore"
-                                                                                ]
-                                                                                == "Offshore"
-                                                                            ]
-                                                                        ),
-                                                                        id="lidars_per_MW_offshore",
-                                                                        responsive=True,
-                                                                        style={
-                                                                            "height": "400px"
-                                                                        },
-                                                                    ),
-                                                                    html.I(
-                                                                        [
-                                                                            html.Small(
-                                                                                [
-                                                                                    html.I(
-                                                                                        className="fa-solid fa-circle-info"
-                                                                                    ),
-                                                                                    " ",
-                                                                                    "Wind lidar on a fixed-bottom platform are shown as 'ground-based'",
-                                                                                ]
-                                                                            ),
-                                                                        ]
-                                                                    ),
-                                                                ],
-                                                                className="col-12 col-lg-4",
-                                                            ),
-                                                            dbc.Col(
-                                                                [
-                                                                    html.H5(
-                                                                        "No answer",
-                                                                        className="card-title",
-                                                                    ),
-                                                                    dcc.Graph(
-                                                                        figure=fig_lidars_per_MW(
-                                                                            df_long[
-                                                                                df_long[
-                                                                                    "land_offshore"
-                                                                                ]
-                                                                                == "N/A"
-                                                                            ]
-                                                                        ),
-                                                                        id="lidars_per_MW_unknown",
-                                                                        responsive=True,
-                                                                        style={
-                                                                            "height": "400px"
-                                                                        },
-                                                                    ),
-                                                                ],
-                                                                className="col-12 col-lg-4",
-                                                            ),
-                                                        ]
-                                                    ),
-                                                ],
-                                            )
-                                        ]
-                                    ),
-                                ],
-                                class_name="col-12 pb-2",
+                                lidars_per_MW_card(df_long),
+                                class_name="col-12 g-4",
+                            ),
+                            # Top 3 needs from lidar
+                            dbc.Col(
+                                lidar_needs_card(df_in_clean),
+                                className="col-6 g-4",
+                            ),
+                            # Top 3 challenges from lidar
+                            dbc.Col(
+                                lidar_challenges_card(df_in_clean),
+                                className="col-6 g-4",
+                            ),
+                            # Feedback
+                            dbc.Col(
+                                feedback_card(),
+                                className="col-12 g-4",
                             ),
                         ],
                     ),
                 ],
-                className="content",
+                className="content g-4",
                 style={"min-height": "80vh"},
             ),
         ],
