@@ -646,19 +646,8 @@ def title_text():
 
 def opening_text():
     opening_text = [
-        html.P("Welcome to the results of our live wind lidar user survey!",className="lead"),
-        html.P("These results are updated live as people take part in the survey. So, please tell us how you use it, too. It'll take you less than 5 minutes.", className="text-white"),
-        dbc.Button(
-                        [   " Take part in the survey",
-                        ],
-                        href="".join(
-                            "https://forms.gle/ALAAa6KpztHH8Uh6A"
-                        ),
-                        target="_blank",
-                        color="light",
-                        disabled=False,
-                        className="btn",
-                    ),
+        html.P("We were curious as well, so we put together this survey",className="lead"),
+        html.P("These results are updated live as people take part in the survey. So, please tell us how you use lidar, too. It'll take you less than 5 minutes.", className="lead"),        
     ]
 
     return opening_text
@@ -672,10 +661,10 @@ def closing_text():
                         href="".join(
                             "https://forms.gle/ALAAa6KpztHH8Uh6A"
                         ),
-                        target="_blank",
-                        color="light",
+                        target="_blank",                        
                         disabled=False,
                         className="btn",
+                        style={"background-color":"#CE1B4C", "border":"none"}
                     ),
     ]
 
@@ -744,13 +733,13 @@ def response_count_card(df_in_clean):
                                         df_in_clean.country_name.unique()
                                     )
                                 )
-                                + " countries"
+                                + " countries."
                             ),
                         ]
                     ),
                     dbc.Button(
                         [
-                            " Take part in the survey",
+                            "Add your experience to the survey",
                         ],
                         href="".join(
                             "https://forms.gle/ALAAa6KpztHH8Uh6A"
@@ -758,7 +747,7 @@ def response_count_card(df_in_clean):
                         target="_blank",
                         color="primary",
                         disabled=False,
-                        className="btn btn-primary col-12 col-lg-6 mx-auto",
+                        className="btn btn-primary col-12 col-lg-8 mx-auto",
                     ),
                 ]
             )
@@ -908,6 +897,15 @@ def lidar_rental_card(df_in_clean):
                         "How many wind lidars are rented per campaign?",
                         className="card-title",
                     ),
+                    html.Small(
+                        [
+                            html.I(
+                                className="fa-solid fa-circle-info"
+                            ),
+                            " ",
+                            "Not enough data!",
+                        ]
+                    ),                    
                     dbc.Row(
                         [
                             dbc.Col(
