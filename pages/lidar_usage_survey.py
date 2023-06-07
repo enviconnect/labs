@@ -207,7 +207,10 @@ def prepare_form_responses(df_in):
     # replace missing data in lidar columns with a zero
     lcols = default_category_order("lidar_type_count")
     for col in lcols:
+        # catch the empty value
         df_in[col] = df_in[col].replace("", 0.0).astype(float)
+        # catch the "more than 5" response
+        df_in[col] = df_in[col].replace("More than 5", 6.0).astype(float)
 
     # add an extra column with the total number of lidar
     df_in["n_lidar_project"] = float("nan")
@@ -217,11 +220,15 @@ def prepare_form_responses(df_in):
     # add an extra column with the total number of _rented_ lidar
     lrentedcols = default_category_order("lidar_type_rented_count")
     for col in lrentedcols:
+        # catch the empty value
         df_in[col] = df_in[col].replace("", 0.0).astype(float)
+        # catch the "more than 5" response
+        df_in[col] = df_in[col].replace("More than 5", 6.0).astype(float)
+
     df_in["n_lidar_project_rented"] = float("nan")
     for index, row in df_in.iterrows():
         df_in.loc[index, "n_lidar_project_rented"] = row[lrentedcols].sum()
-    
+
     # replace missing data in number columns with na
     float_cols = ["year_started", "project_power"]
 
@@ -334,7 +341,6 @@ def convert_form_responses_to_long(df_in):
 
     # add the number of devices per megawatt
     df_long["lidars_per_MW"] = df_long.n_lidar_type / df_long.project_power
-
     return df_long
 
 
@@ -382,15 +388,18 @@ def fig_map_responses(df_plot):
     # modify the presentation of the map
     fig.update_layout(
         geo=dict(
-            bgcolor="#FFFFFF",
-            countrycolor="#cccecf",
-            showcoastlines=True,
             projection_type="equirectangular",
+            showocean=True,
+            oceancolor="lightblue",
+            showcoastlines=False,
             showland=True,
+            landcolor="#8c510A",
+            showcountries=True,
             countrywidth=0.0,
+            countrycolor="#17A9AE",
             showframe=False,
         ),
-        coloraxis={"colorbar":{"dtick":1}},
+        coloraxis={"colorbar": {"dtick": 1}},
         coloraxis_showscale=True,
     )
 
@@ -401,7 +410,6 @@ def fig_map_responses(df_plot):
         colorbar_y=-0.05,
         colorbar_title_side="bottom",
     )
-    fig.update_traces(marker_line_color="lightgray")
 
     # set up the colorbar (legend)
 
@@ -525,6 +533,8 @@ def fig_ts_p(df_plot, ymax=[]):
 # -----------------------------
 # Get the number of lidars per campaign
 # -----------------------------
+
+
 def fig_n_lidars(df_plot):
     fig = px.bar(
         df_plot,
@@ -556,13 +566,16 @@ def fig_n_lidars(df_plot):
 # -----------------------------
 # Plot the number of rented lidar
 # -----------------------------
+
+
 def fig_lidar_rental(df_plot):
 
-    xmax = max(df_plot["n_lidar_project"].max(),df_plot["n_lidar_project_rented"].max())
+    xmax = max(df_plot["n_lidar_project"].max(),
+               df_plot["n_lidar_project_rented"].max())
     print(xmax)
 
     fig = px.scatter(
-        df_plot,
+        df_plot[df_plot["n_lidar_project"] > 0],
         x="n_lidar_project",
         y="n_lidar_project_rented",
         color="measurement_goal",
@@ -578,8 +591,8 @@ def fig_lidar_rental(df_plot):
         margin=dict(t=30, b=0, l=0, r=0),
     )
 
-    fig.update_xaxes(dtick=1, range=[0,xmax+1])
-    fig.update_yaxes(dtick=1, range=[0,xmax+1])
+    fig.update_xaxes(dtick=1, range=[0, xmax+1])
+    fig.update_yaxes(dtick=1, range=[-0.5, xmax+1])
 
     fig = fig_styling(fig)
 
@@ -588,29 +601,22 @@ def fig_lidar_rental(df_plot):
 # -----------------------------
 # plot the number of lidars per MW
 # -----------------------------
-def fig_lidars_per_MW(df_plot):
 
-    # print(df_plot[["land_offshore", "lidar_type_short_name", "lidars_per_MW"]])
+
+def fig_lidars_per_MW(df_plot):
 
     fig = px.scatter(
         df_plot[df_plot["n_lidar_type"] > 0],
         y="lidar_type_short_name",
         x="lidars_per_MW",
-        # range_x=[0, round_up_to_base(df_plot["lidars_per_MW"].max(), 0.5)],
-        # range_x=[0,0.5],
-        # size="project_power",
         color="measurement_goal",
         facet_col="land_offshore",
         category_orders={
             "measurement_goal": actual_category_order(df_plot, "measurement_goal"),
-            # "measurement_goal": default_category_order("lidar_type_short_name"),
-            # "lidar_type_short_name": actual_category_order(
-            #    df_plot, "lidar_type_short_name"
-            # ),
             "lidar_type_short_name": default_category_order("lidar_type_short_name"),
         },
         labels={
-            "lidars_per_MW": "Lidars per MW of wind farm power",
+            "lidars_per_MW": "Lidars used per MW of wind farm capacity",
             "lidar_type_short_name": "Lidar type",
         },
     )
@@ -622,7 +628,7 @@ def fig_lidars_per_MW(df_plot):
     fig.update_layout(
         # scattermode="group",
         # scattergap=0.75,
-        hovermode="closest",
+        hovermode=False,
         legend=dict(
             title="Application",
         ),
@@ -636,6 +642,8 @@ def fig_lidars_per_MW(df_plot):
 # -----------------------------
 # Get the number of met towers per campaign
 # -----------------------------
+
+
 def fig_n_metttowers(df_plot):
     fig = px.bar(
         df_plot,
@@ -675,7 +683,7 @@ def fig_word_cloud(word_list):
     flat_word_list = []
     for sublist in word_list:
         for item in sublist.split(", "):
-            flat_word_list.append(item)
+            flat_word_list.append(item.capitalize())
 
     wc = WordCloud(
         collocations=False,
@@ -708,54 +716,62 @@ def fig_styling(fig):
 # Create layout components, e.g. cards.
 # -----------------------------
 
+
 def title_text():
-    title_text = html.H1("Have you ever wondered how everyone else uses wind lidar?", className="title display-4")
+    title_text = html.H1(
+        "Have you ever wondered how everyone else uses wind lidar?", className="title display-4")
 
     return title_text
 
+
 def opening_text():
     opening_text = [
-        html.P("We were curious as well, so we put together this survey.",className="lead"),
+        html.P("We were curious as well, so we put together this survey.",
+               className="lead"),
         html.P(["These results are updated live as people take part in the survey. So, please ",
-                html.A("tell us how you use lidar",href="https://forms.gle/ALAAa6KpztHH8Uh6A", className="text-white"),
-                ", too. It'll take you less than 5 minutes."], className="lead"),        
+                html.A("tell us how you use lidar",
+                       href="https://forms.gle/ALAAa6KpztHH8Uh6A", className="text-white"),
+                ", too. It'll take you less than 5 minutes."], className="lead"),
     ]
 
     return opening_text
+
 
 def closing_text():
     closing_text = [
         html.P("If you found these results useful, please share how you are using wind lidar too. It'll take you less than 5 minutes.", className="text-white"),
         dbc.Button(
-                        [   " Take part in the survey",
-                        ],
-                        href="".join(
-                            "https://forms.gle/ALAAa6KpztHH8Uh6A"
-                        ),
-                        target="_blank",                        
-                        disabled=False,
-                        className="btn",
-                        style={"background-color":"#CE1B4C", "border":"none"}
-                    ),
+            [" Take part in the survey",
+             ],
+            href="".join(
+                "https://forms.gle/ALAAa6KpztHH8Uh6A"
+            ),
+            target="_blank",
+            disabled=False,
+            className="btn",
+            style={"background-color": "#CE1B4C", "border": "none"}
+        ),
     ]
 
     return closing_text
 
+
 def alert_card():
     alert_card = dbc.Alert(
-                        [
-                            html.H4(
-                                "Includes dummy data",
-                                className="alert-heading"),
-                            html.P(
-                                "This survey includes dummy data to help anonymize early answers. The dummy data will be removed once we have more than 10 survey responses."
-                            ),
-                        ],
-                        color="warning",
-                        className="g-4 mt-4 mb-0"
-                    )
+        [
+            html.H4(
+                "Includes dummy data",
+                className="alert-heading"),
+            html.P(
+                "This survey includes dummy data to help anonymize early answers. The dummy data will be removed once we have more than 10 survey responses."
+            ),
+        ],
+        color="warning",
+        className="g-4 mt-4 mb-0"
+    )
 
     return alert_card
+
 
 def response_count_card(df_in_clean):
     card = dbc.Card(
@@ -906,7 +922,6 @@ def timeline_card(df_in_clean):
                             "height": "500px"
                         },
                     ),
-
                     html.Small(
                         [
                             html.I(
@@ -933,29 +948,20 @@ def lidars_per_campaign_card(df_in_clean):
                         "How many wind lidar are used per campaign?",
                         className="card-title",
                     ),
-                    dbc.Row(
-                        [
-                            dbc.Col(
-                                [
-                                    dcc.Graph(
-                                        figure=fig_n_lidars(
-                                            df_in_clean
-                                        ),
-                                        id="lidars_per_campaign",
-                                        responsive=True,
-                                        style={
-                                            "height": "300px"
-                                        },
-                                    ),
-                                ],
-                                className="col-12 col-lg-12",
-                            ),
-                        ]
+                    dcc.Graph(
+                        figure=fig_n_lidars(
+                            df_in_clean
+                        ),
+                        id="lidars_per_campaign",
+                        responsive=True,
+                        style={
+                            "height": "300px"
+                        },
                     ),
                 ],
-            )
+            ),
         ]
-    ),
+    )
     return card
 
 
@@ -967,28 +973,20 @@ def lidar_rental_card(df_in_clean):
                     html.H2(
                         "How many wind lidars are rented per campaign?",
                         className="card-title"
-                    ),                    
-                    dbc.Row(
-                        [
-                            dbc.Col(
-                                [
-                                    dcc.Graph(
-                                        figure=fig_lidar_rental(
-                                            df_in_clean
-                                        ),
-                                        id="lidars_rented",
-                                        responsive=True,
-                                        style={
-                                            "height": "300px"
-                                        },
-                                    ),
-                                ],
-                                className="col-12 col-lg-12",
-                            ),
-                        ]
+                    ),
+
+                    dcc.Graph(
+                        figure=fig_lidar_rental(
+                            df_in_clean
+                        ),
+                        id="lidars_rented",
+                        responsive=True,
+                        style={
+                            "height": "300px"
+                        },
                     ),
                 ],
-            )
+            ),
         ]
     )
     return card
@@ -1003,51 +1001,41 @@ def masts_per_campaign_card(df_in_clean):
                         "How many met masts are used per campaign?",
                         className="card-title",
                     ),
-                    dbc.Row(
-                        [
-                            dbc.Col(
-                                [
-                                    dcc.Graph(
-                                        figure=fig_n_metttowers(
-                                            df_in_clean
-                                        ),
-                                        id="towers_per_campaign",
-                                        responsive=True,
-                                        style={
-                                            "height": "300px"
-                                        },
-                                    ),
-                                ],
-                                className="col-12 col-lg-12",
-                            ),
-                        ]
+                    dcc.Graph(
+                        figure=fig_n_metttowers(
+                            df_in_clean
+                        ),
+                        id="towers_per_campaign",
+                        responsive=True,
+                        style={
+                            "height": "200px"
+                        },
                     ),
                 ],
-            )
+            ),
         ]
-    ),
+    )
     return card
+
 
 def masts_reasons_card(df_in_clean):
     card = dbc.Card(
         [dbc.CardBody(
             [
-                dbc.Row(
-                    [
-                        html.H2(
-                            "Reasons for using met towers",
-                            className="card-title",
-                        ),
-                        html.Img(
-                            src="data:image/png;base64," +
-                            fig_word_cloud(
-                                df_in_clean["mettower_reasons"]))
-                    ]
+                html.H2(
+                    "Why use met towers?",
+                    className="card-title",
                 ),
+                html.Img(
+                    src="data:image/png;base64," +
+                    fig_word_cloud(
+                        df_in_clean["mettower_reasons"]))
             ]
-        )
-        ],)
+        ),
+        ]
+    )
     return card
+
 
 def lidars_per_MW_card(df_long):
     card = dbc.Card(
@@ -1058,27 +1046,27 @@ def lidars_per_MW_card(df_long):
                         "Do bigger wind farms need more lidar?",
                         className="card-title",
                     ),
-                    dbc.Row(
+                    html.Small(
                         [
-                            dbc.Col(
-                                [
-                                    dcc.Graph(
-                                        figure=fig_lidars_per_MW(
-                                            df_long
-                                        ),
-                                        id="lidars_per_MW_land",
-                                        responsive=True,
-                                        style={
-                                            "height": "300px"
-                                        },
-                                    ),
-                                ],
-                                className="col-12 col-lg-12",
+                            html.I(
+                                className="fa-solid fa-circle-info"
                             ),
+                            " ",
+                            "This chart shows how many lidar are used compared to the size of the wind farm. If 3 lidars were used on a 120 MW farm, that would be plotted as 0.025 lidars per MW.",
                         ]
                     ),
+                    dcc.Graph(
+                        figure=fig_lidars_per_MW(
+                            df_long
+                        ),
+                        id="lidars_per_MW_land",
+                        responsive=True,
+                        style={
+                            "height": "300px"
+                        },
+                    ),
                 ],
-            )
+            ),
         ]
     )
 
@@ -1089,18 +1077,14 @@ def lidar_needs_card(df_in_clean):
     card = dbc.Card(
         [dbc.CardBody(
             [
-                dbc.Row(
-                    [
-                        html.H2(
-                            "Top 3 needs from wind lidar",
-                            className="card-title",
-                        ),
-                        html.Img(
-                            src="data:image/png;base64," +
-                            fig_word_cloud(
-                                df_in_clean["top_needs"]))
-                    ]
+                html.H2(
+                    "Top 3 needs from wind lidar",
+                    className="card-title",
                 ),
+                html.Img(
+                    src="data:image/png;base64," +
+                    fig_word_cloud(
+                        df_in_clean["top_needs"]))
             ]
         )
         ],)
@@ -1112,42 +1096,40 @@ def lidar_challenges_card(df_in_clean):
         [
             dbc.CardBody(
                 [
-                    dbc.Row(
-                        [
-                            html.H2(
-                                "Top 3 challenges from wind lidar",
-                                className="card-title",
-                            ),
-                            html.Img(
-                                src="data:image/png;base64," +
-                                fig_word_cloud(
-                                    df_in_clean["top_challenges"]))
-                        ]
+                    html.H2(
+                        "Top 3 challenges from wind lidar",
+                        className="card-title",
                     ),
+                    html.Img(
+                        src="data:image/png;base64," +
+                        fig_word_cloud(
+                            df_in_clean["top_challenges"]))
                 ]
-            )],)
+            ),
+        ]
+    )
     return card
+
 
 def lidar_opportunities_card(df_in_clean):
     card = dbc.Card(
         [
             dbc.CardBody(
                 [
-                    dbc.Row(
-                        [
-                            html.H2(
-                                "Top 3 opportunities from wind lidar",
-                                className="card-title",
-                            ),
-                            html.Img(
-                                src="data:image/png;base64," +
-                                fig_word_cloud(
-                                    df_in_clean["top_opportunities"]))
-                        ]
+                    html.H2(
+                        "Top 3 opportunities from wind lidar",
+                        className="card-title",
                     ),
+                    html.Img(
+                        src="data:image/png;base64," +
+                        fig_word_cloud(
+                            df_in_clean["top_opportunities"]))
                 ]
-            )],)
+            ),
+        ]
+    )
     return card
+
 
 def feedback_card():
     card = dbc.Card(
@@ -1185,9 +1167,9 @@ def layout():
             # reload the data
             # title row
             dbc.Row(
-        dbc.Col(
-            title_text(),
-        )
+                dbc.Col(
+                    title_text(),
+                )
             ),
             # content
             html.Div(
@@ -1199,7 +1181,7 @@ def layout():
                     # opening text
                     dbc.Row(
                         [
-                            dbc.Col(        
+                            dbc.Col(
                                 opening_text(),
                                 className="col-12"
                             )
@@ -1213,7 +1195,7 @@ def layout():
                                 [
                                     response_count_card(df_in_clean),
                                     alert_card(),
-                                    ],
+                                ],
                                 class_name="col-12 col-lg-6 g-4",
                             ),
                             # Map of responses
@@ -1249,7 +1231,7 @@ def layout():
                             # Met towers
                             dbc.Col(
                                 masts_per_campaign_card(df_in_clean),
-                                class_name="col-12 col-lg-8 g-4",        
+                                class_name="col-12 col-lg-8 g-4",
                             ),
                             # reason for using met towers
                             dbc.Col(
@@ -1281,7 +1263,7 @@ def layout():
                     # closing text
                     dbc.Row(
                         [
-                            dbc.Col(        
+                            dbc.Col(
                                 closing_text(),
                                 className="col-12 g-4 pt-4"
                             )
