@@ -189,6 +189,7 @@ def prepare_form_responses(df_in):
             "How many, and what type of lidar were used? [Vessel-mounted vertically-profiling lidar]": "n_vm_vp",
             "How many, and what type of lidar were used? [Vessel-mounted scanning lidar]": "n_vm_s",
             "How many met towers did you use?": "n_mettowers",
+            "What was the reason for using met towers?": "mettower_reasons",
             "How many, and what type of lidar were rented? [Ground-based vertically-profiling lidar]": "n_gb_vp_rented",
             "How many, and what type of lidar were rented? [Ground-based scanning lidar]": "n_gb_s_rented",
             "How many, and what type of lidar were rented? [Nacelle-mounted forward-looking lidar]": "n_nm_fl_rented",
@@ -524,8 +525,6 @@ def fig_ts_p(df_plot, ymax=[]):
 # -----------------------------
 # Get the number of lidars per campaign
 # -----------------------------
-
-
 def fig_n_lidars(df_plot):
     fig = px.bar(
         df_plot,
@@ -555,10 +554,8 @@ def fig_n_lidars(df_plot):
     return fig
 
 # -----------------------------
-# Get the number of lidars per MW
+# Plot the number of rented lidar
 # -----------------------------
-
-
 def fig_lidar_rental(df_plot):
 
     xmax = max(df_plot["n_lidar_project"].max(),df_plot["n_lidar_project_rented"].max())
@@ -589,10 +586,8 @@ def fig_lidar_rental(df_plot):
     return fig
 
 # -----------------------------
-# Get the number of lidars per MW
+# plot the number of lidars per MW
 # -----------------------------
-
-
 def fig_lidars_per_MW(df_plot):
 
     # print(df_plot[["land_offshore", "lidar_type_short_name", "lidars_per_MW"]])
@@ -633,6 +628,37 @@ def fig_lidars_per_MW(df_plot):
         ),
         margin=dict(t=30, b=0, l=0, r=0),
     )
+
+    fig = fig_styling(fig)
+
+    return fig
+
+# -----------------------------
+# Get the number of met towers per campaign
+# -----------------------------
+def fig_n_metttowers(df_plot):
+    fig = px.bar(
+        df_plot,
+        x="n_mettowers",
+        y="count",
+        color="measurement_goal",
+        barmode="group",
+        labels={
+            "n_mettowers": "Number of met towers used",
+            "count": "Number of responses",
+        },
+    )
+
+    fig.update_layout(
+        bargap=0.30,
+        bargroupgap=0.0,
+        hovermode=False,
+        legend=dict(title="Application"),
+        margin=dict(t=30, b=0, l=0, r=0),
+    )
+
+    fig.update_xaxes(tickmode='linear')
+    fig.update_yaxes(dtick=1)
 
     fig = fig_styling(fig)
 
@@ -968,6 +994,61 @@ def lidar_rental_card(df_in_clean):
     return card
 
 
+def masts_per_campaign_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    html.H2(
+                        "How many met masts are used per campaign?",
+                        className="card-title",
+                    ),
+                    dbc.Row(
+                        [
+                            dbc.Col(
+                                [
+                                    dcc.Graph(
+                                        figure=fig_n_metttowers(
+                                            df_in_clean
+                                        ),
+                                        id="towers_per_campaign",
+                                        responsive=True,
+                                        style={
+                                            "height": "300px"
+                                        },
+                                    ),
+                                ],
+                                className="col-12 col-lg-12",
+                            ),
+                        ]
+                    ),
+                ],
+            )
+        ]
+    ),
+    return card
+
+def masts_reasons_card(df_in_clean):
+    card = dbc.Card(
+        [dbc.CardBody(
+            [
+                dbc.Row(
+                    [
+                        html.H2(
+                            "Reasons for using met towers",
+                            className="card-title",
+                        ),
+                        html.Img(
+                            src="data:image/png;base64," +
+                            fig_word_cloud(
+                                df_in_clean["mettower_reasons"]))
+                    ]
+                ),
+            ]
+        )
+        ],)
+    return card
+
 def lidars_per_MW_card(df_long):
     card = dbc.Card(
         [
@@ -1164,6 +1245,16 @@ def layout():
                             dbc.Col(
                                 lidars_per_MW_card(df_long),
                                 class_name="col-12 g-4",
+                            ),
+                            # Met towers
+                            dbc.Col(
+                                masts_per_campaign_card(df_in_clean),
+                                class_name="col-12 col-lg-8 g-4",        
+                            ),
+                            # reason for using met towers
+                            dbc.Col(
+                                masts_reasons_card(df_in_clean),
+                                className="col-12 col-md-6 col-lg-4 g-4",
                             ),
                             # Top 3 needs from lidar
                             dbc.Col(
