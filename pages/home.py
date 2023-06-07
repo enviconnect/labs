@@ -82,7 +82,7 @@ layout = dbc.Container(
                         dbc.Card(
                             [
                                 dbc.CardImg(
-                                    src="/assets/images/lidar_survey.png", top=True
+                                    src="/assets/images/lidar_usage_survey.png", top=True
                                 ),
                                 dbc.CardBody(
                                     [

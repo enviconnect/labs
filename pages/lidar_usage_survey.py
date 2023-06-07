@@ -44,7 +44,7 @@ dash.register_page(
     name="Wind lidar applications",
     description="Interactive results of a survey about how wind lidar are used in the wind energy industry",
     path="/lidar_applications_survey",
-    image="images/explorer.png",
+    image="images/lidar_usage_survey.png",
 )
 
 # --------------------
