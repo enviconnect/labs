@@ -198,7 +198,8 @@ def prepare_form_responses(df_in):
             "How many, and what type of lidar were rented? [Vessel-mounted scanning lidar]": "n_vm_s_rented",
             "Is this real data?": "real_data",
             "Top 3 needs": "top_needs",
-            "Top 3 challenges": "top_challenges"},
+            "Top 3 challenges": "top_challenges",
+            "Top 3 opportunities": "top_opportunities"},
         inplace=True,
     )
 
@@ -1046,6 +1047,26 @@ def lidar_challenges_card(df_in_clean):
             )],)
     return card
 
+def lidar_opportunities_card(df_in_clean):
+    card = dbc.Card(
+        [
+            dbc.CardBody(
+                [
+                    dbc.Row(
+                        [
+                            html.H2(
+                                "Top 3 opportunities from wind lidar",
+                                className="card-title",
+                            ),
+                            html.Img(
+                                src="data:image/png;base64," +
+                                fig_word_cloud(
+                                    df_in_clean["top_opportunities"]))
+                        ]
+                    ),
+                ]
+            )],)
+    return card
 
 def feedback_card():
     card = dbc.Card(
@@ -1147,12 +1168,17 @@ def layout():
                             # Top 3 needs from lidar
                             dbc.Col(
                                 lidar_needs_card(df_in_clean),
-                                className="col-12 col-md-6 g-4",
+                                className="col-12 col-md-6 col-lg-4 g-4",
                             ),
                             # Top 3 challenges from lidar
                             dbc.Col(
                                 lidar_challenges_card(df_in_clean),
-                                className="col-12 col-md-6 g-4",
+                                className="col-12 col-md-6 col-lg-4 g-4",
+                            ),
+                            # Top 3 opportunities from lidar
+                            dbc.Col(
+                                lidar_opportunities_card(df_in_clean),
+                                className="col-12 col-md-6 col-lg-4 g-4",
                             ),
                             # Feedback
                             dbc.Col(
