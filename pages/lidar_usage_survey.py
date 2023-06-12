@@ -711,19 +711,29 @@ def fig_word_cloud(word_list):
         for item in sublist.split(", "):
             flat_word_list.append(item.capitalize())
 
+    # remove items that are empty
+
+    # Debug the counter syntax
+    # print(Counter(flat_word_list))
+    # flat_word_list = dict(one=1, two=2, three=3)
+    print(Counter(flat_word_list))
+
     wc = WordCloud(
-        collocations=False,
+        min_word_length=1,
+        relative_scaling=1,
         mode="RGBA",
         height=300,
         width=600,
         background_color=None).generate_from_frequencies(
         Counter(flat_word_list))
     wc_img = wc.to_image()
+
     with BytesIO() as buffer:
         wc_img.save(buffer, 'png')
         fig = base64.b64encode(buffer.getvalue()).decode()
 
     return fig
+
 
 # -----------------------------
 # Apply theming to the figures
@@ -786,19 +796,22 @@ def closing_text():
     return closing_text
 
 
-def alert_card():
-    alert_card = dbc.Alert(
-        [
-            html.H4(
-                "Includes dummy data",
-                className="alert-heading"),
-            html.P(
-                "This survey includes dummy data to help anonymize early answers. The dummy data will be removed once we have more than 10 survey responses."
-            ),
-        ],
-        color="warning",
-        className="g-4 mt-4 mb-0"
-    )
+def alert_card(use_real_only=True):
+    if use_real_only:
+        alert_card = []
+    else:
+        alert_card = dbc.Alert(
+            [
+                html.H4(
+                    "Includes dummy data",
+                    className="alert-heading"),
+                html.P(
+                    "This survey includes dummy data to help anonymize early answers. The dummy data will be removed once we have more than 10 survey responses."
+                ),
+            ],
+            color="warning",
+            className="g-4 mt-4 mb-0"
+        )
 
     return alert_card
 
@@ -871,16 +884,6 @@ def response_count_card(df_in_clean):
     )
 
     return card
-
-
-def response_info_cards(df_in_clean, use_real_only=True):
-    if use_real_only:
-        cards = response_count_card(df_in_clean)
-    else:
-        cards = [response_count_card(df_in_clean),
-                 alert_card()]
-
-    return cards
 
 
 def response_map_card(df_in_clean):
@@ -1061,8 +1064,7 @@ def masts_reasons_card(df_in_clean):
                     className="card-title",
                 ),
                 html.Img(
-                    src="data:image/png;base64," +
-                    fig_word_cloud(
+                    src="data:image/png;base64," + fig_word_cloud(
                         df_in_clean["mettower_reasons"]))
             ]
         ),
@@ -1248,8 +1250,8 @@ def layout():
                             # Number of responses
                             dbc.Col(
                                 [
-                                    response_info_cards(
-                                        df_in_clean, use_real_only)
+                                    response_count_card(df_in_clean),
+                                    alert_card(use_real_only)
                                 ],
                                 class_name="col-12 col-lg-6 g-4",
                             ),
