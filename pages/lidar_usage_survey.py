@@ -706,10 +706,13 @@ def fig_n_metttowers(df_plot):
 # https://stackoverflow.com/questions/58286251/how-can-i-group-multi-word-terms-when-creating-a-python-wordcloud
 #
 def fig_word_cloud(word_list):
+
     flat_word_list = []
     for sublist in word_list:
         for item in sublist.split(", "):
-            flat_word_list.append(item.capitalize())
+            if len(item) > 0:
+                # capitalize the first letter in a string and append
+                flat_word_list.append(item[0].upper() + item[1:])
 
     # remove items that are empty
 
@@ -778,7 +781,7 @@ def opening_text():
 def closing_text():
     closing_text = [
         html.H4(
-            "Your data?",
+            "Share your experience",
             className="alert-heading"),
         html.P("If you found these results useful, please share how you are using wind lidar too. It'll take you less than 5 minutes."),
         dbc.Button(
@@ -829,7 +832,7 @@ def response_count_card(df_in_clean):
                                 )
                             )
                             + " "
-                            + "Survey responses"
+                            + "survey responses"
                         ],
                         className="card-title",
                     ),
