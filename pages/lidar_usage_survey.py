@@ -6,9 +6,6 @@ from collections import Counter
 from datetime import date
 from io import BytesIO
 
-# get domain from URLs
-from urllib.parse import urlparse
-
 # specific to this app
 import country_converter as coco
 import dash
@@ -208,11 +205,11 @@ def prepare_form_responses(df_in):
 
     # replace missing data in lidar columns with a zero
     lcols = default_category_order("lidar_type_count")
-    for col in lcols:
-        # catch the empty value
-        df_in[col] = df_in[col].replace("", 0.0).astype(float)
-        # catch the "more than 5" response
-        df_in[col] = df_in[col].replace("More than 5", 6.0).astype(float)
+    # for col in lcols:
+    # catch the empty value
+    df_in[lcols] = df_in[lcols].replace("", 0.0).astype(float)
+    # catch the "more than 5" response
+    df_in[lcols] = df_in[lcols].replace("More than 5", 6.0).astype(float)
 
     # add an extra column with the total number of lidar
     df_in["n_lidar_project"] = float("nan")
@@ -221,11 +218,12 @@ def prepare_form_responses(df_in):
 
     # add an extra column with the total number of _rented_ lidar
     lrentedcols = default_category_order("lidar_type_rented_count")
-    for col in lrentedcols:
-        # catch the empty value
-        df_in[col] = df_in[col].replace("", 0.0).astype(float)
-        # catch the "more than 5" response
-        df_in[col] = df_in[col].replace("More than 5", 6.0).astype(float)
+    # for col in lrentedcols:
+    # catch the empty value
+    df_in[lrentedcols] = df_in[lrentedcols].replace("", 0.0).astype(float)
+    # catch the "more than 5" response
+    df_in[lrentedcols] = df_in[lrentedcols].replace(
+        "More than 5", 6.0).astype(float)
 
     df_in["n_lidar_project_rented"] = float("nan")
     for index, row in df_in.iterrows():
@@ -234,8 +232,8 @@ def prepare_form_responses(df_in):
     # replace missing data in number columns with na
     float_cols = ["year_started", "project_power"]
 
-    for col in float_cols:
-        df_in[col] = df_in[col].replace("", float("nan"))
+    # for col in float_cols:
+    df_in[float_cols] = df_in[float_cols].replace("", float("nan"))
 
     # replace missing data in text columns with "N/A"
     text_cols = [
@@ -247,8 +245,8 @@ def prepare_form_responses(df_in):
         "land_offshore",
     ]
 
-    for col in text_cols:
-        df_in[col] = df_in[col].replace("", "N/A").astype(str)
+    # for col in text_cols:
+    df_in[text_cols] = df_in[text_cols].replace("", "N/A").astype(str)
 
     # map english-language country names to codes
     # apply solution at
@@ -402,9 +400,11 @@ def fig_map_responses(df_plot):
             showcountries=True,
             countrywidth=0.0,
             countrycolor="#17A9AE",
+            showlakes=False,
             showframe=False,
         ),
-        coloraxis={"colorbar": {"dtick": 1}},
+        coloraxis=dict(colorbar=dict(dtick=1,
+                                     thickness=20)),
         coloraxis_showscale=True,
     )
 
@@ -480,11 +480,13 @@ def fig_pc_responses(df_plot):
     )
 
     # fig_pa.update(layout_coloraxis_showscale=True)
+    fig.update_traces(hoverinfo='skip')
     # fig_pa.update_traces(line_colorbar_orientation="h")
     # fig_pa.update_traces(line_colorbar_y=-0.3)
     # fig_pa.update_traces(line_colorbar_title={"text": "Project size (MW)"})
 
-    fig.update_layout(margin=dict(t=20, b=0, l=60, r=20))
+    fig.update_layout(margin=dict(t=20, b=0, l=60, r=20),
+                      hovermode=False)
 
     fig = fig_styling(fig)
 
@@ -716,13 +718,6 @@ def fig_word_cloud(word_list):
                 # capitalize the first letter in a string and append
                 flat_word_list.append(item[0].upper() + item[1:])
 
-    # remove items that are empty
-
-    # Debug the counter syntax
-    # print(Counter(flat_word_list))
-    # flat_word_list = dict(one=1, two=2, three=3)
-    print(Counter(flat_word_list))
-
     wc = WordCloud(
         min_word_length=1,
         relative_scaling=1,
@@ -769,12 +764,8 @@ def title_text():
 
 def opening_text():
     opening_text = [
-        html.P("We were curious as well, so we put together this survey.",
+        html.P("We were curious as well, so we're doing a survey.",
                className="lead"),
-        html.P(["These results are updated live as people take part in the survey. So, please ",
-                html.A("tell us how you use lidar",
-                       href="https://forms.gle/ALAAa6KpztHH8Uh6A", className="text-white"),
-                ", too. It'll take you less than 5 minutes."], className="lead"),
     ]
 
     return opening_text
@@ -860,7 +851,7 @@ def response_count_card(df_in_clean):
                                         df_in_clean.continent.unique()
                                     )
                                 )
-                                + " continents"
+                                + " continents and"
                             ),
                             html.Li(
                                 str(
@@ -872,15 +863,18 @@ def response_count_card(df_in_clean):
                             ),
                         ]
                     ),
+                    html.P(
+                        ["These results are updated automatically as people share their experience."]),
                     dbc.Button(
-                        ["Add your experience to the survey"],
+                        ["Add your experience - it'll take you less than 5 minutes"],
                         href="".join(
                             "https://forms.gle/ALAAa6KpztHH8Uh6A"
                         ),
                         target="_blank",
                         disabled=False,
-                        className="btn col-12 col-lg-8 mx-auto",
-                        style={"background-color": "#CE1B4C", "border": "none"}
+                        className="btn col-12 col-lg-12 mx-auto",
+                        style={"background-color": "#CE1B4C", "border": "none",
+                               "box-shadow": "0 0.5rem 1.0rem rgba(0, 0, 0, 1.0) !important"}
                     ),
 
                 ]
@@ -959,10 +953,10 @@ def timeline_card(df_in_clean):
                             df_in_clean,
                         ),
                         id="timeseries_power",
-                        responsive=True,
                         style={
                             "height": "500px"
                         },
+                        responsive=True,
                     ),
                     html.Small(
                         [
@@ -995,10 +989,10 @@ def lidars_per_campaign_card(df_in_clean):
                             df_in_clean
                         ),
                         id="lidars_per_campaign",
-                        responsive=True,
                         style={
                             "height": "300px"
                         },
+                        responsive=True,
                     ),
                 ],
             ),
@@ -1070,7 +1064,9 @@ def masts_reasons_card(df_in_clean):
                 ),
                 html.Img(
                     src="data:image/png;base64," + fig_word_cloud(
-                        df_in_clean["mettower_reasons"]))
+                        df_in_clean["mettower_reasons"]),
+                    style={"max-width": "100%"},
+                )
             ]
         ),
         ]
@@ -1093,7 +1089,7 @@ def lidars_per_MW_card(df_long):
                                 className="fa-solid fa-circle-info"
                             ),
                             " ",
-                            "This chart shows how many lidar are used compared to the size of the wind farm. If 3 lidars were used on a 120 MW farm, that would be plotted as 0.025 lidars per MW.",
+                            "This chart shows how many lidar are used compared to the size of the wind farm. For example, 3 lidars used on a 120 MW farm would be plotted as 0.025 lidars per MW.",
                         ]
                     ),
                     dcc.Graph(
@@ -1125,7 +1121,8 @@ def lidar_needs_card(df_in_clean):
                 html.Img(
                     src="data:image/png;base64," +
                     fig_word_cloud(
-                        df_in_clean["top_needs"]))
+                        df_in_clean["top_needs"]),
+                    style={"max-width": "100%"})
             ]
         )
         ],)
@@ -1144,7 +1141,9 @@ def lidar_challenges_card(df_in_clean):
                     html.Img(
                         src="data:image/png;base64," +
                         fig_word_cloud(
-                            df_in_clean["top_challenges"]))
+                            df_in_clean["top_challenges"]),
+                        style={"max-width": "100%"}
+                    )
                 ]
             ),
         ]
@@ -1164,7 +1163,9 @@ def lidar_opportunities_card(df_in_clean):
                     html.Img(
                         src="data:image/png;base64," +
                         fig_word_cloud(
-                            df_in_clean["top_opportunities"]))
+                            df_in_clean["top_opportunities"]),
+                        style={"max-width": "100%"}
+                    )
                 ]
             ),
         ]
@@ -1180,7 +1181,7 @@ def feedback_card():
                     html.H4("Feedback and comments"),
                     html.P(
                         "This is a work in progress, and we welcome all feedback about the information we are collecting and how we are presenting it."),
-                    html.P(["Please send any feedback to Andy Clifton at ",
+                    html.P(["Please send any feedback to ",
                             html.A("andy.clifton@enviconnect.de",
                                    href="mailto:andy.clifton@enviconnect.de"),
                             "."])

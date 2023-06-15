@@ -1,11 +1,9 @@
 # set up Dash
 # from jupyter_dash import JupyterDash
 
-from dash import Dash, html, dcc
 import dash
-
 import dash_bootstrap_components as dbc
-
+from dash import Dash, dcc, html
 
 # ---------
 # Build App
@@ -29,9 +27,11 @@ def create_nav_bar():
                     html.A(
                         [
                             html.Img(
-                                src=app.get_asset_url("Logo_white_colourfulC_100H.png"),
-                                style={"max-width": "100%", "max-height": "35px"},
-                            ),                            
+                                src=app.get_asset_url(
+                                    "Logo_white_colourfulC_100H.png"),
+                                style={"max-width": "100%",
+                                       "max-height": "35px"},
+                            ),
                         ],
                         href="/",
                         target="_blank",
@@ -64,7 +64,7 @@ def create_nav_bar():
                         disabled=False,
                         outline=True,
                         className="me-1 border rounded",
-                        style={"color":"#ffffff"}
+                        style={"color": "#ffffff"}
                     ),
                 ]
             ),
@@ -101,7 +101,8 @@ def create_footer_row():
                                     src=app.get_asset_url(
                                         "Logo_white_colourfulC_100H.png"
                                     ),
-                                    style={"max-width": "100%", "max-height": "35px"},
+                                    style={"max-width": "100%",
+                                           "max-height": "35px"},
                                     className="mb-2",
                                 )
                             ],
@@ -109,7 +110,7 @@ def create_footer_row():
                             target="_blank",
                         ),
                         html.P(
-                            "We're experts in finding and deploying new technologies for wind energy applications"
+                            "Digitalising wind energy"
                         ),
                     ]
                 ),
@@ -187,7 +188,8 @@ def create_subfooter():
                             ),
                             # copyright notice
                             html.Div(
-                                [html.P("\u00A9 enviConnect 2022", className="mb-0")],
+                                [html.P("\u00A9 enviConnect 2022",
+                                        className="mb-0")],
                                 className="copyright",
                             ),
                         ],
@@ -212,22 +214,23 @@ def create_subfooter():
 app.layout = dbc.Container(
     [
         # nav bar
-                    html.Div(
-                        [
-                            dbc.Container(create_nav_bar(), fluid=False, className=" px-0")],
-                            className="header sticky-top",
-                            style={"background-color":"#117f82"}
-                            )
-        ,
+        html.Div(
+            [
+                dbc.Container(create_nav_bar(), fluid=False, className=" px-0")],
+            className="header sticky-top",
+            style={"background-color": "#117f82"}
+        ),
         # content from other pages
         html.Div(
-            [dbc.Container(dash.page_container, fluid=False, className="px-0")],
+            [dbc.Container(dash.page_container,
+                           fluid=False, className="px-0")],
             className="content py-2",
             style={"min-height": "50vh"},
         ),
         # footer
         html.Div(
-            [dbc.Container(create_footer_row(), fluid=False, className="px-0")],
+            [dbc.Container(create_footer_row(),
+                           fluid=False, className="px-0")],
             className="footer",
         ),
         # subfooter
