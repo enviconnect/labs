@@ -9,6 +9,10 @@ path = os.getcwd()
 
 print(path)
 
+# change to the working directory
+os.chdir("public-EnergyRnDFacilitiesExplorer")
+print(path)
+
 sa = gspread.service_account(
     filename=".secrets/lidars-per-mw-fae432341abd.json")
 sheet = sa.open("lidar applications survey responses")
