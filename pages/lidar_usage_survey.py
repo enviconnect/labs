@@ -156,11 +156,13 @@ def default_category_order(category):
 
 
 def fetch_form_responses():
-    sa = gspread.service_account(
-        filename=".secrets/lidars-per-mw-fae432341abd.json")
-    sheet = sa.open("lidar applications survey responses")
-    work_sheet = sheet.worksheet("Form responses 1")
-    df_in = pd.DataFrame(work_sheet.get_all_records())
+    # sa = gspread.service_account(
+    #    filename=".secrets/lidars-per-mw-fae432341abd.json")
+    # sheet = sa.open("lidar applications survey responses")
+    # work_sheet = sheet.worksheet("Form responses 1")
+    # df_in = pd.DataFrame(work_sheet.get_all_records())
+
+    df_in = pd.read_pickle("data/lidar_usage_survey/lidar_usage_survey.pkl")
 
     return df_in
 
