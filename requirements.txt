@@ -4,6 +4,7 @@ numpy>=1.23.2
 plotly>=5.11.0
 dash>=2.6.2
 dash_bootstrap_components>=1.2.1
+dash-loading-spinners>=1.0
 pyyaml>=6.0
 dash_leaflet>=0.1.23
 country-converter>=0.8

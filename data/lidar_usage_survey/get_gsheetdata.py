@@ -9,7 +9,7 @@ path = os.getcwd()
 
 print(path)
 
-# change to the working directory
+# change to the working directory. This should be the location of the "app.py"
 os.chdir("public-EnergyRnDFacilitiesExplorer")
 print(path)
 

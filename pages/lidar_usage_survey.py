@@ -11,6 +11,7 @@ import country_converter as coco
 import dash
 import dash_bootstrap_components as dbc
 import dash_leaflet as dl
+import dash_loading_spinners
 import gspread
 
 # import numpy
@@ -1037,6 +1038,7 @@ def masts_per_campaign_card(df_in_clean):
                         "Are wind lidar used with met masts?",
                         className="card-title",
                     ),
+
                     dcc.Graph(
                         figure=fig_n_metttowers(
                             df_in_clean
@@ -1225,9 +1227,8 @@ def layout():
     df_long = convert_form_responses_to_long(df_in_clean)
 
     # now generate the layout
-    layout = dbc.Container(
+    survey_layout = dbc.Container(
         [
-            # reload the data
             # title row
             dbc.Row(
                 dbc.Col(
@@ -1336,9 +1337,52 @@ def layout():
         style={"min-height": "80vh"},
     )
 
+    layout = html.Div(
+        children=[
+            html.Div(
+                id="div-loading",
+                children=[
+                    dash_loading_spinners.Pacman(
+                        color="white",
+                        fullscreen=True,
+                        fullscreen_style={'background-color':"#117f82"},
+                        id="loading-whole-app"
+                    )
+                ]
+            ),
+            html.Div(
+                className="div-app",
+                id="div-app",
+                children=[  
+                    # app layout here
+                    survey_layout
+                ]
+            )
+        ]
+    )
+
     return layout
 
 
 # -----------------------------
 # Callbacks
 # -----------------------------
+@dash.callback(
+        Output("div-loading", "children"),
+        [
+            Input("div-app", "loading_state")
+        ],
+        [
+            State("div-loading", "children"),
+        ]
+    )
+def hide_loading_after_startup(
+        loading_state, 
+        children
+        ):
+        if children:
+            print("remove loading spinner!")
+            return None
+        print("spinner already gone!")
+        
+# See https://community.plotly.com/t/show-a-full-screen-loading-spinner-on-app-start-up-then-remove-it/60174/3
