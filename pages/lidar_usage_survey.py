@@ -1211,8 +1211,7 @@ def closing_card():
 # Create the layout for this page
 # -----------------------------
 
-
-def layout():
+def show_survey_results():
 
     # choose to show all data, or just "real" data
     use_real_only = True
@@ -1337,6 +1336,10 @@ def layout():
         style={"min-height": "80vh"},
     )
 
+    return survey_layout
+
+def layout():    
+
     layout = html.Div(
         children=[
             html.Div(
@@ -1355,7 +1358,7 @@ def layout():
                 id="div-app",
                 children=[  
                     # app layout here
-                    survey_layout
+                    show_survey_results()
                 ]
             )
         ]
