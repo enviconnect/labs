@@ -288,8 +288,10 @@ div.previous-next-container > :is(button):not([disabled]) {
     visibility: hidden;
 }
 *[data-dash-is-loading="true"]::before{
-    content: "Loading, please be patient..";
+    content: "Loading, please be patient. This could take up to 20 seconds.";
     display: inline-block;
     color: white;
+    font-size: 1.25rem;
+    font-weight: 300;
     visibility: visible;
 }
