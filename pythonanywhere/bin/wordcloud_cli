@@ -1,4 +1,4 @@
-#!/Users/andyc/Documents/GitHub/public-EnergyRnDFacilitiesExplorer/pythonanywhere/bin/python3.8
+#!/Users/andyc/Documents/GitHub/labs/pythonanywhere/bin/python3.8
 # EASY-INSTALL-ENTRY-SCRIPT: 'wordcloud==1.9.2','console_scripts','wordcloud_cli'
 import re
 import sys

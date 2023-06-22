@@ -9,7 +9,7 @@ import os
 import sys
 
 # add your project directory to the sys.path
-project_home = '/home/enviConnect/public-EnergyRnDFacilitiesExplorer'
+project_home = '/home/enviConnect/labs'
 if project_home not in sys.path:
     sys.path = [project_home] + sys.path
 

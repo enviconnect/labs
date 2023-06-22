@@ -29,7 +29,7 @@ end
 # unset irrelevant variables
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/andyc/Documents/GitHub/public-EnergyRnDFacilitiesExplorer/pythonanywhere"
+set -gx VIRTUAL_ENV "/Users/andyc/Documents/GitHub/labs/pythonanywhere"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

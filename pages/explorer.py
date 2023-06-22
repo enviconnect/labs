@@ -1018,7 +1018,7 @@ def create_about_element():
                                     "The source code used for this website is available ",
                                     html.A(
                                         "on GitHub",
-                                        href="https://github.com/enviconnect/public-EnergyRnDFacilitiesExplorer",
+                                        href="https://github.com/enviconnect/labs",
                                         target="_blank",
                                     ),
                                     ".",

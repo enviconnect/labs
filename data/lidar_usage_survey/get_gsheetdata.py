@@ -10,7 +10,7 @@ path = os.getcwd()
 print(path)
 
 # change to the working directory. This should be the location of the "app.py"
-os.chdir("public-EnergyRnDFacilitiesExplorer")
+os.chdir("labs")
 print(path)
 
 sa = gspread.service_account(
