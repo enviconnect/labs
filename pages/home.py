@@ -74,7 +74,7 @@ layout = dbc.Container(
                             # style={"width": "18rem"},
                         ),
                     ],
-                    className="col-12 col-md-4 col-lg-3",
+                    className="col-12 col-md-4 col-lg-3 g-4",
                 ),
                 # Lidar usage
                 dbc.Col(
@@ -111,7 +111,7 @@ layout = dbc.Container(
                             # style={"width": "18rem"},
                         ),
                     ],
-                    className="col-12 col-md-4 col-lg-3",
+                    className="col-12 col-md-4 col-lg-3 g-4",
                 ),
                 # talk.inductionzone.org
                 dbc.Col(
@@ -148,7 +148,7 @@ layout = dbc.Container(
                             # style={"width": "18rem"},
                         )
                     ],
-                    className="col-12 col-md-4 col-lg-3",
+                    className="col-12 col-md-4 col-lg-3 g-4",
                 ),
             ]
         ),
