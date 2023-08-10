@@ -718,14 +718,19 @@ def fig_n_metttowers(df_plot):
 # https://community.plotly.com/t/wordcloud-in-dash/11407/25
 # https://stackoverflow.com/questions/58286251/how-can-i-group-multi-word-terms-when-creating-a-python-wordcloud
 #
-def fig_word_cloud(word_list):
 
+def flat_word_list(word_list):
     flat_word_list = []
     for sublist in word_list:
         for item in sublist.split(", "):
             if len(item) > 0:
                 # capitalize the first letter in a string and append
                 flat_word_list.append(item[0].upper() + item[1:])
+
+
+    return flat_word_list
+
+def fig_word_cloud(word_list):
 
     wc = WordCloud(
         min_word_length=1,
@@ -734,7 +739,7 @@ def fig_word_cloud(word_list):
         height=300,
         width=600,
         background_color=None).generate_from_frequencies(
-        Counter(flat_word_list))
+        Counter(flat_word_list(word_list)))
     wc_img = wc.to_image()
 
     with BytesIO() as buffer:
@@ -743,6 +748,51 @@ def fig_word_cloud(word_list):
 
     return fig
 
+def word_list_with_count(word_list,n_words=-1):
+    words, word_counts = np.unique(
+        flat_word_list(word_list), return_counts=True)
+
+    # sort the words by count; biggest first
+    word_counts_sorted, words_sorted = zip(
+        *sorted(zip(word_counts, words), key=lambda x: x[0], reverse=True))
+
+    # remove any values that are just 1
+    words_sorted =np.array(words_sorted)
+    word_counts_sorted = np.array(word_counts_sorted)
+    print(words_sorted)
+    print(word_counts_sorted)
+    words_sorted = words_sorted[word_counts_sorted>1]
+    word_counts_sorted = word_counts_sorted[word_counts_sorted>1]
+    
+    # limit the array to the n biggest values
+    word_counts_sorted = word_counts_sorted[0:n_words] 
+    words_sorted = words_sorted[0:n_words]
+
+    def word_count_string(word, word_count):
+        return (word + " (" + str(word_count) + ")")
+
+    if words_sorted.size > 1.0:
+        word_count_str_out = "The most common terms are "
+        # first values are all comma separated
+        for i in range(0, words_sorted.size-1 ):
+            word_count_str_out = word_count_str_out + word_count_string(words_sorted[i],word_counts_sorted[i]) + ", "
+    
+        # and the last value (no comma)
+        word_count_str_out = word_count_str_out + " and " + word_count_string(words_sorted[-1],word_counts_sorted[-1])
+    elif words_sorted.size == 1:
+        word_count_str_out = "The most common term is " + word_count_string(words_sorted[0],word_counts_sorted[0])
+    elif words_sorted.size == 0:
+        word_count_str_out = "No word is more common than another."
+
+    return word_count_str_out
+
+def word_cloud_insights(word_list, n_words=-1):
+
+    insights = {
+        "word_list_with_count": word_list_with_count(word_list, n_words)
+    }
+
+    return insights
 
 # -----------------------------
 # Apply theming to the figures
@@ -1218,6 +1268,7 @@ def masts_per_campaign_card(df_in_clean):
 
 
 def masts_reasons_card(df_in_clean):
+    insights = word_cloud_insights(df_in_clean["mettower_reasons"], n_words=5)
     card = dbc.Card(
         [dbc.CardBody(
             [
@@ -1229,7 +1280,22 @@ def masts_reasons_card(df_in_clean):
                     src="data:image/png;base64," + fig_word_cloud(
                         df_in_clean["mettower_reasons"]),
                     style={"max-width": "100%"},
-                )
+                ),
+                divider(),
+                dbc.Row(
+                        [
+                            dbc.Col([
+                                html.Small([
+                                    html.I(className="fa-regular fa-lightbulb"
+                                           ),
+                                    " ",
+                                    insights["word_list_with_count"]
+                                ]
+                                ),
+                            ],
+                                width=12)
+                        ]
+                    ),
             ]
         ),
         ]
@@ -1274,6 +1340,7 @@ def lidars_per_MW_card(df_long):
 
 
 def lidar_needs_card(df_in_clean):
+    insights = word_cloud_insights(df_in_clean["top_needs"], n_words=5)
     card = dbc.Card(
         [dbc.CardBody(
             [
@@ -1285,7 +1352,22 @@ def lidar_needs_card(df_in_clean):
                     src="data:image/png;base64," +
                     fig_word_cloud(
                         df_in_clean["top_needs"]),
-                    style={"max-width": "100%"})
+                    style={"max-width": "100%"}),
+                divider(),
+                dbc.Row(
+                        [
+                            dbc.Col([
+                                html.Small([
+                                    html.I(className="fa-regular fa-lightbulb"
+                                           ),
+                                    " ",
+                                    insights["word_list_with_count"]
+                                ]
+                                ),
+                            ],
+                                width=12)
+                        ]
+                    ),
             ]
         )
         ],)
@@ -1293,6 +1375,7 @@ def lidar_needs_card(df_in_clean):
 
 
 def lidar_challenges_card(df_in_clean):
+    insights = word_cloud_insights(df_in_clean["top_challenges"], n_words=5)
     card = dbc.Card(
         [
             dbc.CardBody(
@@ -1306,7 +1389,22 @@ def lidar_challenges_card(df_in_clean):
                         fig_word_cloud(
                             df_in_clean["top_challenges"]),
                         style={"max-width": "100%"}
-                    )
+                    ),
+                    divider(),
+                dbc.Row(
+                        [
+                            dbc.Col([
+                                html.Small([
+                                    html.I(className="fa-regular fa-lightbulb"
+                                           ),
+                                    " ",
+                                    insights["word_list_with_count"]
+                                ]
+                                ),
+                            ],
+                                width=12)
+                        ]
+                    ),
                 ]
             ),
         ]
@@ -1315,6 +1413,7 @@ def lidar_challenges_card(df_in_clean):
 
 
 def lidar_opportunities_card(df_in_clean):
+    insights = word_cloud_insights(df_in_clean["top_opportunities"], n_words=5)
     card = dbc.Card(
         [
             dbc.CardBody(
@@ -1328,7 +1427,22 @@ def lidar_opportunities_card(df_in_clean):
                         fig_word_cloud(
                             df_in_clean["top_opportunities"]),
                         style={"max-width": "100%"}
-                    )
+                    ),
+                    divider(),
+                dbc.Row(
+                        [
+                            dbc.Col([
+                                html.Small([
+                                    html.I(className="fa-regular fa-lightbulb"
+                                           ),
+                                    " ",
+                                    insights["word_list_with_count"]
+                                ]
+                                ),
+                            ],
+                                width=12)
+                        ]
+                    ),
                 ]
             ),
         ]
