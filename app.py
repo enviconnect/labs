@@ -16,7 +16,6 @@ app = Dash(
     suppress_callback_exceptions=True,
 )
 
-
 def create_nav_bar():
     navbar = dbc.Nav(
         [

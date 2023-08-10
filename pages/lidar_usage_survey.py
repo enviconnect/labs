@@ -17,6 +17,8 @@ import gspread
 # import numpy
 import numpy as np
 
+import os
+
 # import pandas (needed for the data table)
 import pandas as pd
 import plotly.express as px
@@ -160,6 +162,10 @@ def fetch_form_responses():
     # work_sheet = sheet.worksheet("Form responses 1")
     # df_in = pd.DataFrame(work_sheet.get_all_records())
 
+    filedir = __file__.replace(f"lidar_usage_survey.py", "")
+    approotdir = os.path.dirname(os.path.dirname(os.path.dirname(filedir)))
+    datadir = os.path.join(approotdir,"..")
+    
     df_in = pd.read_pickle("data/lidar_usage_survey/lidar_usage_survey.pkl")
 
     return df_in
@@ -231,7 +237,7 @@ def prepare_form_responses(df_in):
         df_in.loc[index, "n_lidar_project_rented"] = row[lrentedcols].sum()
 
     # replace missing data in number columns with na
-    float_cols = ["year_started", "project_power"]
+    float_cols = ["year_started", "project_power","n_mettowers"]
 
     # for col in float_cols:
     df_in[float_cols] = df_in[float_cols].replace("", float("nan"))
@@ -345,6 +351,8 @@ def convert_form_responses_to_long(df_in):
 
     # add the number of devices per megawatt
     df_long["lidars_per_MW"] = df_long.n_lidar_type / df_long.project_power
+    df_long["MW_per_lidar"] = df_long.project_power / df_long.n_lidar_type
+
     return df_long
 
 
@@ -434,7 +442,7 @@ def fig_map_responses(df_plot):
 # -----------------------------
 
 
-def fig_pc_responses(df_plot):
+def fig_pc_responses(df_plot):    
 
     # using solution from
     # https://stackoverflow.com/questions/72749285/changing-the-base-color-of-ploty-express-parallel-categories-diagram
@@ -632,7 +640,7 @@ def fig_lidars_per_MW(df_plot):
     fig = px.scatter(
         df_plot[df_plot["n_lidar_type"] > 0],
         y="lidar_type_short_name",
-        x="lidars_per_MW",
+        x="MW_per_lidar",
         color="measurement_goal",
         facet_col="land_offshore",
         category_orders={
@@ -640,7 +648,7 @@ def fig_lidars_per_MW(df_plot):
             "lidar_type_short_name": default_category_order("lidar_type_short_name"),
         },
         labels={
-            "lidars_per_MW": "Lidars used per MW of wind farm capacity",
+            "MW_per_lidar": "MW of wind farm capacity per lidar",
             "lidar_type_short_name": "Lidar type",
         },
     )
@@ -752,8 +760,104 @@ def fig_styling(fig):
     return fig
 
 # -----------------------------
+# Create text snippets to give insight
+# -----------------------------
+
+
+def country_list_count(df):
+
+    unique_countries, country_counts = np.unique(
+        df.country_name, return_counts=True)
+
+    # sort the countries by count; biggest first
+    country_counts_sorted, unique_countries_sorted = zip(
+        *sorted(zip(country_counts, unique_countries), key=lambda x: x[0], reverse=True))
+
+    def country_string(country, count):
+        return (country + " (" + str(count) + ")")
+
+    count_by_country = ""
+    # first values are all comma separated
+    for i in range(0, len(unique_countries_sorted)-2):
+        count_by_country = count_by_country + country_string(unique_countries_sorted[i],
+                                                             country_counts_sorted[i]) + ", "
+    # and the last value (no comma)
+    count_by_country = count_by_country + " and " + country_string(unique_countries_sorted[-1],
+                                                                   country_counts_sorted[-1])
+
+    return count_by_country
+
+
+def lidar_per_campaign_insight(df):
+    # number of campaigns
+    ncampaigns = len(df)
+    # number of campaigns using more than one lidar
+    gtetwolidar = len(df[df["n_lidar_project"] > 1.0])
+    gtetwolidar_str = "{0} campaigns ({1:.1%}) use 2 or more lidars"
+
+    return gtetwolidar_str.format(str(gtetwolidar), gtetwolidar/ncampaigns)
+
+
+def lidar_rental_insight(df):
+    # number of campaigns
+    ncampaigns = len(df)
+
+    # insight: number of campaigns using rented lidar
+    gteonerentedlidar = len(df[df["n_lidar_project_rented"] >= 1.0])
+    gteonerentedlidar_str = "{0} campaigns ({1:.1%}) use a rented lidar"
+    gteonerentedlidar_insight = gteonerentedlidar_str.format(
+        str(gteonerentedlidar), gteonerentedlidar/ncampaigns)
+
+    # insight: number of campaigns using only rented lidar
+    allrentedlidar = sum((df["n_lidar_project_rented"] == df["n_lidar_project"]) & (
+        df["n_lidar_project"] >= 1.0))
+    allrentedlidar_str = "{0} campaigns ({1:.1%}) only use rented lidar"
+    allrentedlidar_insight = allrentedlidar_str.format(
+        str(allrentedlidar), allrentedlidar/ncampaigns)
+
+    insights = {
+        "n_campaigns_renting": gteonerentedlidar_insight,
+        "n_campaigns_onlyrental": allrentedlidar_insight
+    }
+
+    return insights
+
+
+def metmast_insight(df):
+    # number of campaigns
+    ncampaigns = len(df)
+
+    # insight: number of campaigns using a met mast and lidar
+    gteonemetmast = len(df[df["n_mettowers"] >= 1.0])
+    gteonemetmast_str = "{0} campaigns ({1:.1%}) use lidar with a met mast"
+    gteonemetmast_insight = gteonemetmast_str.format(
+        str(gteonemetmast), gteonemetmast/ncampaigns)
+
+    insights = {
+        "n_campaigns_metmast": gteonemetmast_insight
+    }
+
+    return insights
+
+# -----------------------------
 # Create layout components, e.g. cards.
 # -----------------------------
+
+def divider():
+    divider = dbc.Row(
+            dbc.Col(
+                html.Hr(
+                    style={
+                        "borderWidth": "0.25vh",
+                        "width": "100%",
+                        "borderColor": "#117f82",
+                        "opacity": "unset",
+                    }
+                ),
+                width={"size": 12, "offset": 0},
+            )
+            )
+    return divider
 
 
 def title_text():
@@ -904,6 +1008,13 @@ def response_map_card(df_in_clean):
                             "height": "300px"},
                         responsive=True,
                     ),
+                    html.Small(
+                        [
+                            html.I(
+                                className="fa-solid fa-circle-info"
+                            ),
+                            " ",
+                            "We've got information about deployments in" + " " + country_list_count(df_in_clean) + "."])
                 ]
             )
         ]
@@ -962,7 +1073,7 @@ def timeline_card(df_in_clean):
                     html.Small(
                         [
                             html.I(
-                                className="fa-solid fa-circle-info"
+                                className="fa-solid fa-magnifying-glass"
                             ),
                             " ",
                             "Double click on a data series in the legend - e.g. 'power performance testing' - to only show data for that application",
@@ -995,6 +1106,16 @@ def lidars_per_campaign_card(df_in_clean):
                         },
                         responsive=True,
                     ),
+                    divider(),
+                    html.Small(
+                        [
+                            html.I(
+                                className="fa-regular fa-lightbulb"
+                            ),
+                            " ",
+                            lidar_per_campaign_insight(df_in_clean)
+                        ]
+                    )
                 ],
             ),
         ]
@@ -1003,6 +1124,7 @@ def lidars_per_campaign_card(df_in_clean):
 
 
 def lidar_rental_card(df_in_clean):
+    insights = lidar_rental_insight(df_in_clean)
     card = dbc.Card(
         [
             dbc.CardBody(
@@ -1011,7 +1133,6 @@ def lidar_rental_card(df_in_clean):
                         "How many wind lidars are rented per campaign?",
                         className="card-title"
                     ),
-
                     dcc.Graph(
                         figure=fig_lidar_rental(
                             df_in_clean
@@ -1022,14 +1143,40 @@ def lidar_rental_card(df_in_clean):
                             "height": "300px"
                         },
                     ),
-                ],
-            ),
+                    divider(),
+                    dbc.Row(
+                        [
+                            dbc.Col([
+                                html.Small([
+                                    html.I(className="fa-regular fa-lightbulb"
+                                           ),
+                                    " ",
+                                    insights["n_campaigns_renting"]
+                                ]
+                                ),
+                            ],
+                                width=12)
+                        ]
+                    ),
+                    dbc.Row([
+                        dbc.Col([html.Small([
+                            html.I(
+                                className="fa-regular fa-lightbulb"
+                            ),
+                            " ",
+                            insights["n_campaigns_onlyrental"]
+                        ])],
+                            width=12)
+                    ])
+                ]
+            )
         ]
     )
     return card
 
 
 def masts_per_campaign_card(df_in_clean):
+    insights = metmast_insight(df_in_clean)
     card = dbc.Card(
         [
             dbc.CardBody(
@@ -1038,7 +1185,6 @@ def masts_per_campaign_card(df_in_clean):
                         "Are wind lidar used with met masts?",
                         className="card-title",
                     ),
-
                     dcc.Graph(
                         figure=fig_n_metttowers(
                             df_in_clean
@@ -1048,6 +1194,21 @@ def masts_per_campaign_card(df_in_clean):
                         style={
                             "height": "300px"
                         },
+                    ),
+                    divider(),
+                    dbc.Row(
+                        [
+                            dbc.Col([
+                                html.Small([
+                                    html.I(className="fa-regular fa-lightbulb"
+                                           ),
+                                    " ",
+                                    insights["n_campaigns_metmast"]
+                                ]
+                                ),
+                            ],
+                                width=12)
+                        ]
                     ),
                 ],
             ),
@@ -1091,7 +1252,7 @@ def lidars_per_MW_card(df_long):
                                 className="fa-solid fa-circle-info"
                             ),
                             " ",
-                            "This chart shows how many lidar are used compared to the size of the wind farm. For example, 3 lidars used on a 120 MW farm would be plotted as 0.025 lidars per MW.",
+                            "This chart shows how many lidar are used compared to the installed capacity of the wind farm. For example, 3 lidars used on a 120 MW farm would be plotted as 40 MW per lidar.",
                         ]
                     ),
                     dcc.Graph(
@@ -1210,6 +1371,7 @@ def closing_card():
 # -----------------------------
 # Create the layout for this page
 # -----------------------------
+
 
 def show_survey_results():
 
@@ -1338,7 +1500,8 @@ def show_survey_results():
 
     return survey_layout
 
-def layout():    
+
+def layout():
 
     layout = html.Div(
         children=[
@@ -1348,7 +1511,7 @@ def layout():
                     dash_loading_spinners.Pacman(
                         color="white",
                         fullscreen=True,
-                        fullscreen_style={'background-color':"#117f82"},
+                        fullscreen_style={'background-color': "#117f82"},
                         id="loading-whole-app"
                     )
                 ]
@@ -1356,7 +1519,7 @@ def layout():
             html.Div(
                 className="div-app",
                 id="div-app",
-                children=[  
+                children=[
                     # app layout here
                     show_survey_results()
                 ]
@@ -1371,21 +1534,21 @@ def layout():
 # Callbacks
 # -----------------------------
 @dash.callback(
-        Output("div-loading", "children"),
-        [
-            Input("div-app", "loading_state")
-        ],
-        [
-            State("div-loading", "children"),
-        ]
-    )
+    Output("div-loading", "children"),
+    [
+        Input("div-app", "loading_state")
+    ],
+    [
+        State("div-loading", "children"),
+    ]
+)
 def hide_loading_after_startup(
-        loading_state, 
+        loading_state,
         children
-        ):
-        if children:
-            print("remove loading spinner!")
-            return None
-        print("spinner already gone!")
-        
+):
+    if children:
+        print("remove loading spinner!")
+        return None
+    print("spinner already gone!")
+
 # See https://community.plotly.com/t/show-a-full-screen-loading-spinner-on-app-start-up-then-remove-it/60174/3
