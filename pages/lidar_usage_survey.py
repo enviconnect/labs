@@ -1465,7 +1465,7 @@ def feedback_card():
                 ]
             )
         ],
-        className="g-4",
+        className="g-4 mt-4 sticky-note",
     )
 
     return card
@@ -1478,7 +1478,7 @@ def closing_card():
                 closing_text()
             )
         ],
-        className="g-4 mt-4",
+        className="g-4",
     )
     return card
 
@@ -1595,8 +1595,8 @@ def show_survey_results():
                             # Feedback
                             dbc.Col(
                                 [
-                                    feedback_card(),
                                     closing_card(),
+                                    feedback_card(),
                                 ],
                                 className="col-12 col-lg-6 g-4",
                             ),

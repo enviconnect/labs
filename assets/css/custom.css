@@ -256,9 +256,15 @@ div.previous-next-container> :is(button):not([disabled]) {
     border-radius: 0.25rem;
 }
 
-
 .school {
     font-family: "Schoolbell";
+}
+
+.sticky-note {
+    background: #fff7d7;
+    border-radius: 0;
+    rotate: 1deg;
+    box-shadow: 4px 4px 4px 1px;
 }
 
 .sub-footer {
