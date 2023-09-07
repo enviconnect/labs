@@ -389,7 +389,7 @@ def fig_map_responses(df_plot):
     fig = px.choropleth(
         df_response_pivot,
         color="count",
-        range_color=(1, df_response_pivot["count"].max() + 1),
+        range_color=(1, df_response_pivot["count"].max()),
         locationmode="ISO-3",
         locations="country_iso3",
         labels={"count": "Lidar deployments per country"},
@@ -759,8 +759,6 @@ def word_list_with_count(word_list,n_words=-1):
     # remove any values that are just 1
     words_sorted =np.array(words_sorted)
     word_counts_sorted = np.array(word_counts_sorted)
-    print(words_sorted)
-    print(word_counts_sorted)
     words_sorted = words_sorted[word_counts_sorted>1]
     word_counts_sorted = word_counts_sorted[word_counts_sorted>1]
     
@@ -814,10 +812,13 @@ def fig_styling(fig):
 # -----------------------------
 
 
-def country_list_count(df):
+def country_list_count(country_names_list):
+
+    #remove nans from the country list
+    country_names_list.remove("N/A")
 
     unique_countries, country_counts = np.unique(
-        df.country_name, return_counts=True)
+        country_names_list, return_counts=True)
 
     # sort the countries by count; biggest first
     country_counts_sorted, unique_countries_sorted = zip(
@@ -1061,10 +1062,11 @@ def response_map_card(df_in_clean):
                     html.Small(
                         [
                             html.I(
-                                className="fa-solid fa-circle-info"
+                                className="fa-solid fa-lightbulb",
+                                style={"color": "#117f82"}
                             ),
                             " ",
-                            "We've got information about deployments in" + " " + country_list_count(df_in_clean) + "."])
+                            "We've got information about deployments in" + " " + country_list_count(df_in_clean.country_name.tolist()) + "."])
                 ]
             )
         ]
@@ -1123,7 +1125,8 @@ def timeline_card(df_in_clean):
                     html.Small(
                         [
                             html.I(
-                                className="fa-solid fa-magnifying-glass"
+                                className="fa-solid fa-magnifying-glass",
+                                style={"color": "#117f82"}
                             ),
                             " ",
                             "Double click on a data series in the legend - e.g. 'power performance testing' - to only show data for that application",
@@ -1160,7 +1163,8 @@ def lidars_per_campaign_card(df_in_clean):
                     html.Small(
                         [
                             html.I(
-                                className="fa-regular fa-lightbulb"
+                                className="fa-solid fa-lightbulb",
+                                style={"color": "#117f82"}
                             ),
                             " ",
                             lidar_per_campaign_insight(df_in_clean)
@@ -1198,7 +1202,8 @@ def lidar_rental_card(df_in_clean):
                         [
                             dbc.Col([
                                 html.Small([
-                                    html.I(className="fa-regular fa-lightbulb"
+                                    html.I(className="fa-solid fa-lightbulb",
+                                           style={"color": "#117f82"}
                                            ),
                                     " ",
                                     insights["n_campaigns_renting"]
@@ -1211,7 +1216,8 @@ def lidar_rental_card(df_in_clean):
                     dbc.Row([
                         dbc.Col([html.Small([
                             html.I(
-                                className="fa-regular fa-lightbulb"
+                                className="fa-solid fa-lightbulb",
+                                style={"color": "#117f82"}
                             ),
                             " ",
                             insights["n_campaigns_onlyrental"]
@@ -1234,7 +1240,7 @@ def masts_per_campaign_card(df_in_clean):
                     html.H2(
                         "Are wind lidar used with met masts?",
                         className="card-title",
-                    ),
+                    ),                    
                     dcc.Graph(
                         figure=fig_n_metttowers(
                             df_in_clean
@@ -1250,7 +1256,8 @@ def masts_per_campaign_card(df_in_clean):
                         [
                             dbc.Col([
                                 html.Small([
-                                    html.I(className="fa-regular fa-lightbulb"
+                                    html.I(className="fa-solid fa-lightbulb",
+                                           style={"color": "#117f82"}
                                            ),
                                     " ",
                                     insights["n_campaigns_metmast"]
@@ -1276,6 +1283,19 @@ def masts_reasons_card(df_in_clean):
                     "Why use met towers?",
                     className="card-title",
                 ),
+                html.Small([html.I(className="fa-solid fa-circle-question",
+                                style={"color": "#117f82"}
+                                           ),
+                                           " ",
+                                           "We asked,",
+                                           " ",
+                                      html.I("'Please provide a short explanation of why you used met towers, e.g. "),
+                                      "'required by standards.'",
+                                      html.I("'. "),
+                                      "The responses are shown in the word cloud below. More common words or phrases are shown in larger text."
+                                      ]
+                            ),
+                divider(),
                 html.Img(
                     src="data:image/png;base64," + fig_word_cloud(
                         df_in_clean["mettower_reasons"]),
@@ -1286,7 +1306,8 @@ def masts_reasons_card(df_in_clean):
                         [
                             dbc.Col([
                                 html.Small([
-                                    html.I(className="fa-regular fa-lightbulb"
+                                    html.I(className="fa-solid fa-lightbulb",
+                                style={"color": "#117f82"}
                                            ),
                                     " ",
                                     insights["word_list_with_count"]
@@ -1315,7 +1336,8 @@ def lidars_per_MW_card(df_long):
                     html.Small(
                         [
                             html.I(
-                                className="fa-solid fa-circle-info"
+                                className="fa-solid fa-circle-info",
+                                style={"color": "#117f82"}
                             ),
                             " ",
                             "This chart shows how many lidar are used compared to the installed capacity of the wind farm. For example, 3 lidars used on a 120 MW farm would be plotted as 40 MW per lidar.",
@@ -1344,21 +1366,37 @@ def lidar_needs_card(df_in_clean):
     card = dbc.Card(
         [dbc.CardBody(
             [
+                html.Div([
                 html.H2(
                     "Top 3 needs from wind lidar",
                     className="card-title",
                 ),
+                html.Small([html.I(className="fa-solid fa-circle-question",
+                                style={"color": "#117f82"}
+                                           ),
+                                    " ",
+                                    "We asked,",
+                                     " ",
+                                      html.I("'What are your top 3 needs when using wind lidar for this application? Please separate them using a comma, e.g."),
+                                       " low weight, small size, bright orange",
+                                        html.I(" (or whatever). They could be needs that are already satisfied, or unmet needs."),
+                                        "'. ",
+                                      "The responses are shown in the word cloud below. More common words or phrases are shown in larger text."
+                                      ])
+                                      ]),
+                divider(),
                 html.Img(
                     src="data:image/png;base64," +
                     fig_word_cloud(
-                        df_in_clean["top_needs"]),
+                        df_in_clean["top_needs"]),                        
                     style={"max-width": "100%"}),
                 divider(),
                 dbc.Row(
                         [
                             dbc.Col([
                                 html.Small([
-                                    html.I(className="fa-regular fa-lightbulb"
+                                    html.I(className="fa-solid fa-lightbulb",
+                                style={"color": "#117f82"}
                                            ),
                                     " ",
                                     insights["word_list_with_count"]
@@ -1384,6 +1422,19 @@ def lidar_challenges_card(df_in_clean):
                         "Top 3 challenges from wind lidar",
                         className="card-title",
                     ),
+                    html.Small([html.I(className="fa-solid fa-circle-question",
+                                style={"color": "#117f82"}
+                                           ),
+                                           " ",
+                                           "We asked,",
+                                           " ",
+                                      html.I("'What are the top 3 challenges you experienced with using wind lidar for this application? Please separate them using a comma, e.g. "),
+                                      "'standards, site access, power supply'",
+                                      html.I(" (or whatever).'. "),
+                                      "The responses are shown in the word cloud below. More common words or phrases are shown in larger text."
+                                      ]
+                            ),
+                divider(),
                     html.Img(
                         src="data:image/png;base64," +
                         fig_word_cloud(
@@ -1395,7 +1446,8 @@ def lidar_challenges_card(df_in_clean):
                         [
                             dbc.Col([
                                 html.Small([
-                                    html.I(className="fa-regular fa-lightbulb"
+                                    html.I(className="fa-solid fa-lightbulb",
+                                style={"color": "#117f82"}
                                            ),
                                     " ",
                                     insights["word_list_with_count"]
@@ -1422,6 +1474,19 @@ def lidar_opportunities_card(df_in_clean):
                         "Top 3 opportunities from wind lidar",
                         className="card-title",
                     ),
+                    html.Small([html.I(className="fa-solid fa-circle-question",
+                                style={"color": "#117f82"}
+                                           ),
+                                           " ",
+                                           "We asked,",
+                                           " ",
+                                      html.I("'What are the top 3 opportunities you see with using wind lidar for wind energy applications? Please separate them using a comma, e.g. "),
+                                      "'digitalisation, lower cost, icing detection'",
+                                      html.I(" (or whatever).'. "),
+                                      "The responses are shown in the word cloud below. More common words or phrases are shown in larger text."
+                                      ]
+                            ),
+                divider(),
                     html.Img(
                         src="data:image/png;base64," +
                         fig_word_cloud(
@@ -1433,7 +1498,8 @@ def lidar_opportunities_card(df_in_clean):
                         [
                             dbc.Col([
                                 html.Small([
-                                    html.I(className="fa-regular fa-lightbulb"
+                                    html.I(className="fa-solid fa-lightbulb",
+                                style={"color": "#117f82"}
                                            ),
                                     " ",
                                     insights["word_list_with_count"]
@@ -1465,7 +1531,7 @@ def feedback_card():
                 ]
             )
         ],
-        className="g-4 mt-4 sticky-note",
+        className="g-4 mt-4 sticky-note col-12 col-lg-9",
     )
 
     return card
